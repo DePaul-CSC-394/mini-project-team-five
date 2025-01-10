@@ -27,14 +27,24 @@
   - Command to essentially "refresh" and check if there are any changes in the remote repo
 
 - git pull
-  - This will actually TRY to update your current branch with what is on the remote branch, fetch to refresh and pull to update
+  - This will actually TRY to update your local branch with what is on the remote branch, fetch to refresh and pull to update
   - If done correctly, you should receive "Already up to date." or it will pull the changes without error.
+![image](https://github.com/user-attachments/assets/07808722-7b21-4ca2-bf9c-4be5b43ec1b7)
+
 
 - git branch
-  - Shows all the branches available
+  - Shows all the branches available | ___The current branch is highlighted in green with a *___
+![image](https://github.com/user-attachments/assets/7d578930-cda5-4a03-9f2b-7c6ace3b28c7)
+
+- git branch name
+  - Creates a branch with the given name (on your local repo), if successful no message will popup
+![image](https://github.com/user-attachments/assets/8fc28817-c3a1-4703-b3c4-79fa7301506f)
+
 
 - git switch name
-  - This will switch to the branch with whatever name is inserted after switch. 
+  - This will switch to the branch with whatever name is inserted after switch.
+![image](https://github.com/user-attachments/assets/ca46766a-21f0-4e54-b3ed-7a138b000496)
+
 
 - git add .
   - Add all files in your directory to the repo (as long as they are not in .gitignore)
