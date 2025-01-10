@@ -30,8 +30,11 @@
 
 - git push
   - This will TRY to upload the code in the local branch you are in, to the remote branch associated on GitHub.
+  - If successful you will get a message saying your files were pushed with no errors.
 
 # How to run the project:
 
 # How to submit Pull Request:
+
+# FAQ
 
