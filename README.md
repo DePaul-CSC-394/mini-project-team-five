@@ -4,8 +4,6 @@
 ![Docker](https://img.shields.io/badge/Docker-v27.4-00008B.svg)
 ![Postgres](https://img.shields.io/badge/Postgres-v17-3268a8.svg)
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
 # List of Commands:
 
 ### Docker:
@@ -30,7 +28,10 @@
 - git commit -a -m "message"
   - Create a commit that includes all your changes
 
-# How to run project:
+- git push
+  - This will TRY to upload the code in the local branch you are in, to the remote branch associated on GitHub.
+
+# How to run the project:
 
 # How to submit Pull Request:
 
