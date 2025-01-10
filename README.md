@@ -4,6 +4,20 @@
 ![Docker](https://img.shields.io/badge/Docker-v27.4-00008B.svg)
 ![Postgres](https://img.shields.io/badge/Postgres-v17-3268a8.svg)
 
+# File Structure:
+### Repository Folder:
+![image](https://github.com/user-attachments/assets/2bc12f6e-45c1-443e-a1ad-3b5b4b1cd74b)
+- nginx-1.27.3 [The folder that contains NGINX]
+- toDo [The toDo application folder]
+- toDoList [The django project folder]
+- db.sqlite3 [Local database django uses]
+- manage.py [file used to run the django project]
+### toDo app Folder:
+![image](https://github.com/user-attachments/assets/0b3b28ec-9a55-47d1-b1ce-c50221db51de)
+### django Project Folder:
+![image](https://github.com/user-attachments/assets/0879f96a-438c-47eb-afd2-fe38bc7f5395)
+
+
 # List of Commands:
 
 ### Docker:
