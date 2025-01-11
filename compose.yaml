@@ -70,7 +70,7 @@ services:
       dockerfile: dockerfile.prod
     container_name: django-docker
     volumes:
-      - static_volume:/home/app/web/staticfiles
+      - static_volume:/app/staticfiles
     # ports:
     #   - "8000:8000"
     expose:
@@ -85,7 +85,6 @@ services:
       DATABASE_ENGINE: ${DATABASE_ENGINE}
       DATABASE_NAME: ${DATABASE_NAME}
       DATABASE_USERNAME: ${DATABASE_USERNAME}
-  
       DATABASE_PASSWORD: ${DATABASE_PASSWORD}
       DATABASE_HOST: ${DATABASE_HOST}
       DATABASE_PORT: ${DATABASE_PORT}
@@ -95,7 +94,7 @@ services:
   nginx:
     build: ./nginx
     volumes:
-      - static_volume:/app/web/staticfiles
+      - static_volume:/app/staticfiles
     ports:
       - "1337:80"
     depends_on:

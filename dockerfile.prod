@@ -42,6 +42,7 @@ RUN apt-get update && apt-get install -y \
 
 RUN useradd -m -r appuser && \
     mkdir /app && \
+    mkdir /app/staticfiles && \
     chown -R appuser /app
 
 # Copy the Python dependencies from the builder stage
