@@ -20,40 +20,57 @@
 
 # List of Commands:
 
-### Docker:
+## Docker:
+- **docker compose up -d --build**
+  - Builds the containers that are in the current compose.yaml file and run the project on localhost:1337
+  - Using the optional -d flag it will run the container in the background until you use: docker compose down -v.
+    
+- **docker compose down -v**
+  - Stops the running containers and volumes associated with them
 
-### Git & GitHub:
-- git fetch
+- **docker compose exec django-web python manage.py migrate --noinput**
+  - Runs a migration
+ 
+- **docker compose exec django-web python manage.py createsuperuser**
+  - Prompts for a username and email to create a admin user
+ 
+- **docker compose logs name**
+  - Replace name with the name of the service: django-web, db, nginx 
+ 
+- **docker image ls**
+  - Lists all docker images
+&nbsp;
+
+## Git & GitHub:
+- **git fetch**
   - Command to essentially "refresh" and check if there are any changes in the remote repo
 
-- git pull
-  - This will actually TRY to update your local branch with what is on the remote branch, fetch to refresh and pull to update
+- **git pull**
+  - Attempts to update your local branch with what is on the remote branch, fetch to refresh and pull to update
   - If done correctly, you should receive "Already up to date." or it will pull the changes without error.
 ![image](https://github.com/user-attachments/assets/07808722-7b21-4ca2-bf9c-4be5b43ec1b7)
 
-
-- git branch
-  - Shows all the branches available | ___The current branch is highlighted in green with a *___
+- **git branch**
+  - Shows all the local branches available | ___The current branch is highlighted in green with a *___
 ![image](https://github.com/user-attachments/assets/7d578930-cda5-4a03-9f2b-7c6ace3b28c7)
+  - Adding an -a flag will show all branches, local and remote
 
-- git branch name
+- **git branch name**
   - Creates a branch with the given name (on your local repo), if successful no message will popup
 ![image](https://github.com/user-attachments/assets/8fc28817-c3a1-4703-b3c4-79fa7301506f)
 
-
-- git switch name
+- **git switch name**
   - This will switch to the branch with whatever name is inserted after switch.
 ![image](https://github.com/user-attachments/assets/ca46766a-21f0-4e54-b3ed-7a138b000496)
 
-
-- git add .
+- **git add .**
   - Add all files in your directory to the repo (as long as they are not in .gitignore)
 
-- git commit -a -m "message"
+- **git commit -a -m "message"**
   - Create a commit that includes all your changes
 
-- git push
-  - This will TRY to upload the code in the local branch you are in, to the remote branch associated on GitHub.
+- **git push**
+  - Attempts to upload the code in the local branch you are in, to the remote branch associated on GitHub.
   - If successful you will get a message saying your files were pushed with no errors.
 
 # How to run the project:
