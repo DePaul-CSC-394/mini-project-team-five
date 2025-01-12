@@ -21,21 +21,22 @@
 # List of Commands:
 
 ## Docker:
-- **docker compose up -d --build**
+- **docker-compose up**
   - Builds the containers that are in the current compose.yaml file and run the project on localhost:1337
-  - Using the optional -d flag it will run the container in the background until you use: docker compose down -v.
+  - Using the --build flag will create a fresh build
+  - Using the optional -d flag it will run the container in the background until you use: docker-compose down -v.
     
-- **docker compose down -v**
+- **docker-compose down -v**
   - Stops the running containers and volumes associated with them
 
-- **docker compose exec django-web python manage.py migrate --noinput**
+- **docker-compose exec django-web python manage.py migrate --noinput**
   - Runs a migration
  
-- **docker compose exec django-web python manage.py createsuperuser**
-  - Prompts for a username and email to create a admin user
+- **docker-compose exec django-web python manage.py createsuperuser**
+  - Prompts for a username and email to create an admin user
  
-- **docker compose logs name**
-  - Replace name with the name of the service: django-web, db, nginx 
+- **docker-compose logs name**
+  - Replace the name with the name of the service: django-web, db, nginx 
  
 - **docker image ls**
   - Lists all docker images
@@ -76,6 +77,45 @@
 # How to run the project:
 
 # How to submit Pull Request:
+
+### First, make sure all your files are saved.
+### Second, make sure you are in the repository directory.  
+![image](https://github.com/user-attachments/assets/9a385b41-01e8-4644-892c-efd8353c89d9)
+
+### If you aren't already in a new branch, please create one:  
+![image](https://github.com/user-attachments/assets/eabd54f5-abcb-4d0d-9ccf-c8a309ae4f4d)
+
+### Then switch to the new branch:  
+![image](https://github.com/user-attachments/assets/51bcc6c1-267f-4d70-8a15-ec8276d5fa71)
+
+### Add your code, commit the changes and then push:  
+![image](https://github.com/user-attachments/assets/2c605c77-e13f-464b-a802-966915a5d2ff)
+
+### You should see this message on the GitHub page after you push:  
+![image](https://github.com/user-attachments/assets/61a61f9c-54d0-4250-b650-ecebcbb4e85b)
+### If not click on the branch selector and choose the branch you pushed to:  
+![image](https://github.com/user-attachments/assets/8ac84779-21f7-4160-8bc1-f1ef72e67f7c)
+
+### Click on "Compare & Pull Request"
+### This will bring you to a page similar to this:  
+![image](https://github.com/user-attachments/assets/c3d1e867-7001-4bf8-ad5d-58cba14308b3)
+
+### From here click on the reviewer's gear icon to add the Product Manager:  
+![image](https://github.com/user-attachments/assets/ec2018d9-4a9c-4bdb-9564-9a2e8250a724)
+
+### Add a description if you'd like then hit "Create Pull Request":  
+![image](https://github.com/user-attachments/assets/e70250ce-d426-499c-8c3d-f7a5ade095dc)
+
+### You'll see this if you have no merge conflicts:  
+![image](https://github.com/user-attachments/assets/49f79afc-f35d-404e-87a7-56eb0a3d8f51)
+
+### Once you're done the PM will review your code and merge it to the main branch.
+
+### After the pull request is approved and merged, you can do
+- **git switch main**
+- **git pull**
+### to update your main branch with the updated code
+
 
 # FAQ
 
