@@ -28,6 +28,8 @@
     
 - **docker-compose down -v**
   - Stops the running containers and volumes associated with them
+ 
+**_Any docker-compose exec command will not run unless you do docker-compose up -d_**
 
 - **docker-compose exec django-web python manage.py migrate --noinput**
   - Runs a migration
@@ -40,7 +42,30 @@
  
 - **docker image ls**
   - Lists all docker images
+ 
+- **docker exec -it django-docker bash**
+  - Creates an interactive bash shell that is running in the container
+  - To exit this bash terminal use the command 'exit'
+![image](https://github.com/user-attachments/assets/4e614cf1-0d2e-4fcd-8e8e-adc396aea569)
+ 
 &nbsp;
+
+## PSQL:
+- **\l**
+  - Lists the databases
+![image](https://github.com/user-attachments/assets/8b07c240-6f7b-41eb-9607-1d52af3a4148)
+
+- **\c**
+  - Checks the connection to the db and print the current user
+![image](https://github.com/user-attachments/assets/78fa1170-3b74-4c02-ba2a-85b5874ca399)
+
+- **\dt**
+  - Shows all relations
+![image](https://github.com/user-attachments/assets/8fc36fd0-9331-47f4-a00e-aec231049369)
+
+- **\q**
+  - Quit the PSQL console
+![image](https://github.com/user-attachments/assets/7a39d42f-2f36-4d3c-996b-49fbb9bb0ce9)
 
 ## Git & GitHub:
 - **git fetch**
