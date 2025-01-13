@@ -1,4 +1,5 @@
 #!/bin/sh
+#!/bin/zsh
 
 if [ "$DATABASE" = "postgres" ]
 then
@@ -14,7 +15,7 @@ then
 fi
 
 # python manage.py flush --no-input
-# python manage.py migrate
+python manage.py migrate
 
 # Collect the static files
 python manage.py collectstatic --noinput
