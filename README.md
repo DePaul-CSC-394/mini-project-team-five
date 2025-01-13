@@ -10,7 +10,7 @@
 2. [List of Commands](#list-of-commands)  
    2.1.  [Docker](#docker)  
    2.2.  [PSQL](#psql)  
-   2.3.  [Git & Github](git-&-github)  
+   2.3.  [Git & Github](git--github)  
 4. [How to submit pull request](#how-to-submit-pull-request)
 5. [FAQ](#faq)
    
@@ -130,7 +130,7 @@
 ![image](https://github.com/user-attachments/assets/17e3333b-0a9c-4a17-928d-e7d1379af5bf)
 
 
-# How to submit Pull Request:
+# How to submit pull request:
 
 #### First, make sure all your files are saved.
 #### Second, make sure you are in the repository directory.  
