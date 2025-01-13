@@ -106,10 +106,12 @@
 
 # How to run the project:
 
-#### First, make sure you are in the repository directory.  
+#### First, launch Docker Desktop and make sure it's running.
+
+#### Second, go to terminal and make sure you are in the repository directory.  
 ![image](https://github.com/user-attachments/assets/9a385b41-01e8-4644-892c-efd8353c89d9)
 
-#### Second run the command: docker compose up --build (or use docker-compose with the dash)
+#### Third run the command: docker compose up --build (or use docker-compose with the dash)
 ![image](https://github.com/user-attachments/assets/aeedd436-a0ec-45bd-b61f-75b82151cb08)  
 ![image](https://github.com/user-attachments/assets/6ca1a55f-ed52-410f-ba06-e98a97cb572e)
 
