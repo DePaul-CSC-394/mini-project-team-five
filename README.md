@@ -160,3 +160,8 @@
 
 # FAQ
 
+If you recieve an error like this when running docker compose up --build:  
+![image](https://github.com/user-attachments/assets/a9a1f501-7d66-4af8-adb4-dc1bc949d5cb)
+Run:
+- docker compose down -v
+- docker compose up --build
