@@ -90,7 +90,7 @@
   - Creates a branch with the given name (on your local repo), if successful no message will popup
 ![image](https://github.com/user-attachments/assets/8fc28817-c3a1-4703-b3c4-79fa7301506f)
 
-- **git switch name**
+- **git checkout name**
   - This will switch to the branch with whatever name is inserted after switch.
 ![image](https://github.com/user-attachments/assets/ca46766a-21f0-4e54-b3ed-7a138b000496)
 
