@@ -68,6 +68,10 @@
 ![image](https://github.com/user-attachments/assets/7a39d42f-2f36-4d3c-996b-49fbb9bb0ce9)
 
 ## Git & GitHub:
+
+- **git config --global core.autocrlf input**
+  - Sets line endings to be LF or Unix standard
+
 - **git fetch**
   - Command to essentially "refresh" and check if there are any changes in the remote repo
 
