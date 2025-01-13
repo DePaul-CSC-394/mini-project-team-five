@@ -1,22 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
-    <!--Incorporates code from both Matteo and Yumna-->
+    <!--Matteo's code-->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-
+    <title>Unauthenticated Landing Page</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
-
-            padding: 0; 
+            padding: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
-        }
+        } 
         header {
             width: 100%;
             display: flex;
@@ -45,35 +42,29 @@
             max-width: 300px;
             height: auto;
         }
-        .container {
-        	border: 2px solid black;
-            padding: 50px;
-            margin: 40px;
-            background-color: white;
-            text-align: start;
-            
-        }
         input::placeholder
         {
         	color: black;
             opacity: 0.4;
         }
-        input[type = "button"], input[type = "login"] {
+        input[type = "button"], input[type = "cancel"], input[type = "save"] {
         border: none;
         color: white;
         padding: 8px;
         margin: 4px 2px;
-        width: 80px;
+        width: 100px;
         text-align: center;
         cursor: pointer;
         }
-        input[type = submit] {
-        	background-color: #0057B7;
+        input[type = save] {
+        	background-color: #06ad05;
+        }
+        input[type = cancel] {
+           background-color: #FF0000;
         }
     </style>
 </head>
 <body>
-
     <header>
         <div class="logo">$APPNAME</div>
         <a href="#">About</a>
@@ -84,26 +75,15 @@
             <a href="mailto:@depaul.edu">@depaul.edu</a>
         </nav>
     </header>
-        <div class="container">
-            <form action = "{% url 'login' %}" method = "post">
-            {% csrf_token %}
-            <label for="email">Email: </label>
-            <input type="text" id="email" name="Email" placeholder = "Enter email here" style = font-style:italic><br><br>
-      
-            <label for="pass">Password: </label>
-            <input type="password" id="pass" name="Password" placeholder = "Enter password here" style = font-style:italic><br><br>
-      
-            <input type="submit" value="Login">
-            </form>
-
-            {% comment %} <form method="post">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <button type="submit">Login</button>
-              </form> {% endcomment %}
-        </div>
     <main>
+      <label for="tname">Team Name: </label>
+  	  <input type="text" id="tname" name="tname" placeholder = "Ex: Team Five" style = font-style:italic><br><br>
+      
+      <label for="desc">Description: </label>
+  	  <input type="text" id="desc" name="desc" placeholder = "Enter description here" style = font-style:italic><br><br>
+      
+      <input type="cancel" value="Cancel">
+      <input type="save" value="Save">
 </main>
-
 </body>
 </html>

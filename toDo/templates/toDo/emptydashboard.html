@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <head>
-    <!--Yumna's code-->
+    <!--Matteo's code-->
     <title>About Page</title>
     <style>
         body {
@@ -9,7 +9,7 @@
             padding: 0;
         }
         .navbar {
-            background-color: #f4f4f4;
+            background-color: #0057B7;
             padding: 10px 20px;
             display: flex;
             justify-content: space-between;
@@ -20,17 +20,12 @@
             color: black;
             font-weight: bold;
         }
-        .about-section {
-            background-color: #e0e0e0;
-            padding: 20px;
-            text-align: center;
-        }
-        .team-container {
+        .task-container {
             display: flex;
             justify-content: space-around;
             margin: 20px;
         }
-        .team-card {
+        .task {
             background-color: #f9f9f9;
             width: 30%;
             padding: 10px;
@@ -42,7 +37,7 @@
             width: 100%;
             height: 150px;
             object-fit: center;
-            background-color: grey;
+            background-color: ;
         }
         .team-card h3 {
             margin: 10px 0;
@@ -52,36 +47,33 @@
             color: #552;
             font-size: 0.9;
         }
+        button {
+        	margin: 0 auto;
+            display: block;
+        }
+         .create-todo {
+            background-color: blue;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
     <div class="navbar">
         <a href="#">$APPNAME</a>
         <a href="#">About</a>
+        <a href="#">Dashboard</a>
+        <a href="#">To-Do's</a>
+        <a href="#">Teams</a>
         <a href="mailto:@depaul.edu">@depaul.edu</a>
     </div>
-    <div class="about-section">
-        <h1>About</h1>
-        <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. 
-        </p>
-    </div>
-    <div class="team-container">
-        <div class="team-card">
-            <img src="#" alt="Image cap">
-            <h3>Name</h3>
-            <p>Bio<br>Role</p>
-        </div>
-        <div class="team-card">
-            <img src="#" alt="Image cap">
-            <h3>Name</h3>
-            <p>Bio<br>Role</p>
-        </div>
-        <div class="team-card">
-            <img src="#" alt="Image cap">
-            <h3>Name</h3>
-            <p>Bio<br>Role</p>
+    <div class="task-container">
+        <div class="task">
+            <h3>No To-Do's</h3>
         </div>
     </div>
+    <button type="submit" class="create-todo">Create ToDo</button>
 </body>
 </html>
