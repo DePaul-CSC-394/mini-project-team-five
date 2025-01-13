@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<head>
+
+    <title>About Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar {
+            background-color: #0057B7;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .navbar a {
+            text-decoration: none;
+            color: black;
+            font-weight: bold;
+        }
+        .task-container {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px;
+        }
+        .task {
+            background-color: #f9f9f9;
+            width: 30%;
+            padding: 10px;
+            text-align: center;
+            border: 1px solid ;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .team-card img {
+            width: 100%;
+            height: 150px;
+            object-fit: center;
+            background-color: ;
+        }
+        .team-card h3 {
+            margin: 10px 0;
+            font-size: 1.3;
+        }
+        .team-card p {
+            color: #552;
+            font-size: 0.9;
+        }
+        button {
+        	margin: 0 auto;
+            display: block;
+        }
+         .create-todo {
+            background-color: blue;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="#">$APPNAME</a>
+        <a href="#">About</a>
+        <a href="#">Dashboard</a>
+        <a href="#">To-Do's</a>
+        <a href="#">Teams</a>
+        <a href="mailto:@depaul.edu">@depaul.edu</a>
+    </div>
+    <div class="task-container">
+        <div class="task">
+            <h3>No To-Do's</h3>
+        </div>
+    </div>
+    <button type="submit" class="create-todo">Create ToDo</button>
+</body>
+</html>
