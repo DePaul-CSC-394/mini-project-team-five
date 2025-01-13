@@ -4,7 +4,18 @@
 ![Docker](https://img.shields.io/badge/Docker-v27.4-00008B.svg)
 ![Postgres](https://img.shields.io/badge/Postgres-v17-3268a8.svg)
 
+# Table of Contents  
+
+1. [File Structure](#file-structure)
+2. [List of Commands](#list-of-commands)  
+   2.1.  [Docker](#docker)  
+   2.2.  [PSQL](#psql)  
+   2.3.  [Git & Github](git-&-github)  
+4. [How to submit pull request](#how-to-submit-pull-request)
+5. [FAQ](#faq)
+   
 # File Structure:
+
 ### Repository Folder:
 ![image](https://github.com/user-attachments/assets/2bc12f6e-45c1-443e-a1ad-3b5b4b1cd74b)
 - nginx-1.27.3 [The folder that contains NGINX]
