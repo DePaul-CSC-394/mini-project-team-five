@@ -178,3 +178,7 @@ If you recieve an error like this when running docker compose up --build:
 Run:
 - docker compose down -v
 - docker compose up --build
+
+If you get this:
+![image](https://github.com/user-attachments/assets/e16c0c33-5f6f-4840-a414-24666a54a497)
+Make sure Docker Desktop is running, if it is, restart and try again.
