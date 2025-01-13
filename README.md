@@ -21,15 +21,16 @@
 # List of Commands:
 
 ## Docker:
-- **docker-compose up**
+- **docker-compose up** OR **docker compose up**
   - Builds the containers that are in the current compose.yaml file and run the project on localhost:1337
   - Using the --build flag will create a fresh build
   - Using the optional -d flag it will run the container in the background until you use: docker-compose down -v
     
-- **docker-compose down -v**
+- **docker-compose down -v** OR **docker compose down -v**
   - Stops the running containers and volumes associated with them
  
-**_Any docker-compose exec command will not run unless you do docker-compose up -d_**
+**_Any docker-compose exec command will not run unless you do docker-compose up -d_**  
+**_THe docker-compose VS docker compose seems to be a OS specific problem please use them interchangeably if you have issues_**
 
 - **docker-compose exec django-web python manage.py migrate --noinput**
   - Runs a migration
@@ -56,7 +57,7 @@
 ![image](https://github.com/user-attachments/assets/8b07c240-6f7b-41eb-9607-1d52af3a4148)
 
 - **\c**
-  - Checks the connection to the db and print the current user
+  - Checks the connection to the db and prints the current user
 ![image](https://github.com/user-attachments/assets/78fa1170-3b74-4c02-ba2a-85b5874ca399)
 
 - **\dt**
