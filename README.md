@@ -21,24 +21,24 @@
 # List of Commands:
 
 ## Docker:
-- **docker-compose up** OR **docker compose up**
+- **docker compose up** OR **docker-compose up**
   - Builds the containers that are in the current compose.yaml file and run the project on localhost:1337
   - Using the --build flag will create a fresh build
   - Using the optional -d flag it will run the container in the background until you use: docker-compose down -v
     
-- **docker-compose down -v** OR **docker compose down -v**
+- **docker compose down -v** OR **docker-compose down -v**
   - Stops the running containers and volumes associated with them
  
-**_Any docker-compose exec command will not run unless you do docker-compose up -d_**  
-**_THe docker-compose VS docker compose seems to be a OS specific problem please use them interchangeably if you have issues_**
+**_Any docker compose exec command will not run unless you do docker-compose up -d_**  
+**_THe docker compose VS docker-compose seems to be a OS specific problem please use them interchangeably if you have issues_**
 
-- **docker-compose exec django-web python manage.py migrate --noinput**
+- **docker compose exec django-web python manage.py migrate --noinput**
   - Runs a migration
  
-- **docker-compose exec django-web python manage.py createsuperuser**
+- **docker compose exec django-web python manage.py createsuperuser**
   - Prompts for a username and email to create an admin user
  
-- **docker-compose logs name**
+- **docker compose logs name**
   - Replace the name with the name of the service: django-web, db, nginx 
  
 - **docker image ls**
@@ -109,11 +109,11 @@
 #### First, make sure you are in the repository directory.  
 ![image](https://github.com/user-attachments/assets/9a385b41-01e8-4644-892c-efd8353c89d9)
 
-#### Second run the command: docker-compose up --build  
+#### Second run the command: docker compose up --build (or use docker-compose with the dash)
 ![image](https://github.com/user-attachments/assets/aeedd436-a0ec-45bd-b61f-75b82151cb08)  
 ![image](https://github.com/user-attachments/assets/6ca1a55f-ed52-410f-ba06-e98a97cb572e)
 
-#### **_To stop running the project use CTRL+C (or CMD+C for Mac) then use: docker-compose down -v_**  
+#### **_To stop running the project use CTRL+C (or CMD+C for Mac) then use: docker compose down -v_**  
 ![image](https://github.com/user-attachments/assets/17e3333b-0a9c-4a17-928d-e7d1379af5bf)
 
 
