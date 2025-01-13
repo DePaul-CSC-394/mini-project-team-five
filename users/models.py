@@ -1,7 +1,7 @@
 #https://www.youtube.com/watch?v=hN0xbn4sENw
 
 from django.db import models
-from django.contrib.auth.models import AbstractUser, BaseUserManager, PermissionsMixin
+from django.contrib.auth.models import AbstractUser, BaseUserManager
 
 class userManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
@@ -22,10 +22,13 @@ class userManager(BaseUserManager):
 
 
 # Create your models here.
-class CustomUser(AbstractUser, PermissionsMixin):
+class CustomUser(AbstractUser):
     email = models.EmailField(max_length=100, unique=True)
     
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
     
     objects= userManager()
+    
+    def __str__(self):
+        return self.email
