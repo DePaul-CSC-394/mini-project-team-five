@@ -10,7 +10,7 @@
 2. [List of Commands](#list-of-commands)  
    2.1.  [Docker](#docker)  
    2.2.  [PSQL](#psql)  
-   2.3.  [Git](git)  
+   2.3.  [Git](#git--github)  
 4. [How to submit pull request](#how-to-submit-pull-request)
 5. [FAQ](#faq)
    
@@ -79,7 +79,7 @@
   - Quit the PSQL console
 ![image](https://github.com/user-attachments/assets/7a39d42f-2f36-4d3c-996b-49fbb9bb0ce9)
 
-## Git:
+## Git & GitHub:
 
 - **git config --global core.autocrlf input**
   - Sets line endings to be LF or Unix standard
