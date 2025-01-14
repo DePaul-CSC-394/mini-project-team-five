@@ -11,69 +11,55 @@
         body {
             font-family: Arial, sans-serif;
             margin: 0;
-
-            padding: 0; 
-            display: flex;
-            flex-direction: column;
-            align-items: center;
         }
-        header {
-            width: 100%;
+        .navbar {
+            background-color: #0057B7;
+            padding: 10px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background-color: #0057B7; 
-            color: white;
-            padding: 10px 20px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
-        header .logo {
-            font-weight: bold;
-            font-size: 20px;
-        }
-        header nav a {
-            color: white;
+        .navbar a {
             text-decoration: none;
-            margin-left: 20px;
-            margin-right: 20px;
+            color: black;
+            font-weight: bold;
+            margin: 0 10px;
         }
-        main {
-            margin-top: 50px;
-            align-items: flex-start;
+        .form-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 80vh;
         }
-        img {
-            max-width: 300px;
-            height: auto;
+        .form-box {
+            width: 400px;
+            border: 1px solid black;
+            padding: 20px;
+            border-radius: 5px;
         }
-        .container {
-        	border: 2px solid black;
-            padding: 50px;
-            margin: 40px;
-            background-color: white;
-            text-align: start;
-
+        .form-box label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
         }
-        input::placeholder
-        {
-        	color: black;
-            opacity: 0.4;
+        .form-box input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid gray;
+            border-radius: 3px;
         }
-        input[type = "button"], input[type = "login"] {
-        border: none;
-        color: white;
-        padding: 8px;
-        margin: 4px 2px;
-        width: 80px;
-        text-align: center;
-        cursor: pointer;
-        }
-        input[type = submit] {
-        	background-color: #0057B7;
+        .form-box button {
+            padding: 10px 20px;
+            background-color: blue;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
-
     <div class="navbar">
         <a href="{% url 'dashboard' %}">$APPNAME</a>
         <a href="{% url 'about' %}">About</a>
@@ -81,8 +67,6 @@
     </div>
     <div class="form-container">
         <div class="form-box">
-
-
             <form method="post", action="{% url 'login' %}">
                 {% csrf_token %}
                 <label for="email">Email</label>
@@ -90,32 +74,24 @@
                 <label for="password">Password</label>
                 {{form.password}}
                 
-                <button type="submit">Register</button>
->>>>>>>>> Temporary merge branch 2
+                <button type="submit">Login</button>
             </form>
 
-            {% comment %} <form method="post">
+            <!-- <form method="post">
                 {% csrf_token %}
                 {{ form.as_p }}
                 <button type="submit">Login</button>
-              </form> {% endcomment %}
+            </form>  -->
         </div>
-<<<<<<<<< Temporary merge branch 1
-    <main>
-</main>
-
-=========
     </div>
-    {% comment %} <script>
-        // Redirect to the dashboard page when the form is submitted
-        function navigateToDashboard(event) {
-            event.preventDefault(); // Prevent default form submission
-            window.location.href = "dashboard.html"; // Navigate to dashboard
-        }
-    </script> {% endcomment %}
->>>>>>>>> Temporary merge branch 2
+<script>
+    // Add an event listener to the form submission
+    document.querySelector("form").addEventListener("submit", function(event) {
+        event.preventDefault(); // Prevent the default form submission
+        window.location.href = "/dashboard"; // Redirect to /dashboard, need to still add invalid entry error 
+    });
+</script>
+
 </body>
 
 </html>
-
-

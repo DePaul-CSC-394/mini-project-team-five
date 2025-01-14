@@ -10,7 +10,7 @@ def index(request):
     context = {
         'key': 'value',  # Add any context data your template needs
     }
-    return render(request, "toDo/landingpageunauth.html", context)
+    return render(request, "toDo/landingpage.html", context)
 
 def about(request):
     # return HttpResponse("About Page Test")
@@ -94,19 +94,20 @@ def teamsNew(request):
     return render(request, "toDo/createTeam.html")
 
 def dashboard(request):
-    return render(request, "toDo/dashboard.html")
+    team_id = 1  # Replace with actual logic to get team_id
+    return render(request, 'toDo/dashboard.html', {'team_id': team_id})
 
 def register(request):
     return render(request, "toDo/register.html")
 
-def createToDo(request):
+def todosEdit(request):
     return render(request, "toDo/createToDo.html")
 
-def teamList(request):
-    return render(request, "toDo/teamdetails.html")
+def teams(request):
+    return render(request, "toDo/teamdetails.html", {'team_id': id})
 
-def task(request):
-    return render(request, "toDo/task.html")
+# def task(request):
+#     return render(request, "toDo/task.html")
 
 # def LoginView(request):
 #     if request.method == "POST":
