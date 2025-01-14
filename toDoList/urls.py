@@ -20,8 +20,7 @@ from toDo import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("login/", views.login, name = "login"),
     path("", include("toDo.urls")),
-    path("todo/", include("toDo.urls")),
+    # path("todo/", include("toDo.urls")), #redunant
     
 ]
