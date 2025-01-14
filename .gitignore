@@ -1,3 +1,9 @@
 toDoList/__pycache__/
 toDo/__pycache__/
 toDo/migrations/__pycache__/
+toDo/node_modules/
+mini-project-team-five/
+**/node_modules/
+**/__pycache__/
+**/.DS_Store
+.DS_Store

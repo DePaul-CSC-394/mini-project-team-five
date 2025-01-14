@@ -4,7 +4,18 @@
 ![Docker](https://img.shields.io/badge/Docker-v27.4-00008B.svg)
 ![Postgres](https://img.shields.io/badge/Postgres-v17-3268a8.svg)
 
+# Table of Contents  
+
+1. [File Structure](#file-structure)
+2. [List of Commands](#list-of-commands)  
+   2.1.  [Docker](#docker)  
+   2.2.  [PSQL](#psql)  
+   2.3.  [Git](#git--github)  
+4. [How to submit pull request](#how-to-submit-pull-request)
+5. [FAQ](#faq)
+   
 # File Structure:
+
 ### Repository Folder:
 ![image](https://github.com/user-attachments/assets/2bc12f6e-45c1-443e-a1ad-3b5b4b1cd74b)
 - nginx-1.27.3 [The folder that contains NGINX]
@@ -21,23 +32,24 @@
 # List of Commands:
 
 ## Docker:
-- **docker-compose up**
+- **docker compose up** OR **docker-compose up**
   - Builds the containers that are in the current compose.yaml file and run the project on localhost:1337
   - Using the --build flag will create a fresh build
   - Using the optional -d flag it will run the container in the background until you use: docker-compose down -v
     
-- **docker-compose down -v**
+- **docker compose down -v** OR **docker-compose down -v**
   - Stops the running containers and volumes associated with them
  
-**_Any docker-compose exec command will not run unless you do docker-compose up -d_**
+**_Any docker compose exec command will not run unless you do docker-compose up -d_**  
+**_THe docker compose VS docker-compose seems to be a OS specific problem please use them interchangeably if you have issues_**
 
-- **docker-compose exec django-web python manage.py migrate --noinput**
+- **docker compose exec django-web python manage.py migrate --noinput**
   - Runs a migration
  
-- **docker-compose exec django-web python manage.py createsuperuser**
+- **docker compose exec django-web python manage.py createsuperuser**
   - Prompts for a username and email to create an admin user
  
-- **docker-compose logs name**
+- **docker compose logs name**
   - Replace the name with the name of the service: django-web, db, nginx 
  
 - **docker image ls**
@@ -56,7 +68,7 @@
 ![image](https://github.com/user-attachments/assets/8b07c240-6f7b-41eb-9607-1d52af3a4148)
 
 - **\c**
-  - Checks the connection to the db and print the current user
+  - Checks the connection to the db and prints the current user
 ![image](https://github.com/user-attachments/assets/78fa1170-3b74-4c02-ba2a-85b5874ca399)
 
 - **\dt**
@@ -68,6 +80,10 @@
 ![image](https://github.com/user-attachments/assets/7a39d42f-2f36-4d3c-996b-49fbb9bb0ce9)
 
 ## Git & GitHub:
+
+- **git config --global core.autocrlf input**
+  - Sets line endings to be LF or Unix standard
+
 - **git fetch**
   - Command to essentially "refresh" and check if there are any changes in the remote repo
 
@@ -85,7 +101,7 @@
   - Creates a branch with the given name (on your local repo), if successful no message will popup
 ![image](https://github.com/user-attachments/assets/8fc28817-c3a1-4703-b3c4-79fa7301506f)
 
-- **git switch name**
+- **git checkout name**
   - This will switch to the branch with whatever name is inserted after switch.
 ![image](https://github.com/user-attachments/assets/ca46766a-21f0-4e54-b3ed-7a138b000496)
 
@@ -101,18 +117,20 @@
 
 # How to run the project:
 
-#### First, make sure you are in the repository directory.  
+#### First, launch Docker Desktop and make sure it's running.
+
+#### Second, go to terminal and make sure you are in the repository directory.  
 ![image](https://github.com/user-attachments/assets/9a385b41-01e8-4644-892c-efd8353c89d9)
 
-#### Second run the command: docker-compose up --build  
+#### Third run the command: docker compose up --build (or use docker-compose with the dash)
 ![image](https://github.com/user-attachments/assets/aeedd436-a0ec-45bd-b61f-75b82151cb08)  
 ![image](https://github.com/user-attachments/assets/6ca1a55f-ed52-410f-ba06-e98a97cb572e)
 
-#### **_To stop running the project use CTRL+C (or CMD+C for Mac) then use: docker-compose down -v_**  
+#### **_To stop running the project use CTRL+C (or CMD+C for Mac) then use: docker compose down -v_**  
 ![image](https://github.com/user-attachments/assets/17e3333b-0a9c-4a17-928d-e7d1379af5bf)
 
 
-# How to submit Pull Request:
+# How to submit pull request:
 
 #### First, make sure all your files are saved.
 #### Second, make sure you are in the repository directory.  
@@ -155,3 +173,12 @@
 
 # FAQ
 
+If you recieve an error like this when running docker compose up --build:  
+![image](https://github.com/user-attachments/assets/a9a1f501-7d66-4af8-adb4-dc1bc949d5cb)
+Run:
+- docker compose down -v
+- docker compose up --build
+
+If you get this:
+![image](https://github.com/user-attachments/assets/e16c0c33-5f6f-4840-a414-24666a54a497)
+Make sure Docker Desktop is running, if it is, restart and try again.

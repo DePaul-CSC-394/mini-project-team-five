@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Task Form with Validation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+        }
+        .navbar {
+            background-color: #0057B7;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-evenly; /* Evenly space items */
+            align-items: center;
+            font-weight: bold;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            cursor: pointer;
+            flex: 1;
+            text-align: center; /* Center align each link */
+        }
+        .form-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 80vh;
+        }
+        .form-box {
+            width: 400px;
+            border: 1px solid gray;
+            padding: 20px;
+        }
+        .form-box label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-box input,
+        .form-box select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid gray;
+            border-radius: 3px;
+        }
+        .form-box input.error {
+            background-color: lightcoral;
+            border-color: red;
+        }
+        .error-message {
+            color: red;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+            display: none; /* Initially hidden */
+        }
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+        .cancel-button {
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+        .save-button {
+            background-color: green;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="landing.html">$APPNAME</a>
+        <a href="about.html">About</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="tasks.html">To-Do's</a>
+        <a href="teams.html">Teams</a>
+        <a href="mailto:@depaul.edu">@depaul.edu</a>
+    </div>
+    <div class="form-container">
+        <div class="form-box">
+            <form id="taskForm">
+                <label for="task-title">Task Title</label>
+                <input type="text" id="task-title" placeholder="Ex: Take out the trash">
+                <div class="error-message" id="task-title-error">Task Title is required</div>
+
+                <label for="description">Description</label>
+                <input type="text" id="description" placeholder="Description">
+                <div class="error-message" id="description-error">Description is required</div>
+
+                <label for="due-date">Due Date</label>
+                <input type="text" id="due-date" placeholder="Ex: 02/01/2025">
+
+                <label for="category">Category</label>
+                <input type="text" id="category" placeholder="Category">
+
+                <label for="team">Team</label>
+                <select id="team">
+                    <option value="" disabled selected>Team</option>
+                    <option>Team A</option>
+                    <option>Team B</option>
+                    <option>Team C</option>
+                </select>
+
+                <div class="button-container">
+                    <button type="button" class="cancel-button" onclick="window.location.href='dashboard.html'">Cancel</button>
+                    <button type="submit" class="save-button">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Form validation
+        document.getElementById('taskForm').addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent form submission
+
+            let isValid = true;
+
+            // Validate Task Title
+            const taskTitle = document.getElementById('task-title');
+            const taskTitleError = document.getElementById('task-title-error');
+            if (taskTitle.value.trim() === '') {
+                taskTitle.classList.add('error');
+                taskTitleError.style.display = 'block';
+                isValid = false;
+            } else {
+                taskTitle.classList.remove('error');
+                taskTitleError.style.display = 'none';
+            }
+
+         
+            const description = document.getElementById('description');
+            const descriptionError = document.getElementById('description-error');
+            if (description.value.trim() === '') {
+                description.classList.add('error');
+                descriptionError.style.display = 'block';
+                isValid = false;
+            } else {
+                description.classList.remove('error');
+                descriptionError.style.display = 'none';
+            }
+
+            
+            if (isValid) {
+                alert('Form submitted successfully!');
+              
+            }
+        });
+    </script>
+</body>
+</html>

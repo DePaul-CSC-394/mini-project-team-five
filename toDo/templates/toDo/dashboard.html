@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<head>
+    <!--Matteo's code-->
+    <title>Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar {
+            background-color: #0057B7;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .navbar a {
+            text-decoration: none;
+            color: black;
+            font-weight: bold;
+        }
+        .task-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: left;
+            margin: 20px;
+            width: auto;
+        }
+        .taskTop {
+ 			height: 25px;
+            width: auto;
+            background-color: grey;
+		}
+        .task {
+            background-color: #f9f9f9;
+            padding: 10px;
+            text-align: left;
+            align-items: left;
+            border: 1px solid ;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        button {
+        	margin: 0 auto;
+            display: block;
+        }
+         .create-todo {
+            background-color: blue;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+         .resume-todo {
+            background-color: white;
+            color: green;
+            border: 2px solid green;
+            padding: 10px 20px;
+            margin: 10px;
+            cursor: pointer;
+            display: inline-block;
+        }
+          .start-todo {
+            background-color: green;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 10px;
+            cursor: pointer;
+            display: inline-block;
+        }
+           .edit-todo {
+            background-color: gray;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            margin: 10px;
+            display: inline-block;
+            float: right;
+        }
+           .delete-todo {
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            margin: 10px;
+            display: inline-block;
+            float: right;
+        }
+        p {
+        	font-size: 12px;
+        }
+        
+    </style>
+    <script>
+        function removeTask(toRem)
+        {
+        	var wholeNode = toRem.parentNode;
+            wholeNode.remove();
+        }
+        function goDo()
+        {
+           window.location.href = "createToDo.html";
+        }
+    </script>
+    
+</head>
+<body>
+    <div class="navbar">
+        <a href="#">$APPNAME</a>
+        <a href="about.html" >About</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="createToDo.html">To-Do's</a>
+        <a href="teamslist.html">Teams</a>
+        <a href="mailto:@depaul.edu">@depaul.edu</a>
+    </div>
+    <div class="task-container">
+        <div class="task">
+            	<div class="taskTop">
+        </div>
+            <h3>$TITLE</h3>
+            <p>$DESCRIPTION</p>
+                <button type="submit" onclick="changeToResume(this)" class="start-todo">Start</button>
+                <button type="submit" onclick="removeTask(this)" class="delete-todo">Delete</button>
+                <button type="button" onclick="goEdit()" class="edit-todo">Edit</button>
+        </div>
+    </div>
+    <button type="submit" class="create-todo" onclick="goDo()">Create ToDo</button>
+</body>
+</html>
