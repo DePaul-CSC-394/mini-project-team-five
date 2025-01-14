@@ -69,10 +69,12 @@
         <div class="logo">$APPNAME</div>
         <a href="#">About</a>
         <nav>
-            <a href="#">Dashboard</a>
-            <a href="#">To-Do's</a>
-            <a href="#">Teams</a>
+            
+            <a href="{% url 'dashboard' %}">Dashboard</a>
+            <a href="{% url 'createToDo' %}">To-Do's</a>
+            <a href="{% url 'teamList' %}">Teams</a>
             <a href="mailto:@depaul.edu">@depaul.edu</a>
+                
         </nav>
     </header>
     <main>
