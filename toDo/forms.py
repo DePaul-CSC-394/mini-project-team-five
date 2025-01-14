@@ -1,5 +1,6 @@
 from django import forms 
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.models import User
 
 
 class LoginForm(AuthenticationForm):
@@ -7,6 +8,7 @@ class LoginForm(AuthenticationForm):
     password = forms.CharField(widget=forms.PasswordInput(attrs={'name':'password'}))
     
     class Meta:
-        fields = ['email']
+        model = User
+        fields = ['email', 'password']
         
         

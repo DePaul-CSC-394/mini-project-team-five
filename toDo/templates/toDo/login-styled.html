@@ -22,9 +22,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-
-            background-color: #0057B7; 
-
+            background-color: #0057B7; /* Blue */
             color: white;
             padding: 10px 20px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -87,9 +85,10 @@
             <form method="post", action="{% url 'login' %}">
                 {% csrf_token %}
                 <label for="email">Email</label>
-                {{form.email}}
+                <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                
                 <label for="password">Password</label>
-                {{form.password}}
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
                 
                 <button type="submit">Login</button>
             </form>
@@ -100,18 +99,13 @@
                 <button type="submit">Login</button>
               </form> {% endcomment %}
         </div>
-
-    <main>
-</main>
-
-<script>
-    // Add an event listener to the form submission
-    document.querySelector("form").addEventListener("submit", function(event) {
-        event.preventDefault(); // Prevent the default form submission
-        window.location.href = "dashboard.html"; // Redirect to dashboard.html, need to still add invalid entry error 
-    });
-</script>
-
+    </div>
+    {% comment %} <script>
+        // Redirect to the dashboard page when the form is submitted
+        function navigateToDashboard(event) {
+            event.preventDefault(); // Prevent default form submission
+            window.location.href = "dashboard.html"; // Navigate to dashboard
+        }
+    </script> {% endcomment %}
 </body>
-
 </html>
