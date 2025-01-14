@@ -6,7 +6,7 @@ urlpatterns = [
     path("", views.index, name="landingpageunauth"),
     path("about/", views.about, name="about"),
 
-    path("todos/new", views.todosNew, name = "todocreate"),
+    path("task/<int:pk>/", views.todosNew, name = "task"),
     path("teams/new", views.teamsNew, name = "teamcreate"),
     path("dashboard/", views.dashboard, name = "dashboard"),
     path("register/", views.register, name = "register"),
