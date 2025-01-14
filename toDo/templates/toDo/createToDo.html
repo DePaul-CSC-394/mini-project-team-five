@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!--Yumna's code-->
     <title>Task Form with Validation</title>
     <style>
         body {
@@ -12,8 +11,16 @@
             background-color: #0057B7;
             padding: 10px 20px;
             display: flex;
-            gap: 15px;
+            justify-content: space-evenly; /* Evenly space items */
+            align-items: center;
             font-weight: bold;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            cursor: pointer;
+            flex: 1;
+            text-align: center; /* Center align each link */
         }
         .form-container {
             display: flex;
@@ -73,12 +80,12 @@
 </head>
 <body>
     <div class="navbar">
-        <span>$APPNAME</span>
-        <span>About</span>
-        <span>Dashboard</span>
-        <span>To-Do's</span>
-        <span>Teams</span>
-        <span>mmccreed@depaul.edu</span>
+        <a href="landing.html">$APPNAME</a>
+        <a href="about.html">About</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="tasks.html">To-Do's</a>
+        <a href="teams.html">Teams</a>
+        <a href="mailto:@depaul.edu">@depaul.edu</a>
     </div>
     <div class="form-container">
         <div class="form-box">
@@ -106,7 +113,7 @@
                 </select>
 
                 <div class="button-container">
-                    <button type="button" class="cancel-button">Cancel</button>
+                    <button type="button" class="cancel-button" onclick="window.location.href='dashboard.html'">Cancel</button>
                     <button type="submit" class="save-button">Save</button>
                 </div>
             </form>
@@ -132,7 +139,7 @@
                 taskTitleError.style.display = 'none';
             }
 
-            // Validate Description
+         
             const description = document.getElementById('description');
             const descriptionError = document.getElementById('description-error');
             if (description.value.trim() === '') {
@@ -144,10 +151,10 @@
                 descriptionError.style.display = 'none';
             }
 
-            // If valid, submit the form (or handle the data as needed)
+            
             if (isValid) {
                 alert('Form submitted successfully!');
-                // Add form submission logic here
+              
             }
         });
     </script>
