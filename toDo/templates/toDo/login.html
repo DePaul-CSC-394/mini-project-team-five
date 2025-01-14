@@ -22,7 +22,9 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background-color: #0057B7; /* Blue */
+
+            background-color: #0057B7; 
+
             color: white;
             padding: 10px 20px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -98,13 +100,18 @@
                 <button type="submit">Login</button>
               </form> {% endcomment %}
         </div>
-    </div>
-    {% comment %} <script>
-        // Redirect to the dashboard page when the form is submitted
-        function navigateToDashboard(event) {
-            event.preventDefault(); // Prevent default form submission
-            window.location.href = "dashboard.html"; // Navigate to dashboard
-        }
-    </script> {% endcomment %}
+
+    <main>
+</main>
+
+<script>
+    // Add an event listener to the form submission
+    document.querySelector("form").addEventListener("submit", function(event) {
+        event.preventDefault(); // Prevent the default form submission
+        window.location.href = "dashboard.html"; // Redirect to dashboard.html, need to still add invalid entry error 
+    });
+</script>
+
 </body>
+
 </html>
