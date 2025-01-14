@@ -91,11 +91,11 @@
 <body>
     <div class="navbar">
         <div class="navbar-left">
-            <a href="#">$APPNAME</a>
-            <a href="#">About</a>
-            <a href="#">Dashboard</a>
-            <a href="#">Todos</a>
-            <a href="#">Teams</a>
+            <a href="{% url 'dashboard' %}">$APPNAME</a>
+            <a href="{% url 'about' %}">About</a>
+            <a href="{% url 'dashboard' %}">Dashboard</a>
+            <a href="{% url 'dashboard' %}">Todos</a>
+            <a href="{% url 'teamList' %}">Teams</a>
         </div>
         <a href="mailto:@depaul.edu">@depaul.edu</a>
     </div>

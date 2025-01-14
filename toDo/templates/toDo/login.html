@@ -74,26 +74,22 @@
 </head>
 <body>
 
-    <header>
-        <div class="logo">$APPNAME</div>
-        <a href="#">About</a>
-        <nav>
-            <a href="#">Dashboard</a>
-            <a href="#">To-Do's</a>
-            <a href="#">Teams</a>
-            <a href="mailto:@depaul.edu">@depaul.edu</a>
-        </nav>
-    </header>
-        <div class="container">
-            <form action = "{% url 'login' %}" method = "post">
-            {% csrf_token %}
-            <label for="email">Email: </label>
-            <input type="text" id="email" name="Email" placeholder = "Enter email here" style = font-style:italic><br><br>
-
-            <label for="pass">Password: </label>
-            <input type="password" id="pass" name="Password" placeholder = "Enter password here" style = font-style:italic><br><br>
-
-            <input type="submit" value="Login">
+    <div class="navbar">
+        <a href="{% url 'dashboard' %}">$APPNAME</a>
+        <a href="{% url 'about' %}">About</a>
+        <a href="{% url 'login' %}">Login</a> <!-- Link to Dashboard -->
+    </div>
+    <div class="form-container">
+        <div class="form-box">
+            <form onsubmit="navigateToDashboard(event)">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+                
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+                
+                <button type="submit">Register</button>
+n
             </form>
 
             {% comment %} <form method="post">
@@ -102,8 +98,10 @@
                 <button type="submit">Login</button>
               </form> {% endcomment %}
         </div>
+
     <main>
 </main>
+
 
 </body>
 </html>
