@@ -55,10 +55,10 @@ def todosNew(request):
     return render(request, "toDo/todocreate.html")
 
 def teamsNew(request):
-    return render(request, "toDo/teamsNew.html")
+    return render(request, "toDo/teamscreate.html")
 
 def dashboard(request):
-    return render(request, "toDo/dashboard.html")
+    return render(request, "toDo/emptydashboard.html")
 
 
 # def LoginView(request):
