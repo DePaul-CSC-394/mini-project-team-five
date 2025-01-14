@@ -60,6 +60,8 @@ def teamsNew(request):
 def dashboard(request):
     return render(request, "toDo/dashboard.html")
 
+def register(request):
+    return render(request, "toDo/register.html")
 
 # def LoginView(request):
 #     if request.method == "POST":
