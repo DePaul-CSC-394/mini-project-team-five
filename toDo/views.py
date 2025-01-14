@@ -52,13 +52,13 @@ def login(request):#https://stackoverflow.com/questions/77253258/django-function
     return render(request, "toDo/login.html", {"form": form})
 
 def todosNew(request):
-    return render(request, "toDo/todocreate.html")
+    return render(request, "toDo/createToDo.html")
 
 def teamsNew(request):
-    return render(request, "toDo/teamscreate.html")
+    return render(request, "toDo/createTeam.html")
 
 def dashboard(request):
-    return render(request, "toDo/emptydashboard.html")
+    return render(request, "toDo/dashboard.html")
 
 
 # def LoginView(request):
