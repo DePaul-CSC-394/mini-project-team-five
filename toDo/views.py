@@ -29,7 +29,7 @@ def login(request):#https://stackoverflow.com/questions/77253258/django-function
        
     #redirect already login used
     if request.user.id:
-        return redirect("/")
+        return reverse_lazy("dashboard")
     
     form = LoginForm(request.POST)
     if request.method == "POST":

@@ -23,4 +23,5 @@ urlpatterns = [
     path("login/", views.login, name = "login"),
     path("", include("toDo.urls")),
     path("todo/", include("toDo.urls")),
+    
 ]
