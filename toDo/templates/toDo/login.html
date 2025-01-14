@@ -1,109 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
-    <!--Incorporates code from both Matteo and Yumna-->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-
+    <title>Register</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
-
-            padding: 0; 
-            display: flex;
-            flex-direction: column;
-            align-items: center;
         }
-        header {
-            width: 100%;
+        .navbar {
+            background-color: #0057B7;
+            padding: 10px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background-color: #0057B7; /* Blue */
-            color: white;
-            padding: 10px 20px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
-        header .logo {
-            font-weight: bold;
-            font-size: 20px;
-        }
-        header nav a {
-            color: white;
+        .navbar a {
             text-decoration: none;
-            margin-left: 20px;
-            margin-right: 20px;
+            color: black;
+            font-weight: bold;
+            margin: 0 10px;
         }
-        main {
-            margin-top: 50px;
-            align-items: flex-start;
+        .form-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 80vh;
         }
-        img {
-            max-width: 300px;
-            height: auto;
+        .form-box {
+            width: 400px;
+            border: 1px solid black;
+            padding: 20px;
+            border-radius: 5px;
         }
-        .container {
-        	border: 2px solid black;
-            padding: 50px;
-            margin: 40px;
-            background-color: white;
-            text-align: start;
-            
+        .form-box label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
         }
-        input::placeholder
-        {
-        	color: black;
-            opacity: 0.4;
+        .form-box input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid gray;
+            border-radius: 3px;
         }
-        input[type = "button"], input[type = "login"] {
-        border: none;
-        color: white;
-        padding: 8px;
-        margin: 4px 2px;
-        width: 80px;
-        text-align: center;
-        cursor: pointer;
-        }
-        input[type = submit] {
-        	background-color: #0057B7;
+        .form-box button {
+            padding: 10px 20px;
+            background-color: blue;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
-
-    <header>
-        <div class="logo">$APPNAME</div>
+    <div class="navbar">
+        <a href="#">$APPNAME</a>
         <a href="#">About</a>
-        <nav>
-            <a href="#">Dashboard</a>
-            <a href="#">To-Do's</a>
-            <a href="#">Teams</a>
-            <a href="mailto:@depaul.edu">@depaul.edu</a>
-        </nav>
-    </header>
-        <div class="container">
-            <form action = "{% url 'login' %}" method = "post">
-            {% csrf_token %}
-            <label for="email">Email: </label>
-            <input type="text" id="email" name="Email" placeholder = "Enter email here" style = font-style:italic><br><br>
-      
-            <label for="pass">Password: </label>
-            <input type="password" id="pass" name="Password" placeholder = "Enter password here" style = font-style:italic><br><br>
-      
-            <input type="submit" value="Login">
+        <a href="dashboard.html">Login</a> <!-- Link to Dashboard -->
+    </div>
+    <div class="form-container">
+        <div class="form-box">
+            <form onsubmit="navigateToDashboard(event)">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+                
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+                
+                <button type="submit">Register</button>
             </form>
-
-            {% comment %} <form method="post">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <button type="submit">Login</button>
-              </form> {% endcomment %}
         </div>
-    <main>
-</main>
-
+    </div>
+    <script>
+        // Redirect to the dashboard page when the form is submitted
+        function navigateToDashboard(event) {
+            event.preventDefault(); // Prevent default form submission
+            window.location.href = "dashboard.html"; // Navigate to dashboard
+        }
+    </script>
 </body>
 </html>
