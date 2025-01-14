@@ -22,7 +22,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background-color: #0057B7; /* Blue */
+            background-color: #0057B7; 
             color: white;
             padding: 10px 20px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -73,6 +73,7 @@
     </style>
 </head>
 <body>
+
     <div class="navbar">
         <a href="{% url 'dashboard' %}">$APPNAME</a>
         <a href="{% url 'about' %}">About</a>
@@ -89,7 +90,8 @@
                 <label for="password">Password</label>
                 {{form.password}}
                 
-                <button type="submit">Login</button>
+                <button type="submit">Register</button>
+>>>>>>>>> Temporary merge branch 2
             </form>
 
             {% comment %} <form method="post">
@@ -98,6 +100,11 @@
                 <button type="submit">Login</button>
               </form> {% endcomment %}
         </div>
+<<<<<<<<< Temporary merge branch 1
+    <main>
+</main>
+
+=========
     </div>
     {% comment %} <script>
         // Redirect to the dashboard page when the form is submitted
@@ -106,5 +113,9 @@
             window.location.href = "dashboard.html"; // Navigate to dashboard
         }
     </script> {% endcomment %}
+>>>>>>>>> Temporary merge branch 2
 </body>
+
 </html>
+
+
