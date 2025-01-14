@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+        }
+        .navbar {
+            background-color: #0057B7;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .navbar a {
+            text-decoration: none;
+            color: black;
+            font-weight: bold;
+        }
+        .form-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 80vh;
+        }
+        .form-box {
+            width: 300px;
+            border: 1px solid black;
+            padding: 20px;
+        }
+        .form-box label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-box input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid lightgray;
+        }
+        .form-box button {
+            width: 100%;
+            padding: 10px;
+            background-color: blue;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="landingpage.html">$APPNAME</a>
+        <a href="about.html">About</a>
+        <a href="login.html">Login</a>
+    </div>
+    <div class="form-container">
+        <div class="form-box">
+            <form id="registerForm">
+                <label for="email">Email</label>
+                <input type="text" id="email" name="email" required>
+                
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+                
+                <label for="confirm">Confirm</label>
+                <input type="password" id="confirm" name="confirm" required>
+                
+                <button type="submit">Register</button>
+            </form>
+        </div>
+    </div>
+    <script>
+        document.getElementById("registerForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent default form submission
+            window.location.href = "registeration.html"; // Redirect back to the registration page
+        });
+    </script>
+</body>
+</html>
