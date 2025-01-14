@@ -89,10 +89,10 @@
 <body>
     <div class="navbar">
         <a href="#">$APPNAME</a>
-        <a href="#">About</a>
-        <a href="#">Dashboard</a>
-        <a href="#">To-Do's</a>
-        <a href="#">Teams</a>
+        <a href="{% url 'about' %}" >About</a>
+        <a href="{% url 'dashboard' %}">Dashboard</a>
+        <a href="{% url 'createToDo' %}">To-Do's</a>
+        <a href="{% url 'teamList' %}">Teams</a>
         <a href="mailto:@depaul.edu">@depaul.edu</a>
     </div>
     <div class="task-container">

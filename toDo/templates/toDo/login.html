@@ -58,9 +58,9 @@
 </head>
 <body>
     <div class="navbar">
-        <a href="#">$APPNAME</a>
-        <a href="#">About</a>
-        <a href="dashboard.html">Login</a> <!-- Link to Dashboard -->
+        <a href="{% url 'dashboard' %}">$APPNAME</a>
+        <a href="{% url 'about' %}">About</a>
+        <a href="{% url 'login' %}">Login</a> <!-- Link to Dashboard -->
     </div>
     <div class="form-container">
         <div class="form-box">
@@ -75,12 +75,12 @@
             </form>
         </div>
     </div>
-    <script>
+    {% comment %} <script>
         // Redirect to the dashboard page when the form is submitted
         function navigateToDashboard(event) {
             event.preventDefault(); // Prevent default form submission
             window.location.href = "dashboard.html"; // Navigate to dashboard
         }
-    </script>
+    </script> {% endcomment %}
 </body>
 </html>

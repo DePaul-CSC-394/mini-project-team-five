@@ -40,7 +40,7 @@ def login(request):#https://stackoverflow.com/questions/77253258/django-function
             user = authenticate(request, user=email, password=password)
             if user is not None:
                 login(request, user)
-                return redirect("/")
+                return reverse_lazy("dashboard")
                 
         else:
             return render(
@@ -62,6 +62,12 @@ def dashboard(request):
 
 def register(request):
     return render(request, "toDo/register.html")
+
+def createToDo(request):
+    return render(request, "toDo/createToDo.html")
+
+def teamList(request):
+    return render(request, "toDo/teamdetails.html")
 
 # def LoginView(request):
 #     if request.method == "POST":
