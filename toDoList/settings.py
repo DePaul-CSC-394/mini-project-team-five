@@ -35,7 +35,9 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'your-default-secret-key')
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', 'localhost').split(',')
-CSRF_TRUSTED_ORIGINS = ['http://localhost:1337']
+
+CSRF_TRUSTED_ORIGINS = ['http://localhost:1337', 'http://127.0.0.1:1337/']
+
 # # The secret key
 # SECRET_KEY = os.environ.get("SECRET_KEY")
 
@@ -50,8 +52,9 @@ CSRF_TRUSTED_ORIGINS = ['http://localhost:1337']
 # Application definition
 
 INSTALLED_APPS = [
+    'users',
     'toDo',
-    'django.contrib.admin',
+    'django.contrib.admin',  #https://stackoverflow.com/questions/44651760/django-db-migrations-exceptions-inconsistentmigrationhistory
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -70,6 +73,12 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'toDoList.urls'
+
+AUTH_USER_MODEL = 'users.CustomUser'
+AUTHENTICATION_BACKENDS = (
+'django.contrib.auth.backends.RemoteUserBackend',
+'django.contrib.auth.backends.ModelBackend',
+)
 
 TEMPLATES = [
     {
@@ -105,7 +114,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.{}'.format(
             os.getenv('DATABASE_ENGINE', 'sqlite3')
         ),
-        'NAME': os.getenv('DATABASE_NAME', 'polls'),
+        'NAME': os.getenv('DATABASE_NAME', BASE_DIR / 'db.sqlite3'),
         'USER': os.getenv('DATABASE_USERNAME', 'myprojectuser'),
         'PASSWORD': os.getenv('DATABASE_PASSWORD', 'password'),
         'HOST': os.getenv('DATABASE_HOST', '127.0.0.1'),
@@ -154,3 +163,4 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
