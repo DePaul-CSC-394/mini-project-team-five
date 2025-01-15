@@ -1,7 +1,7 @@
 from django.http import HttpResponseRedirect, HttpResponseServerError
 from django.shortcuts import redirect, render
 from .forms import LoginForm, UserRegisterForm
-from django.contrib.auth import authenticate, login as auth_login, get_user_model
+from django.contrib.auth import authenticate, login as auth_login, logout
 from django.urls import reverse
 from django.db import IntegrityError
 
@@ -134,6 +134,10 @@ def register(request):
     #     form = LoginForm()
     
     # return render(request, "toDo/login.html", {"form": form})
+
+def logoutView(request):
+    logout(request)
+    return redirect("login")
 
 def todosNew(request):
     team_id = 1  # Replace with actual logic to get team_id
