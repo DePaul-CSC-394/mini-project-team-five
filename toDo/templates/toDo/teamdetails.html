@@ -11,7 +11,7 @@
             padding: 0;
         }
         .navbar {
-            background-color: lightgray;
+            background-color: #0057B7;
             padding: 10px 20px;
             display: flex;
             justify-content: space-between; 
@@ -23,7 +23,7 @@
         }
         .navbar a {
             text-decoration: none;
-            color: black;
+            color: white;
             font-weight: bold;
         }
         .content {
@@ -91,13 +91,13 @@
 <body>
     <div class="navbar">
         <div class="navbar-left">
-            <a href="{% url 'dashboard' %}">$APPNAME</a>
-            <a href="{% url 'about' %}">About</a>
-            <a href="{% url 'dashboard' %}">Dashboard</a>
-            <a href="{% url 'dashboard' %}">Todos</a>
-            <a href="{% url 'teamList' %}">Teams</a>
+            <a href="/">$APPNAME</a>
+            <a href="/about">About</a>
+            <a href="/dashboard">Dashboard</a>
+            <a href="{% url 'todos_new' %}">To-Do's</a>
+            <a href="{% url 'teams' id=team_id %}">Teams</a>
         </div>
-        <a href="mailto:@depaul.edu">@depaul.edu</a>
+        <a href="/dashboard">@depaul.edu</a>
     </div>
     <div class="content">
         <h1>$TeamName</h1>

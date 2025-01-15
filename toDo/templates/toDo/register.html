@@ -18,7 +18,7 @@
         }
         .navbar a {
             text-decoration: none;
-            color: black;
+            color: white;
             font-weight: bold;
         }
         .form-container {
@@ -54,13 +54,14 @@
 </head>
 <body>
     <div class="navbar">
-        <a href="{% url 'dashboard' %}">$APPNAME</a>
-        <a href="{% url 'about' %}">About</a>
-        <a href="{% url 'login' %}">Login</a>
+        <a href="/">$APPNAME</a>
+        <a href="/about">About</a>
+        <a href="/login">Login</a>
     </div>
     <div class="form-container">
         <div class="form-box">
-            <form>
+            {% comment %} <form method="post" action="{% url 'register' %}">
+                {% csrf_token %}
                 <label for="email">Email</label>
                 <input type="text" id="email" name="email" required>
                 
@@ -70,6 +71,11 @@
                 <label for="confirm">Confirm</label>
                 <input type="password" id="confirm" name="confirm" required>
                 
+                <button type="submit">Register</button>
+            </form> {% endcomment %}
+            <form method="post" action="{% url 'register' %}">
+                {% csrf_token %}
+                {{ form.as_p }}
                 <button type="submit">Register</button>
             </form>
         </div>

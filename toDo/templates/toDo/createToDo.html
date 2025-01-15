@@ -80,11 +80,11 @@
 </head>
 <body>
     <div class="navbar">
-        <a href="{% url 'landing' %}">$APPNAME</a>
-        <a href="{% url 'about' %}">About</a>
-        <a href="{% url 'dashboard' %}">Dashboard</a>
-        <a href="{% url 'createToDo' %}">To-Do's</a>
-        <a href="{% url 'teamList' %}">Teams</a>
+        <a href="/">$APPNAME</a>
+        <a href="/about">About</a>
+        <a href="/dashboard">Dashboard</a>
+        <a href="{% url 'todos_new' %}">To-Do's</a>
+        <a href="{% url 'teams' id=team_id %}">Teams</a>
         <a href="mailto:@depaul.edu">@depaul.edu</a>
     </div>
     <div class="form-container">

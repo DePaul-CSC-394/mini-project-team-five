@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f4f4f9;
+        }
+        .navbar {
+            width: 100%;
+            background-color: #0057B7;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        .navbar a:hover {
+            text-decoration: underline;
+        }
+        .form-container {
+            margin-top: 50px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            max-width: 400px;
+            width: 100%;
+        }
+        .form-container label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-container input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .form-container button {
+            width: 100%;
+            padding: 10px;
+            background-color: #0057B7;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .form-container button:hover {
+            background-color: #003e8a;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="{% url 'dashboard' %}">$APPNAME</a>
+        <a href="{% url 'about' %}">About</a>
+        <a href="{% url 'login' %}">Login</a>
+    </div>
+
+    {% comment %} https://docs.djangoproject.com/en/5.1/topics/forms/ {% endcomment %}
+    <div class="form-container">
+        <form method="POST" action="{% url 'login' %}">
+            {% csrf_token %}
+            {{ form.email.errors }}
+            <button type="submit">Login</button>
+        </form>
+    </div>
+</body>
+</html>

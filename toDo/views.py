@@ -1,8 +1,10 @@
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponseServerError
 from django.shortcuts import redirect, render
-from .forms import LoginForm
-from django.contrib.auth import authenticate, login as auth_login
+from .forms import LoginForm, UserRegisterForm
+from django.contrib.auth import authenticate, login as auth_login, logout
 from django.urls import reverse
+from django.db import IntegrityError
+
 
 # Create your views here.
 def index(request):
@@ -65,6 +67,52 @@ def login(request):
             )
     
     return render(request, "toDo/login.html", {"form": form})
+
+
+# def register(request):
+#     #redirect already login used
+#     if request.user.id:
+#         return HttpResponseRedirect(reverse("dashboard"))
+    
+#     #form = UserRegisterForm(request.POST)
+#     if request.method == "POST":
+#         form = UserRegisterForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             return redirect('login')
+#         else:
+#             form = UserRegisterForm()
+#         return render(request, "toDo/register.html", {"form": form})
+def register(request):
+    try:
+        if request.user.id:
+            return HttpResponseRedirect(reverse("dashboard"))
+
+        if request.method == "POST":
+            form = UserRegisterForm(request.POST)
+            print("Form submitted:", form)
+            if form.is_valid():
+                try:
+                    form.save()
+                except IntegrityError as e:
+                    print("IntegrityError occurred:", e)
+                    return render(request, "toDo/register.html", {"form": form, "message": "Username already exists."})
+                form.save()
+                return redirect("login")
+            else:
+                print("Form errors:", form.errors)
+        else:
+            form = UserRegisterForm()  # Initialize a blank form for GET requests
+            print("Blank form initialized")
+
+        return render(request, "toDo/register.html", {"form": form})
+    except Exception as e:
+        print("Error occurred:", e)  # Print the exact error to console
+        return HttpResponseServerError("Server error")    
+        
+        
+        
+        
                       
         
         # if form.is_valid():
@@ -87,24 +135,33 @@ def login(request):
     
     # return render(request, "toDo/login.html", {"form": form})
 
+def logoutView(request):
+    logout(request)
+    return redirect("login")
+
 def todosNew(request):
-    return render(request, "toDo/createToDo.html")
+    team_id = 1  # Replace with actual logic to get team_id
+    return render(request, "toDo/createToDo.html", {'team_id': team_id})
 
 def teamsNew(request):
     return render(request, "toDo/createTeam.html")
 
 def dashboard(request):
     team_id = 1  # Replace with actual logic to get team_id
-    return render(request, 'toDo/dashboard.html', {'team_id': team_id})
+    todo_id = 1  # Replace with actual logic to get todo_id
+    return render(request, 'toDo/dashboard.html', {'team_id': team_id, 'todo_id': todo_id})
 
-def register(request):
-    return render(request, "toDo/register.html")
 
-def todosEdit(request):
-    return render(request, "toDo/createToDo.html")
+def todosEdit(request, id):
+    team_id = 1  # Replace with actual logic to get team_id
+    return render(request, "toDo/createToDo.html", {'todo_id': id, 'team_id': team_id})
 
-def teams(request):
-    return render(request, "toDo/teamdetails.html", {'team_id': id})
+def teams(request, id):
+    todo_id = 1  # Replace with actual logic to get team_id
+    return render(request, "toDo/teamdetails.html", {'team_id': id, 'todo_id': todo_id})
+
+def landing(request):
+    return render(request, "toDo/landingpage.html")
 
 # def task(request):
 #     return render(request, "toDo/task.html")
