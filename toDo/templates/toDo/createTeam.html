@@ -4,7 +4,7 @@
     <!--Matteo's code-->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Unauthenticated Landing Page</title>
+    <title>Create Team Page</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -12,31 +12,23 @@
             padding: 0;
             display: flex;
             flex-direction: column;
-            align-items: center;
         } 
-        header {
-            width: 100%;
+        .navbar {
+            background-color: #0057B7;
+            padding: 10px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background-color: #0057B7; /* Blue */
-            color: white;
-            padding: 10px 20px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
-        header .logo {
-            font-weight: bold;
-            font-size: 20px;
-        }
-        header nav a {
-            color: white;
+        .navbar a {
             text-decoration: none;
-            margin-left: 20px;
-            margin-right: 20px;
+            color: white;
+            font-weight: bold;
         }
         main {
             margin-top: 50px;
             align-items: flex-start;
+            text-align: center;
         }
         img {
             max-width: 300px;
@@ -65,18 +57,15 @@
     </style>
 </head>
 <body>
-    <header>
-        <div class="logo">$APPNAME</div>
-        <a href="#">About</a>
-        <nav>
-            
+        <div class = "navbar">
+        	<a href="{% url 'landing' %}">$APPNAME</a>
+        	<a href="{% url 'about' %}">About</a>
             <a href="{% url 'dashboard' %}">Dashboard</a>
             <a href="{% url 'createToDo' %}">To-Do's</a>
             <a href="{% url 'teamList' %}">Teams</a>
             <a href="mailto:@depaul.edu">@depaul.edu</a>
                 
-        </nav>
-    </header>
+        </div>
     <main>
       <label for="tname">Team Name: </label>
   	  <input type="text" id="tname" name="tname" placeholder = "Ex: Team Five" style = font-style:italic><br><br>

@@ -108,6 +108,9 @@
         {
            window.location.href = "createToDo.html";
         }
+        function startToDo(buttonID) 
+        {
+        }
     </script>
     
 </head>
@@ -126,11 +129,11 @@
         </div>
             <h3>$TITLE</h3>
             <p>$DESCRIPTION</p>
-                <button type="submit" onclick="changeToResume(this)" class="start-todo">Start</button>
+                <button type="submit" onclick="startToDo(this)" class="start-todo">Start</button>
                 <button type="submit" onclick="removeTask(this)" class="delete-todo">Delete</button>
-                <button type="button" onclick="goEdit()" class="edit-todo">Edit</button>
+                <button type="button" onclick="window.location.href='{% url "createToDo" %}'" class="edit-todo">Edit</button>
         </div>
     </div>
-    {% comment %} <button type="submit" class="create-todo" onclick="window.location.href='{% url "createToDo" %}'">Create ToDo</button> {% endcomment %}
+    <button type="submit" class="create-todo" onclick="window.location.href='{% url "createToDo" %}'">Create ToDo</button>
 </body>
 </html>
