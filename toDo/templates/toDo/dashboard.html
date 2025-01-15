@@ -20,7 +20,7 @@
         }
         .navbar a {
             text-decoration: none;
-            color: black;
+            color: white;
             font-weight: bold;
         }
         .task-container {
@@ -131,9 +131,9 @@
             <p>$DESCRIPTION</p>
                 <button type="submit" onclick="startToDo(this)" class="start-todo">Start</button>
                 <button type="submit" onclick="removeTask(this)" class="delete-todo">Delete</button>
-                <button type="button" onclick="window.location.href='{% url "createToDo" %}'" class="edit-todo">Edit</button>
+                <button type="button" onclick="window.location.href='{% url 'todos_edit' id=todo_id %}'" class="edit-todo">Edit</button>
         </div>
     </div>
-    <button type="submit" class="create-todo" onclick="window.location.href='{% url "createToDo" %}'">Create ToDo</button>
+    <button type="button" onclick="window.location.href='{% url 'todos_new' %}'" class="create-todo">Create ToDo</button>
 </body>
 </html>

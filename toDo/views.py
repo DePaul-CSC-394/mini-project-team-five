@@ -88,23 +88,27 @@ def login(request):
     # return render(request, "toDo/login.html", {"form": form})
 
 def todosNew(request):
-    return render(request, "toDo/createToDo.html")
+    team_id = 1  # Replace with actual logic to get team_id
+    return render(request, "toDo/createToDo.html", {'team_id': team_id})
 
 def teamsNew(request):
     return render(request, "toDo/createTeam.html")
 
 def dashboard(request):
     team_id = 1  # Replace with actual logic to get team_id
-    return render(request, 'toDo/dashboard.html', {'team_id': team_id})
+    todo_id = 1  # Replace with actual logic to get todo_id
+    return render(request, 'toDo/dashboard.html', {'team_id': team_id, 'todo_id': todo_id})
 
 def register(request):
     return render(request, "toDo/register.html")
 
-def todosEdit(request):
-    return render(request, "toDo/createToDo.html")
+def todosEdit(request, id):
+    team_id = 1  # Replace with actual logic to get team_id
+    return render(request, "toDo/createToDo.html", {'todo_id': id, 'team_id': team_id})
 
-def teams(request):
-    return render(request, "toDo/teamdetails.html", {'team_id': id})
+def teams(request, id):
+    todo_id = 1  # Replace with actual logic to get team_id
+    return render(request, "toDo/teamdetails.html", {'team_id': id, 'todo_id': todo_id})
 
 # def task(request):
 #     return render(request, "toDo/task.html")

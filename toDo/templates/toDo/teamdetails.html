@@ -91,13 +91,13 @@
 <body>
     <div class="navbar">
         <div class="navbar-left">
-            <a href="{% url 'dashboard' %}">$APPNAME</a>
-            <a href="{% url 'about' %}">About</a>
-            <a href="{% url 'dashboard' %}">Dashboard</a>
-            <a href="{% url 'dashboard' %}">Todos</a>
-            <a href="{% url 'teamList' %}">Teams</a>
+            <a href="/">$APPNAME</a>
+            <a href="/about">About</a>
+            <a href="/dashboard">Dashboard</a>
+            <a href="{% url 'todos_new' %}">To-Do's</a>
+            <a href="{% url 'teams' id=team_id %}">Teams</a>
         </div>
-        <a href="mailto:@depaul.edu">@depaul.edu</a>
+        <a href="/dashboard">@depaul.edu</a>
     </div>
     <div class="content">
         <h1>$TeamName</h1>
