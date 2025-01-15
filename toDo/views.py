@@ -5,6 +5,8 @@ from django.contrib.auth import authenticate, login as auth_login, logout
 from django.urls import reverse
 from django.db import IntegrityError
 
+from .models import Task, Team
+
 
 # Create your views here.
 def index(request):
@@ -147,9 +149,34 @@ def teamsNew(request):
     return render(request, "toDo/createTeam.html")
 
 def dashboard(request):
-    team_id = 1  # Replace with actual logic to get team_id
-    todo_id = 1  # Replace with actual logic to get todo_id
-    return render(request, 'toDo/dashboard.html', {'team_id': team_id, 'todo_id': todo_id})
+    try:
+        # Get the first team (or return an error if no teams exist)
+        team = Team.objects.first()
+        if not team:
+            return render(request, 'toDo/dashboard.html', {
+                'error': 'No teams available. Please create a team first.'
+            })
+
+        team_id = team.id  # Access the ID of the first team
+        teams = Team.objects.all()  # Get all teams
+
+        # Get all tasks associated with the selected team
+        todo_items = Task.objects.filter(user=request.user)
+        print("Tasks:", todo_items)
+
+        # Pass the data to the template
+        context = {
+            'team_id': team_id,
+            'todo_items': todo_items,
+            'teams': teams,
+        }
+
+        return render(request, 'toDo/dashboard.html', context)
+
+    except Exception as e:
+        # Print the error to the console and return a server error response
+        print("Error occurred:", e)
+        return HttpResponseServerError("Server error")
 
 
 def todosEdit(request, id):
