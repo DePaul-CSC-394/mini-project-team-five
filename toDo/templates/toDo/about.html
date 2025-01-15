@@ -40,7 +40,7 @@
         }
         .team-card img {
             width: 100%;
-            height: 150px;
+            height: clamp(50px, 200px, 300px);
             object-fit: center;
             background-color: grey;
         }
@@ -51,6 +51,19 @@
         .team-card p {
             color: #552;
             font-size: 0.9;
+        }
+        .frontend-img, .backend-img, .projectmanager-img {
+            background-color: transparent;
+            width: fit-content;
+            height: auto;
+        }
+        .team-card {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .team-card img {
+            background-color: transparent;
         }
     </style>
 </head>
@@ -68,19 +81,22 @@
     </div>
     <div class="team-container">
         <div class="team-card">
-            <img src="#" alt="Image cap">
-            <h3>Name</h3>
-            <p>Bio<br>Role</p>
+            <img src="https://www.freepnglogos.com/uploads/javascript/logo-html-5-css-javascript-source-code-for-the-taking-23.png" alt="Image cap" class="frontend-img">
+            <h3>Yumna & Matteo</h3>
+            <p>Used wireframes and the requirements doc to design and build the frontend using HTML, CSS and JS. Built a user friendly interface with easy to use features.
+                <br><br>Front End Developers</p>
         </div>
         <div class="team-card">
-            <img src="#" alt="Image cap">
-            <h3>Name</h3>
-            <p>Bio<br>Role</p>
+            <img src="https://www.liquidweb.com/wp-content/uploads/2024/03/do-web-development-using-python-django.png" alt="Image cap" class="backend-img">
+            <h3>John & Jake</h3>
+            <p>Using Python and Django, built the backend of our application. Wrote code to communicate with our frontend to serve pages, handle login and users, and read/write to the PostgresSQL database.
+                <br><br>Backend Developers</p>
         </div>
         <div class="team-card">
-            <img src="#" alt="Image cap">
-            <h3>Name</h3>
-            <p>Bio<br>Role</p>
+            <img src="https://www.docker.com/wp-content/uploads/2020/09/dockergithub.png" alt="Image cap" class="projectmanager-img">
+            <h3>Jake</h3>
+            <p>Led team, ensuring tasks are completed on time. Setup the Docker containers, GitHub and wrote documentation. Assisted in troubleshooting back and frontend.
+                <br><br>Project Manager</p>
         </div>
     </div>
 </body>
