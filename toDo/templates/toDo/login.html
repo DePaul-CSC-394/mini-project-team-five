@@ -76,7 +76,9 @@
                 {{form.password}}
                 
                 <button type="submit">Login</button>
-                <button type="button" onclick="window.location.href = '/register'">Register</button>
+                <button type="button" onclick="window.location.href = '{% url "register" %}'">Register</button>
+
+                
 
             </form>
 
@@ -87,7 +89,7 @@
             </form>  -->
         </div>
     </div>
-    <script>
+    {% comment %} <script>
         // Add an event listener to the login button
         document.querySelector("button[type='submit']").addEventListener("click", function(event) {
             event.preventDefault(); // Prevent the default form submission
@@ -103,7 +105,7 @@
             //     window.location.href = "/dashboard"; // Redirect to /dashboard
             // }
         });
-    </script>
+    </script> {% endcomment %}
 
 </body>
 

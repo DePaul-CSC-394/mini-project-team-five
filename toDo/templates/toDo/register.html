@@ -60,7 +60,8 @@
     </div>
     <div class="form-container">
         <div class="form-box">
-            <form>
+            {% comment %} <form method="post" action="{% url 'register' %}">
+                {% csrf_token %}
                 <label for="email">Email</label>
                 <input type="text" id="email" name="email" required>
                 
@@ -70,7 +71,12 @@
                 <label for="confirm">Confirm</label>
                 <input type="password" id="confirm" name="confirm" required>
                 
-                <button type="submit" onclick="window.location.href='/dashboard'">Register</button>
+                <button type="submit">Register</button>
+            </form> {% endcomment %}
+            <form method="post" action="{% url 'register' %}">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">Register</button>
             </form>
         </div>
     </div>
