@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <!--Incorporates code from both Matteo and Yumna-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+
+            padding: 0; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        header {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #0057B7; /* Blue */
+            color: white;
+            padding: 10px 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        header .logo {
+            font-weight: bold;
+            font-size: 20px;
+        }
+        header nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            margin-right: 20px;
+        }
+        main {
+            margin-top: 50px;
+            align-items: flex-start;
+        }
+        img {
+            max-width: 300px;
+            height: auto;
+        }
+        .container {
+        	border: 2px solid black;
+            padding: 50px;
+            margin: 40px;
+            background-color: white;
+            text-align: start;
+
+        }
+        input::placeholder
+        {
+        	color: black;
+            opacity: 0.4;
+        }
+        input[type = "button"], input[type = "login"] {
+        border: none;
+        color: white;
+        padding: 8px;
+        margin: 4px 2px;
+        width: 80px;
+        text-align: center;
+        cursor: pointer;
+        }
+        input[type = submit] {
+        	background-color: #0057B7;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="{% url 'dashboard' %}">$APPNAME</a>
+        <a href="{% url 'about' %}">About</a>
+        <a href="{% url 'login' %}">Login</a> <!-- Link to Dashboard -->
+    </div>
+    <div class="form-container">
+        <div class="form-box">
+
+
+            <form method="post", action="{% url 'login' %}">
+                {% csrf_token %}
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                
+                <button type="submit">Login</button>
+            </form>
+
+            {% comment %} <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">Login</button>
+              </form> {% endcomment %}
+        </div>
+    </div>
+    {% comment %} <script>
+        // Redirect to the dashboard page when the form is submitted
+        function navigateToDashboard(event) {
+            event.preventDefault(); // Prevent default form submission
+            window.location.href = "dashboard.html"; // Navigate to dashboard
+        }
+    </script> {% endcomment %}
+</body>
+</html>
