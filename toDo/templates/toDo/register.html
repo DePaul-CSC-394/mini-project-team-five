@@ -54,9 +54,9 @@
 </head>
 <body>
     <div class="navbar">
-        <a href="{% url 'dashboard' %}">$APPNAME</a>
-        <a href="{% url 'about' %}">About</a>
-        <a href="{% url 'login' %}">Login</a>
+        <a href="/">$APPNAME</a>
+        <a href="/about">About</a>
+        <a href="/login">Login</a>
     </div>
     <div class="form-container">
         <div class="form-box">
@@ -70,7 +70,7 @@
                 <label for="confirm">Confirm</label>
                 <input type="password" id="confirm" name="confirm" required>
                 
-                <button type="submit">Register</button>
+                <button type="submit" onclick="window.location.href='/dashboard'">Register</button>
             </form>
         </div>
     </div>

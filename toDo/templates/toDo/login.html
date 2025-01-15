@@ -76,7 +76,7 @@
                 {{form.password}}
                 
                 <button type="submit">Login</button>
-                <button onclick="window.location.href = 'register/'">Register</button>
+                <button type="button" onclick="window.location.href = '/register'">Register</button>
 
             </form>
 
@@ -87,13 +87,23 @@
             </form>  -->
         </div>
     </div>
-<script>
-    // Add an event listener to the form submission
-    document.querySelector("form").addEventListener("submit", function(event) {
-        event.preventDefault(); // Prevent the default form submission
-        window.location.href = "/dashboard"; // Redirect to /dashboard, need to still add invalid entry error 
-    });
-</script>
+    <script>
+        // Add an event listener to the login button
+        document.querySelector("button[type='submit']").addEventListener("click", function(event) {
+            event.preventDefault(); // Prevent the default form submission
+        
+            // Example validation logic
+            const email = document.querySelector("input[name='email']").value;
+            const password = document.querySelector("input[name='password']").value;
+        
+            if (email === "" || password === "") {
+                alert("Please fill in all fields."); // Show an error message
+            }
+            // } else {
+            //     window.location.href = "/dashboard"; // Redirect to /dashboard
+            // }
+        });
+    </script>
 
 </body>
 
