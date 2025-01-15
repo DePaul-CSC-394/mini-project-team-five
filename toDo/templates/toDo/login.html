@@ -61,9 +61,10 @@
 </head>
 <body>
     <div class="navbar">
-        <a href="{% url 'dashboard' %}">$APPNAME</a>
-        <a href="{% url 'about' %}">About</a>
-        <a href="http://localhost:1337/register/email=w&password=w&confirm=w">Register</a> <!-- Link to Registration Page -->
+        <a href="/dashboard">$APPNAME</a>
+        <a href="/about">About</a>
+        <a href="/login">Login</a> 
+        
     </div>
     <div class="form-container">
         <div class="form-box">
@@ -75,6 +76,8 @@
                 {{form.password}}
                 
                 <button type="submit">Login</button>
+                <button onclick="window.location.href = 'register/'">Register</button>
+
             </form>
 
             <!-- <form method="post">
