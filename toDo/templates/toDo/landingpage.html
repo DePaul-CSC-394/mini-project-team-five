@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!--Matteo's code>-->
+    <!-- Matteo's & Yumna's code-->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Unauthenticated Landing Page</title>
@@ -27,6 +27,8 @@
         header .logo {
             font-weight: bold;
             font-size: 20px;
+            text-decoration: none;
+            color: white;
         }
         header nav a {
             color: white;
@@ -34,6 +36,11 @@
             margin-left: 20px;
             margin-right: 20px;
         }
+        header nav .login-btn {
+         color: white;
+         font size: 16px;
+}
+
         main {
             margin-top: 50px;
             text-align: center;
@@ -46,10 +53,11 @@
 </head>
 <body>
     <header>
-        <div class="logo">$APPNAME</div>
+        <a href="landing.html" class="logo">$APPNAME</a> <!-- Redirects to landing.html -->
         <nav>
-            <a href="/about">About</a>
-            <a href="/login" style="margin-left: auto;">Login</a>
+            <a href="{% url 'about' %}">About</a>
+            <a href="mailto:@depaul.edu">@depaul.edu</a>
+            <a href="{% url 'login' %}" class="login-btn">Login</a>
         </nav>
     </header>
     <main>
@@ -57,3 +65,8 @@
     </main>
 </body>
 </html>
+<!-- need to redirect if user is logged in must show at the right hand corner
+def landing_page(request):
+    return render(request, 'landing.html', {'username': request.user.username if request.user.is_authenticated else None})--!>
+
+
