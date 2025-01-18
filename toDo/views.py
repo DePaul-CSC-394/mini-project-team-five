@@ -7,6 +7,9 @@ from django.db import IntegrityError
 
 from .models import Task, Team
 
+import logging
+
+logger = logging.getLogger(__name__)
 
 # Create your views here.
 def index(request):
@@ -39,7 +42,7 @@ def login(request):
        
     #redirect already login used
     if request.user.id:
-        return HttpResponseRedirect(reverse("dashboard"))
+        return HttpResponseRedirect(reverse("/dashboard"))
     
     form = LoginForm(request.POST) #https://stackoverflow.com/questions/10023213/extracting-items-out-of-a-querydict
     if request.method == "POST":
@@ -56,7 +59,7 @@ def login(request):
             if login_user is not None:
                 login_user.backend = 'users.authBackend.emailBackend.EmailBackend'
                 auth_login(request, login_user)
-                return redirect('dashboard')
+                return redirect('/dashboard')
             
             
             
@@ -153,8 +156,9 @@ def dashboard(request):
         # Get the first team (or return an error if no teams exist)
         team = Team.objects.first()
         if not team:
+            logger.error("No teams found in the database.")
             return render(request, 'toDo/dashboard.html', {
-                'error': 'No teams available. Please create a team first.'
+                "message": 'No teams found. Please create a team first.', 'team_id': 0
             })
 
         team_id = team.id  # Access the ID of the first team
@@ -175,6 +179,7 @@ def dashboard(request):
 
     except Exception as e:
         # Print the error to the console and return a server error response
+        logger.exception("An error occurred while accessing the dashboard.")
         print("Error occurred:", e)
         return HttpResponseServerError("Server error")
 
