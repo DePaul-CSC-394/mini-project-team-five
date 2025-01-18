@@ -67,6 +67,6 @@
 </html>
 <!-- need to redirect if user is logged in must show at the right hand corner
 def landing_page(request):
-    return render(request, 'landing.html', {'username': request.user.username if request.user.is_authenticated else None})--!>
-
+    return render(request, 'landing.html', {'username': request.user.username if request.user.is_authenticated else None})-!>
+ 
 
