@@ -53,11 +53,11 @@
 </head>
 <body>
     <header>
-        <a href="landing.html" class="logo">$APPNAME</a> <!-- Redirects to landing.html -->
+        <a href="/" class="logo">$APPNAME</a> <!-- Redirects to landing.html -->
         <nav>
             <a href="{% url 'about' %}">About</a>
             <a href="mailto:@depaul.edu">@depaul.edu</a>
-            <a href="{% url 'login' %}" class="login-btn">Login</a>
+            <a href="/login" class="login-btn">Login</a>
         </nav>
     </header>
     <main>
@@ -68,5 +68,4 @@
 <!-- need to redirect if user is logged in must show at the right hand corner
 def landing_page(request):
     return render(request, 'landing.html', {'username': request.user.username if request.user.is_authenticated else None})-!>
- 
 
