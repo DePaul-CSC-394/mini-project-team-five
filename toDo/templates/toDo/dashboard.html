@@ -115,8 +115,7 @@
                     <p>{{ task.description }}</p>
                     <button onclick="startToDo(this)" class="start-todo">Start</button>
                     <button onclick="removeTask(this)" class="delete-todo">Delete</button>
-                    <!-- Uncomment and adjust the edit button if needed -->
-                    <!-- <button onclick="window.location.href='{% url 'todos_edit' task.id %}'" class="edit-todo">Edit</button> -->
+                    <button onclick="window.location.href='{% url 'todos_edit' task.id %}'" class="edit-todo">Edit</button>
                 </div>
             {% endfor %}
         {% else %}
