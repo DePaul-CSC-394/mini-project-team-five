@@ -42,7 +42,7 @@ def login(request):
        
     #redirect already login used
     if request.user.id:
-        return HttpResponseRedirect(reverse("/dashboard"))
+        return HttpResponseRedirect(reverse("dashboard"))
     
     form = LoginForm(request.POST) #https://stackoverflow.com/questions/10023213/extracting-items-out-of-a-querydict
     if request.method == "POST":
