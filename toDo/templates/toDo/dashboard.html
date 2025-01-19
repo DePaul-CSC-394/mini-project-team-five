@@ -1,9 +1,8 @@
 <!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-    <!--Matteo's code-->
     <title>Dashboard</title>
     <style>
         body {
@@ -32,10 +31,10 @@
             width: auto;
         }
         .taskTop {
- 			height: 25px;
+            height: 25px;
             width: auto;
             background-color: grey;
-		}
+        }
         .task {
             background-color: #f9f9f9;
             padding: 10px;
@@ -45,17 +44,17 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
         button {
-        	margin: 0 auto;
+            margin: 0 auto;
             display: block;
         }
-         .create-todo {
+        .create-todo {
             background-color: blue;
             color: white;
             border: none;
             padding: 10px 20px;
             cursor: pointer;
         }
-         .resume-todo {
+        .resume-todo {
             background-color: white;
             color: green;
             border: 2px solid green;
@@ -64,7 +63,7 @@
             cursor: pointer;
             display: inline-block;
         }
-          .start-todo {
+        .start-todo {
             background-color: green;
             color: white;
             border: none;
@@ -73,7 +72,7 @@
             cursor: pointer;
             display: inline-block;
         }
-           .edit-todo {
+        .edit-todo {
             background-color: gray;
             color: white;
             border: none;
@@ -83,7 +82,7 @@
             display: inline-block;
             float: right;
         }
-           .delete-todo {
+        .delete-todo {
             background-color: red;
             color: white;
             border: none;
@@ -94,46 +93,36 @@
             float: right;
         }
         p {
-        	font-size: 12px;
+            font-size: 12px;
         }
-        
     </style>
-    <script>
-        function removeTask(toRem)
-        {
-        	var wholeNode = toRem.parentNode;
-            wholeNode.remove();
-        }
-        function goDo()
-        {
-           window.location.href = "createToDo.html";
-        }
-        function startToDo(buttonID) 
-        {
-        }
-    </script>
-    
 </head>
 <body>
     <div class="navbar">
         <a href="">$APPNAME</a>
-        <a href="/about" >About</a>
-        <a href="/dashboard">Dashboard</a>
+        <a href="{% url 'about'%}" >About</a>
+        <a href="{% url 'dashboard'%}">Dashboard</a>
         <a href="{% url 'todos_new' %}">To-Do's</a>
         <a href="{% url 'teams' id=team_id %}">Teams</a>
         <a href="">@depaul.edu</a>
     </div>
+
     <div class="task-container">
-        <div class="task">
-            	<div class="taskTop">
-        </div>
-            <h3>$TITLE</h3>
-            <p>$DESCRIPTION</p>
-                <button type="submit" onclick="startToDo(this)" class="start-todo">Start</button>
-                <button type="submit" onclick="removeTask(this)" class="delete-todo">Delete</button>
-                <button type="button" onclick="window.location.href='{% url 'todos_edit' id=todo_id %}'" class="edit-todo">Edit</button>
-        </div>
+        {% if todo_items %}
+            {% for task in todo_items %}
+                <div class="task">
+                    <h3>{{ task.title }}</h3>
+                    <p>{{ task.description }}</p>
+                    <button onclick="startToDo(this)" class="start-todo">Start</button>
+                    <button onclick="removeTask(this)" class="delete-todo">Delete</button>
+                    <button onclick="window.location.href='{% url 'todos_edit' task.id %}'" class="edit-todo">Edit</button>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No tasks available. Create a new task to get started!</p>
+        {% endif %}
     </div>
+
     <button type="button" onclick="window.location.href='{% url 'todos_new' %}'" class="create-todo">Create ToDo</button>
 </body>
 </html>

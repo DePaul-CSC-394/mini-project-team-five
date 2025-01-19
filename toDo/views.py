@@ -5,6 +5,11 @@ from django.contrib.auth import authenticate, login as auth_login, logout
 from django.urls import reverse
 from django.db import IntegrityError
 
+from .models import Task, Team
+
+import logging
+
+logger = logging.getLogger(__name__)
 
 # Create your views here.
 def index(request):
@@ -37,7 +42,7 @@ def login(request):
        
     #redirect already login used
     if request.user.id:
-        return HttpResponseRedirect(reverse("dashboard"))
+        return HttpResponseRedirect(reverse("/dashboard"))
     
     form = LoginForm(request.POST) #https://stackoverflow.com/questions/10023213/extracting-items-out-of-a-querydict
     if request.method == "POST":
@@ -54,7 +59,7 @@ def login(request):
             if login_user is not None:
                 login_user.backend = 'users.authBackend.emailBackend.EmailBackend'
                 auth_login(request, login_user)
-                return redirect('dashboard')
+                return redirect('/dashboard')
             
             
             
@@ -147,9 +152,36 @@ def teamsNew(request):
     return render(request, "toDo/createTeam.html")
 
 def dashboard(request):
-    team_id = 1  # Replace with actual logic to get team_id
-    todo_id = 1  # Replace with actual logic to get todo_id
-    return render(request, 'toDo/dashboard.html', {'team_id': team_id, 'todo_id': todo_id})
+    try:
+        # Get the first team (or return an error if no teams exist)
+        team = Team.objects.first()
+        if not team:
+            logger.error("No teams found in the database.")
+            return render(request, 'toDo/dashboard.html', {
+                "message": 'No teams found. Please create a team first.', 'team_id': 0
+            })
+
+        team_id = team.id  # Access the ID of the first team
+        teams = Team.objects.all()  # Get all teams
+
+        # Get all tasks associated with the selected team
+        todo_items = Task.objects.filter(user=request.user)
+        print("Tasks:", todo_items)
+
+        # Pass the data to the template
+        context = {
+            'team_id': team_id,
+            'todo_items': todo_items,
+            'teams': teams,
+        }
+
+        return render(request, 'toDo/dashboard.html', context)
+
+    except Exception as e:
+        # Print the error to the console and return a server error response
+        logger.exception("An error occurred while accessing the dashboard.")
+        print("Error occurred:", e)
+        return HttpResponseServerError("Server error")
 
 
 def todosEdit(request, id):
