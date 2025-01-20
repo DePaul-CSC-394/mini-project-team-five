@@ -14,6 +14,10 @@ then
     echo "PostgreSQL started"
 fi
 
+#create migration for toDo app
+python manage.py makemigrations toDo
+#create migration for users app
+python manage.py makemigrations users
 # python manage.py flush --no-input
 python manage.py migrate
 
