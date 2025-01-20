@@ -94,8 +94,8 @@
             <a href="{% url 'dashboard' %}">$APPNAME</a>
             <a href="{% url 'about' %}">About</a>
             <a href="{% url 'dashboard' %}">Dashboard</a>
-            <a href="{% url 'todos_new' %}">To-Do's</a>
-            <a href="{% url 'teams' id=team_id %}">Teams</a>
+            <a href="{% url 'createToDo' %}">To-Do's</a>
+            <a href="{% url 'teamList' id=team_id %}">Teams</a>
         </div>
         <a href="/dashboard">@depaul.edu</a>
     </div>
@@ -118,7 +118,7 @@
             <button class="update-button" onclick="alert('Update Successful!')">Update</button>
         </div>
     </div>
-    <script>
+    {% comment %} <script>
         // Function to add a new team member
         function addMember() {
             const input = document.getElementById('add-member');
@@ -142,6 +142,6 @@
                 member.textContent = newName;
             }
         }
-    </script>
+    </script> {% endcomment %}
 </body>
 </html>

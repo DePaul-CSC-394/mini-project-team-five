@@ -42,6 +42,7 @@ class stopwatch(models.Model):
             return None
         
 class Task(models.Model):
+    id = models.AutoField(primary_key=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)  # on_delete=models.CASCADE means that if the user is deleted, all the tasks associated with that user will also be deleted
     title = models.CharField(max_length=200)
     description = models.TextField(null=True, blank=True)

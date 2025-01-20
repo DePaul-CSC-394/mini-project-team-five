@@ -1,3 +1,5 @@
+{% comment %} Copied from task create {% endcomment %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -80,11 +82,12 @@
 </head>
 <body>
     <div class="navbar">
-        <a href="/">$APPNAME</a>
-        <a href="/about">About</a>
-        <a href="/dashboard">Dashboard</a>
-        <a href="{% url 'createToDo' %}">To-Do's</a>
-        <a href="{% url 'teamList' id=team_id %}">Teams</a>
+        <a href="{% url 'dashboard' %}">$APPNAME</a>
+            <a href="{% url 'about' %}">About</a>
+            <a href="{% url 'dashboard' %}">Dashboard</a>
+            <a href="{% url 'createToDo' %}">To-Do's</a>
+            <a href="{% url 'teamList' id=team_id %}">Teams</a>
+        {% comment %} <a href="{% url 'teams' id=team_id %}">Teams</a> {% endcomment %}
         <a href="mailto:@depaul.edu">@depaul.edu</a>
     </div>
     <div class="form-container">
@@ -110,18 +113,15 @@
                     <option>Team A</option>
                     <option>Team B</option>
                     <option>Team C</option>
-                </select>
+                </select> {% endcomment %}
 
-                <div class="button-container">
+                {% comment %} <div class="button-container">
                     <button type="button" class="cancel-button" onclick="window.location.href='dashboard.html'">Cancel</button>
                     <button type="submit" class="save-button">Save</button>
                 </div> {% endcomment %}
-
                 {% csrf_token %}
                 {{form}}
-
-                <button type="button" class="cancel-button" onclick="window.location.href='{% url 'dashboard' %}'">Cancel</button>
-                <input type="submit" value="Save" class="save-button">
+                <button type="submit">Testing</button>
             </form>
         </div>
     </div>
