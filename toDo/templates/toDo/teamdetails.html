@@ -109,7 +109,7 @@
             <a href="{% url 'dashboard' %}">Dashboard</a>
             <a href="{% url 'todos_new' %}">To-Do's</a>
             <a href="{% url 'teams' id=team_id %}">Teams</a>
-            <a href="{% url 'dashboard' %}">@depaul.edu</a>
+            <a href="{% url 'logout' %}">{{ user.email }}</a>
         </div>
     </div>
     <div class="content">
