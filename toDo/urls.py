@@ -12,7 +12,7 @@ urlpatterns = [
     path("teams/new", views.teamsNew, name = "teams_new"),
     path("todos/new", views.todosNew, name = "todos_new"),
     path("todos/<int:id>/edit", views.todosEdit, name = "todos_edit"),
-    path('teams/<int:id>/', views.teams, name='teamList'),
+    path('teams/<int:id>/', views.teams, name='teams'),
     path("landing/", views.landing, name = "landing"),
     path("logout/", views.logoutView, name = "logout"),
 ]
