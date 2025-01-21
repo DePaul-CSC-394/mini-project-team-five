@@ -30,6 +30,10 @@
             text-decoration: none;
             color: black;
         }
+        header nav {
+           display: flex;
+           width: 100%;
+        }
         header nav a {
             color: black;
             font-weight: bold;
@@ -41,6 +45,7 @@
          color: black;
          font-weight: bold;
          font-size: 16px;
+         margin-left: auto;
         }
         main {
             margin-top: 50px;
@@ -54,7 +59,7 @@
 </head>
 <body>
     <header>
-        <a href="/" class="logo">$APPNAME</a> <!-- Redirects to landing.html -->
+        <a href="/" class="logo">$APPNAME</a>
         <nav>
             <a href="{% url 'about' %}">About</a>
             <a href="{% url 'login'%}" class="login-btn">Login</a>
