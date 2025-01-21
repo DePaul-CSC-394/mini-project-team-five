@@ -144,13 +144,13 @@
         <div class="navbar-right">
             <a href="{% url 'dashboard'%}">Dashboard</a>
             <a href="{% url 'todos_new' %}">To-Do's</a>
-            <a href="{% url 'teams' id=team_id %}">Teams</a>
+            <a href="{% url 'teamList' id=team_id %}">Teams</a>
             <a href="mailto:{{ user.email }}">{{ user.email }}</a>
         </div>
     </div>
 
     <div class="new-todo-container">
-        <button type="button" class="new-todo" onclick="window.location.href='{% url "todos_new" %}'">Create ToDo</button>
+        <button type="button" class="new-todo" onclick="window.location.href='{% url 'todos_new' %}'">Create ToDo</button>
     </div>
 
     <div class="task-container" id="task-container">
@@ -178,7 +178,7 @@
         </div>
     </div>
 
-    <script>
+    {% comment %} <script>
         let taskCount = 0;
         const timers = {};
         let taskToDelete = null;
@@ -265,6 +265,6 @@
             taskToDelete = null;
             document.getElementById('popup-overlay').style.display = 'none';
         }
-    </script>
+    </script> {% endcomment %}
 </body>
 </html>
