@@ -38,6 +38,14 @@ class TaskForm(forms.ModelForm):
         model = Task
         fields = ['title', 'description', 'dueDate', 'category', 'team']
         
+        
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
+        super(TaskForm, self).__init__(*args, **kwargs)
+        if self.user:
+            self.fields['team'].queryset = Team.objects.filter(members=self.user)
+            self.fields['user'].initial = self.user
+        
 class TeamForm(forms.ModelForm):
     name = forms.CharField(max_length=200, widget=forms.TextInput(attrs={'name':'name'}))
     description = forms.CharField(widget=forms.Textarea(attrs={'name':'description'}), required=False)
@@ -46,4 +54,5 @@ class TeamForm(forms.ModelForm):
     class Meta:
         model = Team
         fields = ['name', 'description', 'members']
+    
     
