@@ -113,6 +113,7 @@ def todosNew(request):
         form = TaskForm(request.POST)
         print("Form:", form)
         if form.is_valid():
+            form.instance.user = request.user
             form.save()
             print("Form saved")
             return redirect('dashboard')
