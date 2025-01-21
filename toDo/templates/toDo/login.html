@@ -16,7 +16,7 @@
             font-size: 1.25em;
             display: flex;
             background-color: lightgray;
-            padding: 10px 20px;
+            padding: 10px 0px;
         }
         .navbar-left{
             display: flex;
@@ -36,7 +36,7 @@
         }
         .navbar a {
             text-decoration: none;
-            color: black;
+            color: white;
             font-weight: bold;
         }
         .form-container {
@@ -76,7 +76,7 @@
 <body>
     <div class="navbar">
         <div class="navbar-left">
-            <a href="{% url 'dashboard'%}">$APPNAME</a>
+            <a href="/">$APPNAME</a>
             <a href="{% url 'about'%}">About</a>
         </div>
         <div class = "navbar-right">
