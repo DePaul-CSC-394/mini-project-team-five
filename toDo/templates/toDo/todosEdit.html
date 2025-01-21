@@ -1,3 +1,4 @@
+<!-- Copied from task create -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,31 +9,19 @@
             margin: 0;
         }
         .navbar {
-            font-size: 1.25em;
-            display: flex;
-            background-color: lightgray;
+            background-color: #0057B7;
             padding: 10px 20px;
-        }
-        .navbar-left{
             display: flex;
-            flex-direction: row;
-            gap: 20px;
-            justify-content: left;
-            align-self: center;
-            width: 50%;
-        }
-        .navbar-right{
-            display: flex;
-            flex-direction: row;
-            justify-content: right;
+            justify-content: space-evenly; /* Evenly space items */
             align-items: center;
-            width: 50%;
-            gap: 20px;
+            font-weight: bold;
         }
         .navbar a {
+            color: white;
             text-decoration: none;
-            color: black;
-            font-weight: bold;
+            cursor: pointer;
+            flex: 1;
+            text-align: center; /* Center align each link */
         }
         .form-container {
             display: flex;
@@ -92,21 +81,17 @@
 </head>
 <body>
     <div class="navbar">
-        <div class="navbar-left">
-            <a href="/">$APPNAME</a>
-            <a href="{% url 'about'%}" >About</a>
-        </div>
-        <div class="navbar-right">
-            <a href="{% url 'dashboard'%}">Dashboard</a>
+        <a href="{% url 'dashboard' %}">$APPNAME</a>
+            <a href="{% url 'about' %}">About</a>
+            <a href="{% url 'dashboard' %}">Dashboard</a>
             <a href="{% url 'todos_new' %}">To-Do's</a>
             <a href="{% url 'teams' id=team_id %}">Teams</a>
-        </div>
-        <a href="/logout">{{ user.email }}</a>
+            <a href="{% url 'logout' %}">{{ user.email }}</a>
     </div>
     <div class="form-container">
         <div class="form-box">
             <form method = "post" id="taskForm">
-                {% comment %} <label for="task-title">Task Title</label>
+                <!-- <label for="task-title">Task Title</label>
                 <input type="text" id="task-title" placeholder="Ex: Take out the trash">
                 <div class="error-message" id="task-title-error">Task Title is required</div>
 
@@ -126,23 +111,20 @@
                     <option>Team A</option>
                     <option>Team B</option>
                     <option>Team C</option>
-                </select>
+                </select>  -->
 
-                <div class="button-container">
+                <!-- <div class="button-container">
                     <button type="button" class="cancel-button" onclick="window.location.href='dashboard.html'">Cancel</button>
                     <button type="submit" class="save-button">Save</button>
-                </div> {% endcomment %}
-
+                </div> -->
                 {% csrf_token %}
                 {{form}}
-
-                <button type="button" class="cancel-button" onclick="window.location.href='{% url 'dashboard' %}'">Cancel</button>
-                <input type="submit" value="Save" class="save-button">
+                <button type="submit">Testing</button>
             </form>
         </div>
     </div>
 
-    {% comment %} <script>
+    <!-- <script>
         // Form validation
         document.getElementById('taskForm').addEventListener('submit', function (event) {
             event.preventDefault(); // Prevent form submission
@@ -161,7 +143,6 @@
                 taskTitleError.style.display = 'none';
             }
 
-         
             const description = document.getElementById('description');
             const descriptionError = document.getElementById('description-error');
             if (description.value.trim() === '') {
@@ -176,9 +157,8 @@
             
             if (isValid) {
                 alert('Form submitted successfully!');
-              
             }
         });
-    </script> {% endcomment %}
+    </script> -->
 </body>
 </html>

@@ -145,15 +145,29 @@
             <a href="{% url 'dashboard'%}">Dashboard</a>
             <a href="{% url 'todos_new' %}">To-Do's</a>
             <a href="{% url 'teams' id=team_id %}">Teams</a>
-            <a href="">@depaul.edu</a>
+            <a href="{% url 'logout' %}">{{ user.email }}</a>
         </div>
     </div>
 
     <div class="new-todo-container">
-        <button type="button" class="new-todo" onclick="createNewTask()">Create ToDo</button>
+        <button type="button" class="new-todo" onclick="window.location.href='{% url 'todos_new' %}'">Create ToDo</button>
     </div>
 
-    <div class="task-container" id="task-container"></div>
+    <div class="task-container" id="task-container">
+        {% if todo_items %}
+            {% for task in todo_items %}
+                <div class="task">
+                    <h3>{{ task.title }}</h3>
+                    <p>{{ task.description }}</p>
+                    <button onclick="startToDo(this)" class="start-todo">Start</button>
+                    <button onclick="removeTask(this)" class="delete-todo">Delete</button>
+                    <button onclick="window.location.href='{% url 'todos_edit' task.id %}'" class="edit-todo">Edit</button>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No tasks available. Create a new task to get started!</p>
+        {% endif %}
+    </div>
 
     
     <div class="popup-overlay" id="popup-overlay">
@@ -164,7 +178,7 @@
         </div>
     </div>
 
-    <script>
+<!--     <script>
         let taskCount = 0;
         const timers = {};
         let taskToDelete = null;
@@ -251,6 +265,6 @@
             taskToDelete = null;
             document.getElementById('popup-overlay').style.display = 'none';
         }
-    </script>
+    </script> -->
 </body>
 </html>
