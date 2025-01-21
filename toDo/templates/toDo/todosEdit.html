@@ -9,19 +9,31 @@
             margin: 0;
         }
         .navbar {
-            background-color: #0057B7;
-            padding: 10px 20px;
+            font-size: 1.25em;
             display: flex;
-            justify-content: space-evenly; /* Evenly space items */
+            background-color: lightgray;
+            padding: 10px 0px;
+        }
+        .navbar-left{
+            display: flex;
+            flex-direction: row;
+            gap: 20px;
+            justify-content: left;
+            align-self: center;
+            width: 50%;
+        }
+        .navbar-right{
+            display: flex;
+            flex-direction: row;
+            justify-content: right;
             align-items: center;
-            font-weight: bold;
+            width: 50%;
+            gap: 20px;
         }
         .navbar a {
-            color: white;
             text-decoration: none;
-            cursor: pointer;
-            flex: 1;
-            text-align: center; /* Center align each link */
+            color: white;
+            font-weight: bold;
         }
         .form-container {
             display: flex;
