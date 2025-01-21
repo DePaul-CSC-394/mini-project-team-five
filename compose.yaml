@@ -91,16 +91,31 @@ services:
       DATABASE_PORT: ${DATABASE_PORT}
     env_file:
       - .env
+    networks:
+      - default
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
   nginx:
     build: ./nginx
+    image: nginx:latest
     volumes:
       - static_volume:/app/staticfiles
     ports:
       - "1337:80"
     depends_on:
-      - django-web
+      django-web:
+        condition: service_healthy
+    networks:
+      - default
     
 volumes:
   postgres_data:
   static_volume:
+
+networks:
+  default:
+    driver: bridge
