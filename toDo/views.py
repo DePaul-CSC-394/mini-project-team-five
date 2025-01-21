@@ -106,7 +106,11 @@ def logoutView(request):
     logout(request)
     return redirect("login")
 
+
 def todosNew(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    
     team_id = 1  # Replace with actual logic to get team_id
     # return render(request, "toDo/createToDo.html", {'team_id': team_id})
     if request.method == "POST":
@@ -123,6 +127,9 @@ def todosNew(request):
 
 
 def todosEdit(request, id):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    
     team_id = 1  # Replace with actual logic to get team_id
     
     try:
@@ -147,6 +154,9 @@ def todosEdit(request, id):
         return HttpResponseServerError("Server error")
 
 def teamsNew(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    
     team_id = 1  # Replace with actual logic to get team_id
     # return render(request, "toDo/createTeam.html")
     form = TeamForm(request.POST)
@@ -162,6 +172,9 @@ def teamsNew(request):
     
 
 def dashboard(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    
     try:
         # Get the first team (or return an error if no teams exist)
         team = Team.objects.first()
@@ -197,6 +210,9 @@ def dashboard(request):
 
 
 def teams(request, id):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    
     # todo_id = 1  # Replace with actual logic to get team_id
     # return render(request, "toDo/teamdetails.html", {'team_id': id, 'todo_id': todo_id})
 
@@ -228,6 +244,11 @@ def teams(request, id):
     
 def landing(request):
     return render(request, "toDo/landingpage.html")
+
+def delete(request, id):
+    task = Task.objects.get(id=id) # Get the task object
+    task.delete() # Delete the task
+    return redirect('dashboard')
 
 # def task(request):
 #     return render(request, "toDo/task.html")

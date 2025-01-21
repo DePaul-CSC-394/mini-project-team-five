@@ -14,5 +14,6 @@ urlpatterns = [
     path("todos/<int:id>/edit", views.todosEdit, name = "todos_edit"),
     path('teams/<int:id>/', views.teams, name='teams'),
     path("landing/", views.landing, name = "landing"),
-    path("logout/", views.logoutView, name = "logout")
+    path("logout/", views.logoutView, name = "logout"),
+    path("delete/<int:id>/", views.delete, name = "delete"),
 ]

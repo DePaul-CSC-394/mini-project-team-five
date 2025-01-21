@@ -160,7 +160,7 @@
                     <h3>{{ task.title }}</h3>
                     <p>{{ task.description }}</p>
                     <button onclick="startToDo(this)" class="start-todo">Start</button>
-                    <button onclick="removeTask(this)" class="delete-todo">Delete</button>
+                    <button onclick="window.location.href='{% url "delete" task.id %}'" class="delete-todo">Delete</button>
                     <button onclick="window.location.href='{% url 'todos_edit' task.id %}'" class="edit-todo">Edit</button>
                 </div>
             {% endfor %}
@@ -178,7 +178,7 @@
         </div>
     </div>
 
-<!--     <script>
+    <script>
         let taskCount = 0;
         const timers = {};
         let taskToDelete = null;
@@ -266,5 +266,6 @@
             document.getElementById('popup-overlay').style.display = 'none';
         }
     </script> -->
+    </script> 
 </body>
 </html>
