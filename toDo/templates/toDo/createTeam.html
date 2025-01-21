@@ -14,15 +14,30 @@
             flex-direction: column;
         } 
         .navbar {
-            background-color: #0057B7;
-            padding: 10px 20px;
+            font-size: 1.25em;
             display: flex;
-            justify-content: space-between;
+            background-color: lightgray;
+            padding: 10px 20px;
+        }
+        .navbar-left{
+            display: flex;
+            flex-direction: row;
+            gap: 20px;
+            justify-content: left;
+            align-self: center;
+            width: 50%;
+        }
+        .navbar-right{
+            display: flex;
+            flex-direction: row;
+            justify-content: right;
             align-items: center;
+            width: 50%;
+            gap: 20px;
         }
         .navbar a {
             text-decoration: none;
-            color: white;
+            color: black;
             font-weight: bold;
         }
         main {
@@ -48,31 +63,80 @@
         text-align: center;
         cursor: pointer;
         }
-        input[type = save] {
-        	background-color: #06ad05;
+        .cancel-button {
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 3px;
         }
-        input[type = cancel] {
-           background-color: #FF0000;
+        .save-button {
+            background-color: green;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+        .form-container {
+            display: flex;
+            justify-content: center;
+            align-items: start;
+            height: 80vh;
+        }
+        .form-box {
+            width: 400px;
+            border: 1px solid gray;
+            padding: 20px;
+        }
+        .form-box label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-box input,
+        .form-box select {
+            width: 100%;
+            padding: 4px;
+            margin-bottom: 10px;
+            border: 1px solid gray;
+            border-radius: 3px;
+        }
+        .form-box input.error {
+            background-color: lightcoral;
+            border-color: red;
+        }
+        .error-message {
+            color: red;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+            display: none; /* Initially hidden */
         }
     </style>
 </head>
 <body>
         <div class = "navbar">
-        	<a href="{% url 'landing' %}">$APPNAME</a>
-        	<a href="{% url 'about' %}">About</a>
-            <a href="{% url 'dashboard' %}">Dashboard</a>
-            <a href="{% url 'todos_new' %}">To-Do's</a>
-            <a href="{% url 'teams' id=team_id %}">Teams</a>
-            <a href="/logout">@depaul.edu</a>
-                
+            <div class="navbar-left">
+                <a href="/">$APPNAME</a>
+                <a href="{% url 'about'%}" >About</a>
+            </div>
+            <div class="navbar-right">
+                <a href="{% url 'dashboard'%}">Dashboard</a>
+                <a href="{% url 'todos_new' %}">To-Do's</a>
+                <a href="{% url 'teams' id=team_id %}">Teams</a>
+                <a href="/logout">@depaul.edu</a>
+            </div>
         </div>
     <main>
-      {% comment %} <label for="tname">Team Name: </label>
-  	  <input type="text" id="tname" name="tname" placeholder = "Ex: Team Five" style = font-style:italic><br><br>
-      
-      <label for="desc">Description: </label>
-  	  <input type="text" id="desc" name="desc" placeholder = "Enter description here" style = font-style:italic><br><br>
-      
+    <div class="form-container">
+    <div class="form-box">
+        <form id="taskForm">
+            {% comment %} <label for="tname">Team Name: </label>
+            <input type="text" id="task-title" placeholder="Ex: Take out the trash">
+            <div class="error-message" id="task-title-error">Task Title is required</div>
+        <label for="desc">Description: </label>
+        <input type="text" id="description" placeholder="Add description">
+        <div class="error-message" id="description-error">Description is required</div>
       <input type="cancel" value="Cancel">
       <input type="save" value="Save"> {% endcomment %}
         <form method="post">
@@ -80,6 +144,49 @@
             {{ form }}
             <input type="submit" value="Create Team">
         </form>
+
+<!--         <button type="button" class="cancel-button" onclick="window.location.href='dashboard.html'">Cancel</button>
+        <button type="submit" class="save-button">Save</button>
+    </form> -->
+</div>
 </main>
+<script>
+    // Form validation
+    document.getElementById('taskForm').addEventListener('submit', function (event) {
+        event.preventDefault(); // Prevent form submission
+
+        let isValid = true;
+
+        // Validate Task Title
+        const taskTitle = document.getElementById('task-title');
+        const taskTitleError = document.getElementById('task-title-error');
+        if (taskTitle.value.trim() === '') {
+            taskTitle.classList.add('error');
+            taskTitleError.style.display = 'block';
+            isValid = false;
+        } else {
+            taskTitle.classList.remove('error');
+            taskTitleError.style.display = 'none';
+        }
+
+     
+        const description = document.getElementById('description');
+        const descriptionError = document.getElementById('description-error');
+        if (description.value.trim() === '') {
+            description.classList.add('error');
+            descriptionError.style.display = 'block';
+            isValid = false;
+        } else {
+            description.classList.remove('error');
+            descriptionError.style.display = 'none';
+        }
+
+        
+        if (isValid) {
+            alert('Form submitted successfully!');
+          
+        }
+    });
+</script>
 </body>
 </html>
