@@ -8,10 +8,12 @@
             margin: 0;
         }
         .navbar {
+            width: 100%;
             font-size: 1.25em;
             display: flex;
             background-color: lightgray;
-            padding: 10px 20px;
+            padding: 10px 0px;
+            border-bottom: 1px solid gray;
         }
         .navbar-left{
             display: flex;
@@ -32,7 +34,8 @@
         .navbar a {
             text-decoration: none;
             color: black;
-            font-weight: bold;
+/*             font-weight: bold; */
+            margin: 0 10px;
         }
         .form-container {
             display: flex;
@@ -100,13 +103,13 @@
             <a href="{% url 'dashboard'%}">Dashboard</a>
             <a href="{% url 'todos_new' %}">To-Do's</a>
             <a href="{% url 'teams' id=team_id %}">Teams</a>
+            <a href="/logout">{{ user.email }}</a>
         </div>
-        <a href="/logout">{{ user.email }}</a>
     </div>
     <div class="form-container">
         <div class="form-box">
             <form method = "post" id="taskForm">
-                {% comment %} <label for="task-title">Task Title</label>
+<!--                  <label for="task-title">Task Title</label>
                 <input type="text" id="task-title" placeholder="Ex: Take out the trash">
                 <div class="error-message" id="task-title-error">Task Title is required</div>
 
@@ -131,7 +134,7 @@
                 <div class="button-container">
                     <button type="button" class="cancel-button" onclick="window.location.href='dashboard.html'">Cancel</button>
                     <button type="submit" class="save-button">Save</button>
-                </div> {% endcomment %}
+                </div> -->
 
                 {% csrf_token %}
                 {{form}}
@@ -142,7 +145,7 @@
         </div>
     </div>
 
-    {% comment %} <script>
+    <script>
         // Form validation
         document.getElementById('taskForm').addEventListener('submit', function (event) {
             event.preventDefault(); // Prevent form submission
@@ -172,13 +175,48 @@
                 description.classList.remove('error');
                 descriptionError.style.display = 'none';
             }
-
+                        
+            const dueDate = document.getElementById('due-date');
+            const dueDateError = document.getElementById('due-date-error');
+            const dateRegex = /^(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])\/\d{4}$/;
             
-            if (isValid) {
-                alert('Form submitted successfully!');
-              
+            
+            if (!dateRegex.test(dueDate.value.trim())) {
+                dueDate.classList.add('error');
+                dueDateError.style.display = 'block';
+                dueDateError.textContent = 'Please enter a valid date in MM/DD/YYYY format';
+                isValid = false;
+            } else {
+                const [month, day, year] = dueDate.value.split('/').map(Number);
+                const dueDateObj = new Date(year, month - 1, day);
+                const currentDate = new Date();
+            
+                if (
+                    dueDateObj.getFullYear() !== year ||
+                    dueDateObj.getMonth() + 1 !== month ||
+                    dueDateObj.getDate() !== day
+                ) {
+                    dueDate.classList.add('error');
+                    dueDateError.style.display = 'block';
+                    dueDateError.textContent = 'Invalid date. Please check the values entered.';
+                    isValid = false;
+                } 
+                else if (dueDateObj < currentDate) {
+                    dueDate.classList.add('error');
+                    dueDateError.style.display = 'block';
+                    dueDateError.textContent = 'Due date cannot be in the past.';
+                    isValid = false;
+                } else {
+                    dueDate.classList.remove('error');
+                    dueDateError.style.display = 'none';
+                }
             }
-        });
-    </script> {% endcomment %}
+             if (isValid) {
+                alert('Form submitted successfully!');
+
+            }
+        }
+    );
+    </script>
 </body>
 </html>

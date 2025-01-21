@@ -13,10 +13,12 @@
             margin: 0;
         }
         .navbar {
+            width: 100%;
             font-size: 1.25em;
             display: flex;
             background-color: lightgray;
-            padding: 10px 20px;
+            padding: 10px 0px;
+            border-bottom: 1px solid gray;
         }
         .navbar-left{
             display: flex;
@@ -37,7 +39,8 @@
         .navbar a {
             text-decoration: none;
             color: black;
-            font-weight: bold;
+/*             font-weight: bold; */
+            margin: 0 10px;
         }
         .form-container {
             display: flex;
@@ -46,7 +49,8 @@
             height: 80vh;
         }
         .form-box {
-            width: 400px;
+            width: 100%;
+            max-width: 600px;
             border: 1px solid black;
             padding: 20px;
             border-radius: 5px;
@@ -76,7 +80,7 @@
 <body>
     <div class="navbar">
         <div class="navbar-left">
-            <a href="{% url 'dashboard'%}">$APPNAME</a>
+            <a href="/">$APPNAME</a>
             <a href="{% url 'about'%}">About</a>
         </div>
         <div class = "navbar-right">
@@ -92,14 +96,12 @@
                 
                 <label for="password">Password</label>
                 {{form.password}}
-
-                
                 
                 <button type="submit">Login</button>
-                
-                <button type="submit">Forgot Password?</button
-
+                <button type="submit">Forgot Password?</button>
+                <button type="button" onclick="window.location.href = '/register'">Register</button>
             </form>
+          
             {% if message %}
                     <div>
                         <p>{{ message }}</p>

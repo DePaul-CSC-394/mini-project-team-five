@@ -11,10 +11,12 @@
             margin: 0;
         }
         .navbar {
+            width: 100%;
             font-size: 1.25em;
             display: flex;
             background-color: lightgray;
-            padding: 10px 20px;
+            padding: 10px 0px;
+            border-bottom: 1px solid gray;
         }
         .navbar-left{
             display: flex;
@@ -35,7 +37,8 @@
         .navbar a {
             text-decoration: none;
             color: black;
-            font-weight: bold;
+/*             font-weight: bold; */
+            margin: 0 10px;
         }
         .form-container {
             display: flex;
@@ -44,9 +47,11 @@
             height: 80vh;
         }
         .form-box {
-            width: 300px;
+            width: 100%;
+            max-width: 600px;
             border: 1px solid #000;
             padding: 20px;
+            box-sizing: border-box;
         }
         .form-box label {
             display: block;
@@ -55,7 +60,7 @@
         .form-box input {
             width: 100%;
             padding: 8px;
-            margin-bottom: 15px;
+            margin-bottom: 5px;
             border: 1px solid #ccc;
         }
         .form-box input.error {
@@ -81,7 +86,7 @@
 <body>
     <div class="navbar">
         <div class="navbar-left">
-            <a href="{% url 'dashboard'%}">$APPNAME</a>
+            <a href="/">$APPNAME</a>
             <a href="{% url 'about'%}">About</a>
         </div>
         <div class = "navbar-right">
@@ -105,7 +110,6 @@
                 <div class="error-message" id="confirm-error-1">Please confirm password.</div>
                 <div class="error-message" id="confirm-error-2">Passwords do not match.</div>
                 
-                <button type="submit">Register</button>
             </form> {% endcomment %}
             <form method="post" action="{% url 'register' %}">
                 {% csrf_token %}

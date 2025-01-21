@@ -11,16 +11,33 @@
             padding: 0;
         }
         .navbar {
+            width: 100%;
+            font-size: 1.25em;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
             background-color: lightgray;
-            padding: 10px 20px;
+            padding: 10px 0px;
             border-bottom: 1px solid gray;
+        }
+        .navbar-left{
+            display: flex;
+            flex-direction: row;
+            gap: 20px;
+            justify-content: left;
+            align-self: center;
+            width: 50%;
+        }
+        .navbar-right{
+            display: flex;
+            flex-direction: row;
+            justify-content: right;
+            align-items: center;
+            width: 50%;
+            gap: 20px;
         }
         .navbar a {
             text-decoration: none;
             color: black;
+/*             font-weight: bold; */
             margin: 0 10px;
         }
         .task-container {
