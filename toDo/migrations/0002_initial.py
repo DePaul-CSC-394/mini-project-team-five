@@ -23,7 +23,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='team',
             name='members',
-            field=models.ManyToManyField(related_name='teamList', to=settings.AUTH_USER_MODEL),
+            field=models.ManyToManyField(related_name='teams', to=settings.AUTH_USER_MODEL),
         ),
         migrations.AddField(
             model_name='task',
