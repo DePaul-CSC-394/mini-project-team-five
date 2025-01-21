@@ -25,7 +25,6 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
         header .logo {
-            font-weight: bold;
             font-size: 20px;
             text-decoration: none;
             color: black;
@@ -34,16 +33,14 @@
            display: flex;
            width: 100%;
         }
-        header nav a {
+        header nav a, header nav span {
             color: black;
-            font-weight: bold;
             text-decoration: none;
             margin-left: 20px;
             margin-right: 20px;
         }
         header nav .login-btn {
          color: black;
-         font-weight: bold;
          font-size: 16px;
          margin-left: auto;
         }
@@ -62,7 +59,12 @@
         <a href="/" class="logo">$APPNAME</a>
         <nav>
             <a href="{% url 'about' %}">About</a>
-            <a href="{% url 'login'%}" class="login-btn">Login</a>
+            {% if user.is_authenticated %}
+                <span>{{ user.email }}</span>
+            {% else %}
+                <a href="{% url 'login' %}" class="login-btn">Login</a>
+            {% endif %}
+            <!-- <a href="{% url 'login'%}" class="login-btn">Login</a> -->
         </nav>
     </header>
     <main>
