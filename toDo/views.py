@@ -46,9 +46,34 @@ def login(request):
     
     form = LoginForm(request.POST) #https://stackoverflow.com/questions/10023213/extracting-items-out-of-a-querydict
     if request.method == "POST":
-        # print("POST")
-        form = LoginForm(request.POST)
-        print("Form:", form)
+    #     # print("POST")
+    #     form = LoginForm(request.POST)
+    #     print("Form:", form)
+        
+    #     if form.is_valid():
+    #         email = form.cleaned_data.get("email")
+    #         password = form.cleaned_data.get("password")
+            
+    #         login_user = authenticate(request, email=email, password=password)
+    #         if login_user is not None:
+    #             login_user.backend = 'users.authBackend.emailBackend.EmailBackend'
+    #             auth_login(request, login_user)
+    #             return redirect('/dashboard')
+            
+    #         else:
+    #             return render(
+    #                 request,
+    #                 "toDo/login.html",
+    #                 {"message":"The user is not found.", "form": form},
+    #             )   
+    # else:
+    #     form = LoginForm()
+    
+    # context = {
+    #     "form": form
+    # }
+    # return render(request, "toDo/login.html", context)
+            
         
         if form:
             email = request.POST.get("email")
@@ -60,6 +85,13 @@ def login(request):
                 login_user.backend = 'users.authBackend.emailBackend.EmailBackend'
                 auth_login(request, login_user)
                 return redirect('/dashboard')
+            else:
+                print("The user is not found.")
+                return render(
+                    request,
+                    "toDo/login.html",
+                    {"message":"The user is not found.", "form": form},
+                )
             
             
             
@@ -72,6 +104,7 @@ def login(request):
             )
     
     return render(request, "toDo/login.html", {"form": form})
+    
 
 
 
