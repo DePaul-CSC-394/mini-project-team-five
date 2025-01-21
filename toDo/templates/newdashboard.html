@@ -63,12 +63,12 @@
         <a href="/dashboard">Dashboard</a>
         <a href="{% url 'todos_new' %}">To-Do's</a>
         <a href="{% url 'teams' id=team_id %}">Teams</a>
-        <a href="">@depaul.edu</a>
+        <a href="{% url 'logout' %}">{{ user.email }}</a>
     </div>
 
     <div class="task-container">
         <h3>No ToDo's</h3>
-        <button class="create-todo" onclick="window.location.href='{% url 'createToDo' %}'">Create ToDo</button>
+        <button class="create-todo" onclick="window.location.href='{% url 'todos_new' %}'">Create ToDo</button>
     </div>
 </body>
 </html>
