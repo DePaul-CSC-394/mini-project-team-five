@@ -12,18 +12,31 @@
             
         }
         .navbar {
+            font-size: 1.25em;
             display: flex;
+            background-color: lightgray;
+            padding: 10px 0px;
+        }
+        .navbar-left{
+            display: flex;
+            flex-direction: row;
+            gap: 20px;
+            justify-content: left;
+            align-self: center;
+            width: 50%;
+        }
+        .navbar-right{
+            display: flex;
+            flex-direction: row;
+            justify-content: right;
             align-items: center;
-            justify-content: space-between;
-            background-color: #f8f9fa;
-            padding: 10px 20px;
-            border-bottom: 1px solid #ddd;
-           
+            width: 50%;
+            gap: 20px;
         }
         .navbar a {
             text-decoration: none;
-            color: #333;
-            margin: 0 10px;
+            color: white;
+            font-weight: bold;
         }
         .navbar a:hover {
             color: #0056b3;
