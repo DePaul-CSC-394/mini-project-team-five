@@ -102,8 +102,8 @@
         <a href="">$APPNAME</a>
         <a href="{% url 'about'%}" >About</a>
         <a href="{% url 'dashboard'%}">Dashboard</a>
-        <a href="{% url 'createToDo' %}">To-Do's</a>
-        <a href="{% url 'teamList' id=team_id %}">Teams</a>
+        <a href="{% url 'todos_new' %}">To-Do's</a>
+        <a href="{% url 'teams' id=team_id %}">Teams</a>
         <a href="">@depaul.edu</a>
     </div>
 
@@ -123,6 +123,6 @@
         {% endif %}
     </div>
 
-    <button type="button" onclick="window.location.href='{% url 'createToDo' %}'" class="create-todo">Create ToDo</button>
+    <button type="button" onclick="window.location.href='{% url 'todos_new' %}'" class="create-todo">Create ToDo</button>
 </body>
 </html>
