@@ -98,10 +98,12 @@
         </div>
         <div class="navbar-right">
             <a href="{% url 'dashboard'%}">Dashboard</a>
+
             <a href="{% url 'createToDo' %}">To-Do's</a>
             <a href="{% url 'teamList' id=team_id %}">teamList</a>
         </div>
         <a href="/logout">{{ user.email }}</a>
+
     </div>
     <div class="form-container">
         <div class="form-box">
