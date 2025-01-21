@@ -9,11 +9,25 @@
             padding: 0;
         }
         .navbar {
+            font-size: 1.25em;
+            display: flex;
             background-color: #0057B7;
             padding: 10px 20px;
+        }
+        .navbar-left{
             display: flex;
-            justify-content: space-between;
+            flex-direction: row;
+            gap: 20px;
+            justify-content: left;
+            align-self: center;
+            width: 50%;
+        }
+        .navbar-right{
+            display: flex;
+            flex-direction: row;
+            justify-content: right;
             align-items: center;
+            width: 50%;
         }
         .navbar a {
             text-decoration: none;
@@ -23,7 +37,8 @@
         .about-section {
             background-color: #e0e0e0;
             padding: 20px;
-            text-align: center;
+            text-align: left;
+            margin: 50px 5% 0;
         }
         .gridBox{
             justify-self: center;
@@ -48,6 +63,7 @@
             background-color: #f9f9f9;
             width: clamp(100px, 100%, 300px);
             padding: 5px;
+            margin: 0 auto; 
             text-align: center;
             border: 1px solid ;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -89,9 +105,13 @@
 </head>
 <body>
     <div class="navbar">
-        <a href="/">$APPNAME</a>
-        <a href="/about" >About</a>
-        <a href="">@depaul.edu</a>
+        <div class="navbar-left">
+            <a href="/">$APPNAME</a>
+            <a href="/about" >About</a>
+        </div>
+        <div class="navbar-right">
+            <a href="">@depaul.edu</a>
+        </div>
     </div>
     <div class="about-section">
         <h1>About</h1>
