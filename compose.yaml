@@ -47,7 +47,7 @@
 #   db-password:
 #     file: db/password.txt
 
-### Our code starts here
+### Our code starts here ###
 services:
   db:
     image: postgres:latest
