@@ -9,11 +9,25 @@
             padding: 0;
         }
         .navbar {
+            font-size: 1.25em;
+            display: flex;
             background-color: #0057B7;
             padding: 10px 20px;
+        }
+        .navbar-left{
             display: flex;
-            justify-content: space-between;
+            flex-direction: row;
+            gap: 20px;
+            justify-content: left;
+            align-self: center;
+            width: 50%;
+        }
+        .navbar-right{
+            display: flex;
+            flex-direction: row;
+            justify-content: right;
             align-items: center;
+            width: 50%;
         }
         .navbar a {
             text-decoration: none;
@@ -91,9 +105,13 @@
 </head>
 <body>
     <div class="navbar">
-        <a href="/">$APPNAME</a>
-        <a href="/about" >About</a>
-        <a href="">@depaul.edu</a>
+        <div class="navbar-left">
+            <a href="/">$APPNAME</a>
+            <a href="/about" >About</a>
+        </div>
+        <div class="navbar-right">
+            <a href="">@depaul.edu</a>
+        </div>
     </div>
     <div class="about-section">
         <h1>About</h1>
