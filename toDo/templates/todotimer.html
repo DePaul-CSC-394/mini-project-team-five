@@ -90,7 +90,7 @@
         <a href="/newdashboard">Dashboard</a>
         <a href="/todos">Todos</a>
         <a href="/teams">Teams</a>
-        <a href="/logout">@depaul.edu</a>
+        <a href="{% url 'logout' %}">{{ user.email }}</a>
     </div>
 
 
