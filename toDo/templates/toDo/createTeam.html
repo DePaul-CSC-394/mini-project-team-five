@@ -77,7 +77,7 @@
       <input type="save" value="Save"> {% endcomment %}
         <form method="post">
             {% csrf_token %}
-            {{ form.as_p }}
+            {{ form }}
             <input type="submit" value="Create Team">
         </form>
 </main>

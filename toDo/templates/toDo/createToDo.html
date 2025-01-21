@@ -80,16 +80,16 @@
 </head>
 <body>
     <div class="navbar">
-        <a href="/">$APPNAME</a>
-        <a href="/about">About</a>
-        <a href="/dashboard">Dashboard</a>
+        <a href="{% url 'landing' %}">$APPNAME</a>
+        <a href="{% url 'about' %}">About</a>
+        <a href="{% url 'dashboard' %}">Dashboard</a>
         <a href="{% url 'createToDo' %}">To-Do's</a>
         <a href="{% url 'teamList' id=team_id %}">Teams</a>
         <a href="mailto:@depaul.edu">@depaul.edu</a>
     </div>
     <div class="form-container">
         <div class="form-box">
-            <form id="taskForm">
+            <form method = "post" id="taskForm">
                 {% comment %} <label for="task-title">Task Title</label>
                 <input type="text" id="task-title" placeholder="Ex: Take out the trash">
                 <div class="error-message" id="task-title-error">Task Title is required</div>

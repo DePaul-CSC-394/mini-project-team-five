@@ -25,16 +25,10 @@
             padding: 20px;
             text-align: center;
         }
-        .gridBox{
-            justify-self: center;
-            width: 80%;
-        }
         .team-container {
-                display: grid;
-                grid-template-columns: repeat(3, 1fr);
-                gap: 20px;
-                justify-content: center;
-                margin: 20px;
+            display: flex;
+            justify-content: space-around;
+            margin: 20px;
         }
         .team-card {
             background-color: #f9f9f9;
@@ -44,23 +38,9 @@
             border: 1px solid ;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
-        .team-card {
-            background-color: #f9f9f9;
-            width: clamp(100px, 100%, 300px);
-            padding: 5px;
-            text-align: center;
-            border: 1px solid ;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
         .team-card img {
             width: 100%;
-            height: clamp(100px, 200px, 300px);
-            object-fit: center;
-            background-color: grey;
-        }
-        .team-card img2 {
-            width: 300px;
-            height: 300px;
+            height: clamp(50px, 200px, 300px);
             object-fit: center;
             background-color: grey;
         }
@@ -99,38 +79,25 @@
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. 
         </p>
     </div>
-    <div class="gridBox">
-        <div class="team-container">
-            <div class="team-card">
-                <img src="https://lh3.googleusercontent.com/d/1dV6fxNiAayJDuKjPDdsMW83DS8ROet1x=s220?authuser=0" alt="Image cap" class="frontend-img">
-                <h3>Jake</h3>
-                <p>I'm a senior Computer Science major with a Software Engineering minor. I setup the Docker files & containers, NGINX, manage the GitHub. I also write documentation and help the team troubleshoot and debug.                	<br><br><b>Project Manager</b></p>
-            </div>
-            <div class="team-card">
-                <img src="insert here" alt="Image cap" class="backend-img">
-                <h3>John</h3>
-                <p>Description TBA
-                <br><br><b>Requirements Manager</b></p>
-            </div>
-            <div class="team-card">
-                <img src="https://lh3.googleusercontent.com/d/1mbp4c0UXAhiXQWekmqXMjcPrSFPecKRy" alt="Image cap" class="projectmanager-img">
-                <h3>Matteo</h3>
-                <p>I'm a senior in Computer Science with a Game Design minor. I built and troubleshooted many of the HTML files on display, as well as tested the application to ensure stability.</p>
-                <br><br><b>Testing / Design Manager</b></p>
-            </div>
-            <div class="team-card">
-                <img src="insert here" alt="Image cap" class="backend-img">
-                <h3>Syed</h3>
-                <p>Description TBA</p>
-            </div>                
-            <div class="team-card">
-                <img src="insert here" alt="Image cap" class="backend-img">
-                <h3>Yumna</h3>
-                <p>I’m a computer science major with an interest in data science and insurance. Familiar coding in 					HTML, C and debugging.
-                <br><br><b>Presentation Manager</b></p>
-            </div>
+    <div class="team-container">
+        <div class="team-card">
+            <img src="https://www.freepnglogos.com/uploads/javascript/logo-html-5-css-javascript-source-code-for-the-taking-23.png" alt="Image cap" class="frontend-img">
+            <h3>Yumna & Matteo</h3>
+            <p>Used wireframes and the requirements doc to design and build the frontend using HTML, CSS and JS. Built a user friendly interface with easy to use features.
+                <br><br>Front End Developers</p>
+        </div>
+        <div class="team-card">
+            <img src="https://www.liquidweb.com/wp-content/uploads/2024/03/do-web-development-using-python-django.png" alt="Image cap" class="backend-img">
+            <h3>John & Jake</h3>
+            <p>Using Python and Django, built the backend of our application. Wrote code to communicate with our frontend to serve pages, handle login and users, and read/write to the PostgresSQL database.
+                <br><br>Backend Developers</p>
+        </div>
+        <div class="team-card">
+            <img src="https://www.docker.com/wp-content/uploads/2020/09/dockergithub.png" alt="Image cap" class="projectmanager-img">
+            <h3>Jake</h3>
+            <p>Led team, ensuring tasks are completed on time. Setup the Docker containers, GitHub and wrote documentation. Assisted in troubleshooting back and frontend.
+                <br><br>Project Manager</p>
         </div>
     </div>
-    
 </body>
 </html>
