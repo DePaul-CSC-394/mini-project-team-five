@@ -87,13 +87,12 @@
             <a href="{% url 'dashboard' %}">Dashboard</a>
             <a href="{% url 'todos_new' %}">To-Do's</a>
             <a href="{% url 'teams' id=team_id %}">Teams</a>
-        {% comment %} <a href="{% url 'teamList' id=team_id %}">teamList</a> {% endcomment %}
-        <a href="mailto:@depaul.edu">@depaul.edu</a>
+        <a href="/">@depaul.edu</a>
     </div>
     <div class="form-container">
         <div class="form-box">
             <form method = "post" id="taskForm">
-                {% comment %} <label for="task-title">Task Title</label>
+<!--                 <label for="task-title">Task Title</label>
                 <input type="text" id="task-title" placeholder="Ex: Take out the trash">
                 <div class="error-message" id="task-title-error">Task Title is required</div>
 
@@ -113,12 +112,12 @@
                     <option>Team A</option>
                     <option>Team B</option>
                     <option>Team C</option>
-                </select> {% endcomment %}
+                </select> -->
 
-                {% comment %} <div class="button-container">
+<!--                 <div class="button-container">
                     <button type="button" class="cancel-button" onclick="window.location.href='dashboard.html'">Cancel</button>
                     <button type="submit" class="save-button">Save</button>
-                </div> {% endcomment %}
+                </div>  -->
                 {% csrf_token %}
                 {{form}}
                 <button type="submit">Testing</button>
