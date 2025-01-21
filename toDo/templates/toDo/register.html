@@ -44,9 +44,11 @@
             height: 80vh;
         }
         .form-box {
-            width: 300px;
+            width: 100%;
+            max-width: 600px;
             border: 1px solid #000;
             padding: 20px;
+            box-sizing: border-box;
         }
         .form-box label {
             display: block;
@@ -105,7 +107,6 @@
                 <div class="error-message" id="confirm-error-1">Please confirm password.</div>
                 <div class="error-message" id="confirm-error-2">Passwords do not match.</div>
                 
-                <button type="submit">Register</button>
             </form> {% endcomment %}
             <form method="post" action="{% url 'register' %}">
                 {% csrf_token %}
