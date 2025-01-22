@@ -92,7 +92,7 @@
         </div>
         <div class="navbar-right">
             {% if user.is_authenticated %}
-                <span>{{ user.email }}</span>
+            <a href="{% url 'logout' %}" class="logout-btn">{{ user.email }}</a>
             {% else %}
                 <a href="{% url 'login' %}" class="login-btn">Login</a>
             {% endif %}
