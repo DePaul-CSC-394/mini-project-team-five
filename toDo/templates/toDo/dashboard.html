@@ -161,7 +161,7 @@
                     <div class="timer" id="timer-{{ task.id }}">0m 0s</div>
                     <button class="start-btn" onclick="startTimer('timer-{{ task.id }}')">Start</button>
                     <button class="stop-btn" onclick="stopTimer('timer-{{ task.id }}')">Stop</button>
-                    <button class="delete-btn" onclick="showPopup(this)">Delete</button>
+                    <button class="delete-btn" onclick="showPopup(this, '{{ task.id }}')">Delete</button>
                     <button onclick="window.location.href='{% url 'todos_edit' task.id %}'" class="edit-todo">Edit</button>
                 </div>
             {% endfor %}
@@ -222,8 +222,8 @@
             }
         }
 
-        function showPopup(button) {
-            taskToDelete = button.parentNode;
+        function showPopup(button, taskId) {
+            taskToDelete = taskId;
             document.getElementById('popup-overlay').style.display = 'flex';
         }
 
@@ -231,7 +231,7 @@
 
         function confirmDelete() {
             if (taskToDelete) {
-                taskToDelete.remove();
+                window.location.href = `{% url 'delete' 0 %}`.replace('0', taskToDelete);
                 taskToDelete = null;
             }
             document.getElementById('popup-overlay').style.display = 'none';
