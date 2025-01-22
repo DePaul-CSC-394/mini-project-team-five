@@ -17,7 +17,7 @@
             padding: 10px 0px;
             border-bottom: 1px solid gray;
         }
-        .navbar-left{
+        .navbar-left {
             display: flex;
             flex-direction: row;
             gap: 20px;
@@ -25,7 +25,7 @@
             align-self: center;
             width: 50%;
         }
-        .navbar-right{
+        .navbar-right {
             display: flex;
             flex-direction: row;
             justify-content: right;
@@ -36,7 +36,6 @@
         .navbar a {
             text-decoration: none;
             color: black;
-/*             font-weight: bold; */
             margin: 0 10px;
         }
         .task-container {
@@ -87,6 +86,12 @@
         .task .stop-btn {
             background-color: red;
             color: white;
+            display: none;
+        }
+        .task .pause-btn {
+            background-color: yellow;
+            color: black;
+            display: none;
         }
         .task .edit-btn {
             background-color: gray;
@@ -139,10 +144,10 @@
     <div class="navbar">
         <div class="navbar-left">
             <a href="/">$APPNAME</a>
-            <a href="{% url 'about'%}" >About</a>
+            <a href="{% url 'about' %}">About</a>
         </div>
         <div class="navbar-right">
-            <a href="{% url 'dashboard'%}">Dashboard</a>
+            <a href="{% url 'dashboard' %}">Dashboard</a>
             <a href="{% url 'todos_new' %}">To-Do's</a>
             <a href="{% url 'teams' id=team_id %}">Teams</a>
             <a href="{% url 'logout' %}">{{ user.email }}</a>
@@ -150,7 +155,7 @@
     </div>
 
     <div class="new-todo-container">
-        <button type="button" class="new-todo" onclick="window.location.href='{% url 'todos_new' %}'">Create ToDo</button>
+        <button type="button" class="new-todo" onclick="window.location.href='{% url 'todos_new' %}'">New ToDo</button>
     </div>
 
     <div class="task-container" id="task-container">
@@ -162,6 +167,8 @@
                     <div class="timer" id="timer-{{ task.id }}">0m 0s</div>
                     <button class="start-btn" onclick="startTimer('timer-{{ task.id }}')">Start</button>
                     <button class="stop-btn" onclick="stopTimer('timer-{{ task.id }}')">Stop</button>
+                    <button class="pause-btn" onclick="pauseTimer('timer-{{ task.id }}')">Pause</button>
+                    <button class="edit-btn" onclick="toggleEdit(this)">Edit</button>
                     <button class="delete-btn" onclick="showPopup(this)">Delete</button>
                 </div>
             {% endfor %}
@@ -170,7 +177,6 @@
         {% endif %}
     </div>
 
-    
     <div class="popup-overlay" id="popup-overlay">
         <div class="popup">
             <p>Are you sure you want to delete this item?</p>
@@ -180,7 +186,6 @@
     </div>
 
     <script>
-        let taskCount = 0;
         const timers = {};
         let taskToDelete = null;
 
@@ -188,45 +193,55 @@
             const timerElement = document.getElementById(timerId);
             const startButton = timerElement.parentNode.querySelector('.start-btn');
             const stopButton = timerElement.parentNode.querySelector('.stop-btn');
+            const pauseButton = timerElement.parentNode.querySelector('.pause-btn');
 
             if (!timers[timerId]) {
-                timers[timerId] = { seconds: 0, interval: null };
+                timers[timerId] = { seconds: 0, interval: null, isPaused: false };
             }
 
             if (!timers[timerId].interval) {
                 timers[timerId].interval = setInterval(() => {
-                    timers[timerId].seconds++;
-                    const minutes = Math.floor(timers[timerId].seconds / 60);
-                    const seconds = timers[timerId].seconds % 60;
-                    timerElement.innerText = `${minutes}m ${seconds}s`;
+                    if (!timers[timerId].isPaused) {
+                        timers[timerId].seconds++;
+                        const minutes = Math.floor(timers[timerId].seconds / 60);
+                        const seconds = timers[timerId].seconds % 60;
+                        timerElement.innerText = `${minutes}m ${seconds}s`;
+                    }
                 }, 1000);
 
-                startButton.style.backgroundColor = 'gray';
-                startButton.innerText = 'Running';
-                stopButton.style.backgroundColor = 'red';
-                stopButton.innerText = 'Stop';
+                startButton.style.display = 'none';
+                stopButton.style.display = 'inline-block';
+                pauseButton.style.display = 'inline-block';
             }
         }
 
         function stopTimer(timerId) {
             const timerElement = document.getElementById(timerId);
+            clearInterval(timers[timerId].interval);
+            timers[timerId].interval = null;
+
             const startButton = timerElement.parentNode.querySelector('.start-btn');
             const stopButton = timerElement.parentNode.querySelector('.stop-btn');
+            const pauseButton = timerElement.parentNode.querySelector('.pause-btn');
 
-            if (timers[timerId]?.interval) {
-                clearInterval(timers[timerId].interval);
-                timers[timerId].interval = null;
+            startButton.style.display = 'inline-block';
+            stopButton.style.display = 'none';
+            pauseButton.style.display = 'none';
+        }
 
-                stopButton.style.backgroundColor = 'yellow';
-                stopButton.innerText = 'Resume';
-                startButton.style.backgroundColor = 'green';
-                startButton.innerText = 'Start';
+        function pauseTimer(timerId) {
+            const timer = timers[timerId];
+            const pauseButton = document.getElementById(timerId).parentNode.querySelector('.pause-btn');
+
+            if (timer) {
+                timer.isPaused = !timer.isPaused;
+                pauseButton.innerText = timer.isPaused ? 'Resume' : 'Pause';
             }
         }
 
         function toggleEdit(button) {
             const taskElement = button.parentNode;
-            const title = taskElement.querySelector('h4');
+            const title = taskElement.querySelector('h3');
             const description = taskElement.querySelector('p');
 
             if (title.isContentEditable) {
@@ -264,6 +279,6 @@
             taskToDelete = null;
             document.getElementById('popup-overlay').style.display = 'none';
         }
-    </script> 
+    </script>
 </body>
 </html>

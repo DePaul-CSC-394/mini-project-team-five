@@ -1,4 +1,3 @@
-<!-- Copied from task create -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -98,86 +97,26 @@
     <div class="navbar">
         <div class="navbar-left">
             <a href="/">$APPNAME</a>
-            <a href="{% url 'about' %}">About</a>
+            <a href="{% url 'about'%}" >About</a>
         </div>
         <div class="navbar-right">
-            <a href="{% url 'dashboard' %}">Dashboard</a>
+            <a href="{% url 'dashboard'%}">Dashboard</a>
             <a href="{% url 'todos_new' %}">To-Do's</a>
             <a href="{% url 'teams' id=team_id %}">Teams</a>
-            <a href="{% url 'logout' %}">{{ user.email }}</a>
+            <a href="/logout">{{ user.email }}</a>
         </div>
     </div>
     <div class="form-container">
         <div class="form-box">
             <form method = "post" id="taskForm">
-                <!-- <label for="task-title">Task Title</label>
-                <input type="text" id="task-title" placeholder="Ex: Take out the trash">
-                <div class="error-message" id="task-title-error">Task Title is required</div>
 
-                <label for="description">Description</label>
-                <input type="text" id="description" placeholder="Add description">
-                <div class="error-message" id="description-error">Description is required</div>
-
-                <label for="due-date">Due Date</label>
-                <input type="text" id="due-date" placeholder="Ex: 02/01/2025">
-
-                <label for="category">Category</label>
-                <input type="text" id="category" placeholder="Add category">
-
-                <label for="team">Team</label>
-                <select id="team">
-                    <option value="" disabled selected>Team</option>
-                    <option>Team A</option>
-                    <option>Team B</option>
-                    <option>Team C</option>
-                </select>  -->
-
-                <!-- <div class="button-container">
-                    <button type="button" class="cancel-button" onclick="window.location.href='dashboard.html'">Cancel</button>
-                    <button type="submit" class="save-button">Save</button>
-                </div> -->
                 {% csrf_token %}
                 {{form}}
-                <button type="submit">Save</button>
+
+                <button type="button" class="cancel-button" onclick="window.location.href='{% url 'dashboard' %}'">Cancel</button>
+                <input type="submit" value="Save" class="save-button">
             </form>
         </div>
     </div>
-
-    <!-- <script>
-        // Form validation
-        document.getElementById('taskForm').addEventListener('submit', function (event) {
-            event.preventDefault(); // Prevent form submission
-
-            let isValid = true;
-
-            // Validate Task Title
-            const taskTitle = document.getElementById('task-title');
-            const taskTitleError = document.getElementById('task-title-error');
-            if (taskTitle.value.trim() === '') {
-                taskTitle.classList.add('error');
-                taskTitleError.style.display = 'block';
-                isValid = false;
-            } else {
-                taskTitle.classList.remove('error');
-                taskTitleError.style.display = 'none';
-            }
-
-            const description = document.getElementById('description');
-            const descriptionError = document.getElementById('description-error');
-            if (description.value.trim() === '') {
-                description.classList.add('error');
-                descriptionError.style.display = 'block';
-                isValid = false;
-            } else {
-                description.classList.remove('error');
-                descriptionError.style.display = 'none';
-            }
-
-            
-            if (isValid) {
-                alert('Form submitted successfully!');
-            }
-        });
-    </script> -->
 </body>
 </html>
