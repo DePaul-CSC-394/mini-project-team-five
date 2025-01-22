@@ -20,8 +20,7 @@
             height: 80vh;
         }
         .form-box {
-            width: 100%;
-            max-width: 600px;
+            width: clamp(300px, 90%, 1200px);
             border: 1px solid black;
             padding: 20px;
             border-radius: 5px;
@@ -42,9 +41,28 @@
             padding: 10px 20px;
             background-color: blue;
             color: white;
-            border: none;
+            border: 1px solid transparent;
             border-radius: 5px;
             cursor: pointer;
+        }
+        .form-box button:hover {
+            background-color: transparent;
+            color: black;
+            border: 1px solid blue;
+            transition: all 0.2s ease-out;
+        }
+        .form-box button:last-of-type {
+            background-color: transparent;
+            color: black;
+            border: 1px solid blue;
+            float: right;
+        }
+        .form-box button:last-of-type:hover {
+            background-color: blue;
+            color: white;
+            border: 1px solid transparent;
+            float: right;
+            transition: all 0.2s ease-out;
         }
     </style>
 </head>

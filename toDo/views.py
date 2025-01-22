@@ -146,7 +146,17 @@ def todosNew(request):
     if not request.user.is_authenticated:
         return redirect('login')
     
-    team_id = 1  # Replace with actual logic to get team_id
+    # Get the first team (or return an error if no teams exist)
+    team = Team.objects.first()
+    # if not team:
+    #     logger.error("No teams found in the database.")
+    #     return render(request, 'toDo/dashboard.html', {
+    #         "message": 'No teams found. Please create a team first.', 'team_id': 0
+    #     })
+
+    team_id = team.id if team else 0  # Access the ID of the first team, or 0 if no team exists
+    teams = Team.objects.all()  # Get all teams
+
     # return render(request, "toDo/createToDo.html", {'team_id': team_id})
     if request.method == "POST":
         form = TaskForm(request.POST)
