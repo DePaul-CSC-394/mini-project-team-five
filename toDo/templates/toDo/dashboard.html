@@ -168,7 +168,9 @@
                     <button class="start-btn" onclick="startTimer('timer-{{ task.id }}')">Start</button>
                     <button class="stop-btn" onclick="stopTimer('timer-{{ task.id }}')">Stop</button>
                     <button class="pause-btn" onclick="pauseTimer('timer-{{ task.id }}')">Pause</button>
-                    <button class="edit-btn" onclick="toggleEdit(this)">Edit</button>
+                    <button class="edit-btn" onclick="window.location.href='{% url 'todos_edit' %}'">Edit</button>
+                   <!-- <button class="edit-btn" onclick="toggleEdit(this)">Edit</button> -->
+
                     <button class="delete-btn" onclick="showPopup(this)">Delete</button>
                 </div>
             {% endfor %}
@@ -227,6 +229,12 @@
             startButton.style.display = 'inline-block';
             stopButton.style.display = 'none';
             pauseButton.style.display = 'none';
+        
+    
+            timers[timerId] = { seconds: 0, interval: null, isPaused: false };
+            pauseButton.innerText = 'Pause';
+
+
         }
 
         function pauseTimer(timerId) {
@@ -239,7 +247,7 @@
             }
         }
 
-        function toggleEdit(button) {
+      /*  function toggleEdit(button) {
             const taskElement = button.parentNode;
             const title = taskElement.querySelector('h3');
             const description = taskElement.querySelector('p');
@@ -255,7 +263,7 @@
                 button.innerText = "Save";
                 button.style.backgroundColor = "green";
             }
-        }
+      }*/
 
         function showPopup(button) {
             taskToDelete = button.parentNode;
