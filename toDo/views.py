@@ -260,40 +260,60 @@ def teams(request, id):
 
     if id == 0:
         return redirect('teams_new')
-    team = Team.objects.get(id=id)
-    print("Team:", team)
+    if not id:
+        id = 1
+    # team = Team.objects.get(id=id)
     # # Get the team by ID
-    # team = get_object_or_404(Team, id=id)
+    team = get_object_or_404(Team, id=id)
+    print("Team:", team)
+    team_members = team.members.all()
 
-    if request.method == 'POST':
-        if 'new_members' in request.POST:
-            form = TeamForm(request.POST, instance=team)
-            if form.is_valid():
-                team = form.save()
-                new_members_ids = request.POST.get('new_members', '').split(',')
-                if new_members_ids:
-                    new_members = CustomUser.objects.filter(id__in=new_members_ids)
-                    team.members.add(*new_members)
-                return redirect('dashboard')
-            else:
-                print("Form is not valid:", form.errors)
-        elif '_method' in request.POST and request.POST['_method'] == 'DELETE':
-            team.delete()
+    print(request.POST)
+
+    # if request.method == "GET":
+    #         form = TaskForm(instance=team)
+    #         context = {
+    #             'form': form,
+    #             'team_id': team_id,
+    #             'team_name': team_name,
+    #             'team_description': team_description,
+    #             'team_members': team_members,
+    #             'todo_items': todo_items,
+    #             'users_not_in_team': users_not_in_team,
+    #         }
+    #         return render(request, 'toDo/teamdetails.html', context)
+    
+    if request.method == "GET":
+        form = TaskForm(instance=team)
+    elif request.method == 'POST':
+        # if 'new_members' in request.POST:
+        form = TeamForm(request.POST, instance=team)
+        if form.is_valid():
+            team = form.save()
+            
+            # new_members_ids = request.POST.get('new_members', '').split(',')
+            # if new_members_ids:
+            #     new_members = CustomUser.objects.filter(id__in=new_members_ids)
+            #     team.members.add(*new_members)
             return redirect('dashboard')
-    else:
-        form = None
-
+        else:
+            print("Form is not valid:", form.errors)
+            form = None
+    # elif '_method' in request.POST and request.POST['_method'] == 'DELETE':
+    #     team.delete()
+    #     return redirect('dashboard')
+    # else:
+    #     form = None
     team_id = team.id
     team_name = team.name
     team_description = team.description
-    team_members = team.members.all()
     todo_items = Task.objects.filter(team=team)
     users_not_in_team = CustomUser.objects.exclude(teams=team)
     print("Tasks:", todo_items)
     print("Users not in team:", users_not_in_team)
 
     context = {
-        'form': form,
+        # 'form': form,
         'team_id': team_id,
         'team_name': team_name,
         'team_description': team_description,
