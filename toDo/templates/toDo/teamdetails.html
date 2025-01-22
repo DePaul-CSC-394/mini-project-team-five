@@ -175,8 +175,28 @@
         const newMembers = [];
 
         function updateTeam() {
-            newMembersInput.value = newMembers.join(',');
-            document.getElementById('update-team-form').submit();
+            const newMembersInput = document.getElementById('new-members');
+            const form = document.getElementById('update-team-form');
+            
+            // Set the new members value before submitting
+            // newMembersInput.value = newMembers.join(',');
+
+            if (newMembers && newMembers.length > 0) {
+                newMembersInput.value = newMembers.join(',');
+                console.log('Submitting new members:', newMembersInput.value); // Debug log
+            }
+            
+            // // Create a hidden input for new_members if it doesn't exist
+            // if (!form.querySelector('input[name="new_members"]')) {
+            //     const hiddenInput = document.createElement('input');
+            //     hiddenInput.type = 'hidden';
+            //     hiddenInput.name = 'new_members';
+            //     hiddenInput.value = newMembers.join(',');
+            //     form.appendChild(hiddenInput);
+            // }
+            
+            // Submit the form
+            form.submit();
         }
 
         function addMember() {
@@ -185,18 +205,20 @@
             const memberId = selectedOption.value;
             const memberEmail = selectedOption.text;
 
+            // Add to team list UI
             const teamList = document.getElementById('team-list');
             const newMemberDiv = document.createElement('div');
             newMemberDiv.innerHTML = `
-            <span class="member-name">${memberEmail}</span>
+                <span class="member-name">${memberEmail}</span>
             `;
             teamList.appendChild(newMemberDiv);
 
             // Add member ID to newMembers array
-            newMembers.push(memberId);
-            newMembersInput.value = newMembers.join(',');
+            if (!newMembers.includes(memberId)) {
+                newMembers.push(memberId);
+            }
 
-            // Optionally, you can remove the selected option from the dropdown
+            // Remove from dropdown
             select.remove(select.selectedIndex);
         }
 

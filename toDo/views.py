@@ -268,7 +268,7 @@ def teams(request, id):
     print("Team:", team)
     team_members = team.members.all()
 
-    print(request.POST)
+    # print(request.POST)
 
     # if request.method == "GET":
     #         form = TaskForm(instance=team)
@@ -286,22 +286,26 @@ def teams(request, id):
     if request.method == "GET":
         form = TaskForm(instance=team)
     elif request.method == 'POST':
-        # if 'new_members' in request.POST:
-        form = TeamForm(request.POST, instance=team)
-        if form.is_valid():
-            team = form.save()
-            
-            # new_members_ids = request.POST.get('new_members', '').split(',')
-            # if new_members_ids:
-            #     new_members = CustomUser.objects.filter(id__in=new_members_ids)
-            #     team.members.add(*new_members)
-            return redirect('dashboard')
+        if 'new_members' in request.POST:
+            form = TeamForm(request.POST, instance=team)
+            if form.is_valid():
+                team = form.save()
+                
+                new_members_str = request.POST.get('new_members')
+                if new_members_str:
+                    new_members_ids = new_members_str.split(',')
+                    new_members_ids = [int(id) for id in new_members_ids if id]  # Convert to integers
+                    if new_members_ids:
+                        new_members = CustomUser.objects.filter(id__in=new_members_ids)
+                        team.members.add(*new_members)
+                return redirect('dashboard')
         else:
-            print("Form is not valid:", form.errors)
-            form = None
-    # elif '_method' in request.POST and request.POST['_method'] == 'DELETE':
-    #     team.delete()
-    #     return redirect('dashboard')
+            print("POST data:", request.POST)  # Debug log
+            if 'new_members' in request.POST:
+                print("New members found:", request.POST.get('new_members'))  # Debug log
+    else:
+        print("Form is not valid:", form.errors)
+        form = None
     # else:
     #     form = None
     team_id = team.id
