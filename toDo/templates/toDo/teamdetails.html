@@ -140,7 +140,7 @@
         <div class="team-members">
             <select id="add-member">
                 {% for user in users_not_in_team %}
-                    <option value="{{ user.id }}">{{ user.username }}</option>
+                    <option value="{{ user.id }}">{{ user.email }}</option>
                 {% endfor %}
             </select>
             <button onclick="addMember()">Add</button>
@@ -148,7 +148,7 @@
         <div class="team-list" id="team-list">
             {% for member in team_members %}
                 <div>
-                    <span class="member-name">{{ member.username }}</span>
+                    <span class="member-name">{{ member.email }}</span>
                     <button class="delete-btn" onclick="showPopup(this)">Delete</button>
                 </div>
             {% endfor %}

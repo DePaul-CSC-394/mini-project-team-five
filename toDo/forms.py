@@ -46,7 +46,7 @@ class UserRegisterForm(UserCreationForm):
 class TaskForm(forms.ModelForm):
     title = forms.CharField(max_length=200, widget=forms.TextInput(attrs={'name':'title'}))
     description = forms.CharField(widget=forms.Textarea(attrs={'name':'description'}))
-    dueDate = forms.DateTimeField(widget=forms.DateTimeInput(attrs={'name':'dueDate'}), required=False)
+    dueDate = forms.DateField(widget=forms.DateTimeInput(attrs={'name':'dueDate'}), required=False)
     category = forms.CharField(max_length=200, widget=forms.TextInput(attrs={'name':'category'}), required=False)
     team = forms.ModelChoiceField(queryset=Team.objects.all(), widget=forms.Select(attrs={'name':'team'}), required=False)
     

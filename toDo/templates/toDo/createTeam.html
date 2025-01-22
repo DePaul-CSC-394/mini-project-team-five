@@ -133,7 +133,7 @@
     <main>
     <div class="form-container">
     <div class="form-box">
-        <form id="taskForm">
+        <form method = "post" id="taskForm">
             {% comment %} <label for="tname">Team Name: </label>
             <input type="text" id="task-title" placeholder="Ex: Take out the trash">
             <div class="error-message" id="task-title-error">Task Title is required</div>
@@ -153,7 +153,8 @@
     </form> -->
 </div>
 </main>
-<script>
+<!--script>
+    //JS breaking form submission
     // Form validation
     document.getElementById('taskForm').addEventListener('submit', function (event) {
         event.preventDefault(); // Prevent form submission
@@ -190,6 +191,6 @@
           
         }
     });
-</script>
+</script-->
 </body>
 </html>
