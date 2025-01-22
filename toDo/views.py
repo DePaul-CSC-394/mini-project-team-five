@@ -257,29 +257,37 @@ def dashboard(request):
 def teams(request, id):
     if not request.user.is_authenticated:
         return redirect('login')
-    
-    # todo_id = 1  # Replace with actual logic to get team_id
-    # return render(request, "toDo/teamdetails.html", {'team_id': id, 'todo_id': todo_id})
 
+    # Get the team by ID
+    team = get_object_or_404(Team, id=id)
 
-    #list team name, description, and members
-    if id == 0:
-        return redirect('teams_new')
-    team = Team.objects.get(id=id)
-    print("Team:", team)
+    if request.method == 'POST':
+        if 'new_members' in request.POST:
+            form = TeamForm(request.POST, instance=team)
+            if form.is_valid():
+                team = form.save()
+                new_members_ids = request.POST.get('new_members', '').split(',')
+                if new_members_ids:
+                    new_members = CustomUser.objects.filter(id__in=new_members_ids)
+                    team.members.add(*new_members)
+                return redirect('dashboard')
+            else:
+                print("Form is not valid:", form.errors)
+        elif '_method' in request.POST and request.POST['_method'] == 'DELETE':
+            team.delete()
+            return redirect('dashboard')
+    else:
+        form = None
+
     team_id = team.id
     team_name = team.name
     team_description = team.description
     team_members = team.members.all()
-    
-    # Get all tasks associated with the selected team
     todo_items = Task.objects.filter(team=team)
     users_not_in_team = CustomUser.objects.exclude(teams=team)
-    print("Tasks:", todo_items)
-    print("Users not in team:", users_not_in_team)
-    
-    # Pass the data to the template
+
     context = {
+        'form': form,
         'team_id': team_id,
         'team_name': team_name,
         'team_description': team_description,
@@ -287,7 +295,7 @@ def teams(request, id):
         'todo_items': todo_items,
         'users_not_in_team': users_not_in_team,
     }
-    
+
     return render(request, 'toDo/teamdetails.html', context)
 
     
@@ -315,3 +323,15 @@ def delete(request, id):
 #             return redirect("/")
 #         else:
 #             return render(request, "toDo/login.html", {"message": "Invalid credentials"})
+
+def delete_team(request, id):
+    if not request.user.is_authenticated:
+        return redirect('login')
+
+    team = get_object_or_404(Team, id=id)
+
+    if request.method == 'POST':
+        team.delete()
+        return redirect('dashboard')
+
+    return HttpResponseRedirect(reverse('teamdetails', args=[id]))
