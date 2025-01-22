@@ -172,7 +172,7 @@ def todosEdit(request, id):
         
         if request.method == "GET":
             form = TaskForm(instance=task)
-            return render(request, "toDo/todosEdit.html", {"form": form, "task": task, 'team_id': team_id})
+            return render(request, "toDo/createToDo.html", {"form": form, "task": task, 'team_id': team_id})
         
         if request.method == "POST":
             form = TaskForm(request.POST, instance=task)
@@ -180,7 +180,7 @@ def todosEdit(request, id):
                 form.save()
                 return redirect('dashboard')
             else:
-                return render(request, "toDo/todosEdit.html", {"form": form, "task": task, 'team_id': team_id})
+                return render(request, "toDo/createToDo.html", {"form": form, "task": task, 'team_id': team_id})
     
     except Task.DoesNotExist:
         return HttpResponseServerError("Task not found")
