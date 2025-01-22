@@ -168,10 +168,10 @@
                     <button class="start-btn" onclick="startTimer('timer-{{ task.id }}')">Start</button>
                     <button class="stop-btn" onclick="stopTimer('timer-{{ task.id }}')">Stop</button>
                     <button class="pause-btn" onclick="pauseTimer('timer-{{ task.id }}')">Pause</button>
-                    <button class="edit-btn" onclick="window.location.href='{% url 'todos_edit' %}'">Edit</button>
+                    <button onclick="window.location.href='{% url 'todos_edit' task.id %}'" class="edit-todo">Edit</button>
                    <!-- <button class="edit-btn" onclick="toggleEdit(this)">Edit</button> -->
 
-                    <button class="delete-btn" onclick="showPopup(this)">Delete</button>
+                    <button class="delete-btn" onclick="showPopup(this, '{{ task.id }}')">Delete</button>
                 </div>
             {% endfor %}
         {% else %}
@@ -247,7 +247,7 @@
             }
         }
 
-      /*  function toggleEdit(button) {
+        /*  function toggleEdit(button) {
             const taskElement = button.parentNode;
             const title = taskElement.querySelector('h3');
             const description = taskElement.querySelector('p');
@@ -265,23 +265,17 @@
             }
       }*/
 
-        function showPopup(button) {
-            taskToDelete = button.parentNode;
+        function showPopup(button, taskId) {
+            taskToDelete = taskId;
             document.getElementById('popup-overlay').style.display = 'flex';
         }
 
-        function showPopup(button, task) {
-            //taskToDelete = button.parentNode;
-            //document.getElementById('popup-overlay').style.display = 'flex';
-            
-
-        }
+        
 
         function confirmDelete() {
-            const timerId = taskToDelete.querySelector('.timer').id;
-
-            if (timers[timerId]?.interval) {
-                clearInterval(timers[timerId].interval);
+            if (taskToDelete) {
+                window.location.href = `{% url 'delete' 0 %}`.replace('0', taskToDelete);
+                taskToDelete = null;
             }
             delete timers[timerId];
             taskToDelete.remove();
