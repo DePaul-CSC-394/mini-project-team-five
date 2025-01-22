@@ -134,18 +134,19 @@
     <div class="form-container">
     <div class="form-box">
         <form method = "post" id="taskForm">
-            {% comment %} <label for="tname">Team Name: </label>
+<!--             <label for="tname">Team Name: </label>
             <input type="text" id="task-title" placeholder="Ex: Take out the trash">
             <div class="error-message" id="task-title-error">Task Title is required</div>
         <label for="desc">Description: </label>
         <input type="text" id="description" placeholder="Add description">
         <div class="error-message" id="description-error">Description is required</div>
-      <input type="cancel" value="Cancel">
-      <input type="save" value="Save"> {% endcomment %}
-        <form method="post">
+        <form method="post"> -->
             {% csrf_token %}
             {{ form }}
-            <input type="submit" value="Create Team">
+            <div class="buttons">
+                <button class="cancel-button" onclick="window.location.href='{% url 'dashboard' %}'">Cancel</button>
+                <button type="submit" class="save-button">Save</button>
+            </div>
         </form>
 
 <!--         <button type="button" class="cancel-button" onclick="window.location.href='dashboard.html'">Cancel</button>
