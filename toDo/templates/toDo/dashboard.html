@@ -159,10 +159,10 @@
                 <div class="task">
                     <h3>{{ task.title }}</h3>
                     <p>{{ task.description }}</p>
-                    <button onclick="startToDo(this)" class="start-todo">Start</button>
-                    <button onclick="window.location.href='{% url "delete" task.id %}'" class="delete-todo">Delete</button>
-                    <button onclick="window.location.href='{% url 'todos_edit' task.id %}'" class="edit-todo">Edit</button>
-
+                    <div class="timer" id="timer-{{ task.id }}">0m 0s</div>
+                    <button class="start-btn" onclick="startTimer('timer-{{ task.id }}')">Start</button>
+                    <button class="stop-btn" onclick="stopTimer('timer-{{ task.id }}')">Stop</button>
+                    <button class="delete-btn" onclick="showPopup(this)">Delete</button>
                 </div>
             {% endfor %}
         {% else %}
@@ -185,24 +185,42 @@
         let taskToDelete = null;
 
         function startTimer(timerId) {
-            if (timers[timerId]?.interval) return;
+            const timerElement = document.getElementById(timerId);
+            const startButton = timerElement.parentNode.querySelector('.start-btn');
+            const stopButton = timerElement.parentNode.querySelector('.stop-btn');
 
             if (!timers[timerId]) {
                 timers[timerId] = { seconds: 0, interval: null };
             }
 
-            timers[timerId].interval = setInterval(() => {
-                timers[timerId].seconds += 1;
-                const minutes = Math.floor(timers[timerId].seconds / 60);
-                const seconds = timers[timerId].seconds % 60;
-                document.getElementById(timerId).innerText = `${minutes}m ${seconds}s`;
-            }, 1000);
-        }      //change start button to stop button 
+            if (!timers[timerId].interval) {
+                timers[timerId].interval = setInterval(() => {
+                    timers[timerId].seconds++;
+                    const minutes = Math.floor(timers[timerId].seconds / 60);
+                    const seconds = timers[timerId].seconds % 60;
+                    timerElement.innerText = `${minutes}m ${seconds}s`;
+                }, 1000);
+
+                startButton.style.backgroundColor = 'gray';
+                startButton.innerText = 'Running';
+                stopButton.style.backgroundColor = 'red';
+                stopButton.innerText = 'Stop';
+            }
+        }
 
         function stopTimer(timerId) {
+            const timerElement = document.getElementById(timerId);
+            const startButton = timerElement.parentNode.querySelector('.start-btn');
+            const stopButton = timerElement.parentNode.querySelector('.stop-btn');
+
             if (timers[timerId]?.interval) {
                 clearInterval(timers[timerId].interval);
                 timers[timerId].interval = null;
+
+                stopButton.style.backgroundColor = 'yellow';
+                stopButton.innerText = 'Resume';
+                startButton.style.backgroundColor = 'green';
+                startButton.innerText = 'Start';
             }
         }
 
