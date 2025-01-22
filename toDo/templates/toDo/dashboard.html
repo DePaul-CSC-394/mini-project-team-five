@@ -167,6 +167,7 @@
                     <div class="timer" id="timer-{{ task.id }}">0m 0s</div>
                     <button class="start-btn" onclick="startTimer('timer-{{ task.id }}')">Start</button>
                     <button class="stop-btn" onclick="stopTimer('timer-{{ task.id }}')">Stop</button>
+                    <button class="pause-btn" onclick="pauseTimer('timer-{{ task.id }}')">Pause</button>
                     <button onclick="window.location.href='{% url 'todos_edit' task.id %}'" class="edit-todo">Edit</button>
                    <!-- <button class="edit-btn" onclick="toggleEdit(this)">Edit</button> -->
 
