@@ -1,5 +1,7 @@
 from django.http import HttpResponseRedirect, HttpResponseServerError
 from django.shortcuts import get_object_or_404, redirect, render
+
+from users.models import CustomUser
 from .forms import LoginForm, TaskForm, TeamForm, UserRegisterForm
 from django.contrib.auth import authenticate, login as auth_login, logout
 from django.urls import reverse
@@ -251,6 +253,8 @@ def teams(request, id):
 
 
     #list team name, description, and members
+    if id == 0:
+        return redirect('teams_new')
     team = Team.objects.get(id=id)
     print("Team:", team)
     team_id = team.id
@@ -260,7 +264,9 @@ def teams(request, id):
     
     # Get all tasks associated with the selected team
     todo_items = Task.objects.filter(team=team)
+    users_not_in_team = CustomUser.objects.exclude(teams=team)
     print("Tasks:", todo_items)
+    print("Users not in team:", users_not_in_team)
     
     # Pass the data to the template
     context = {
@@ -269,6 +275,7 @@ def teams(request, id):
         'team_description': team_description,
         'team_members': team_members,
         'todo_items': todo_items,
+        'users_not_in_team': users_not_in_team,
     }
     
     return render(request, 'toDo/teamdetails.html', context)
