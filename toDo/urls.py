@@ -16,4 +16,5 @@ urlpatterns = [
     path("landing/", views.landing, name = "landing"),
     path("logout/", views.logoutView, name = "logout"),
     path("delete/<int:id>/", views.delete, name = "delete"),
+    path('teams/<int:id>/delete/', views.delete_team, name='delete_team'),
 ]
