@@ -178,6 +178,27 @@
             memberToDelete = null;
             document.getElementById('popup-overlay').style.display = 'none';
         }
+
+        function addMember() {
+            const select = document.getElementById('add-member');
+            const userId = select.value;
+            const userEmail = select.options[select.selectedIndex].text;
+
+            if (userId) {
+                const teamList = document.getElementById('team-list');
+                const newMemberDiv = document.createElement('div');
+                newMemberDiv.innerHTML = `
+                    <span class="member-name">${userEmail}</span>
+                    <button class="delete-btn" onclick="showPopup(this)">Delete</button>
+                `;
+                teamList.appendChild(newMemberDiv);
+
+                // Optionally, you can remove the added member from the select list
+                select.remove(select.selectedIndex);
+            }
+        }
+        
+
     </script>
 </body>
 </html>
