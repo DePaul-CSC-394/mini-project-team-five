@@ -144,7 +144,7 @@
             {% csrf_token %}
             {{ form }}
             <div class="buttons">
-                <button class="cancel-button" onclick="window.location.href='{% url 'dashboard' %}'">Cancel</button>
+                <button class="cancel-button" type="button" onclick="window.location.href='/dashboard'">Cancel</button>
                 <button type="submit" class="save-button">Save</button>
             </div>
         </form>
