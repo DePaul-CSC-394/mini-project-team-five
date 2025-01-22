@@ -85,6 +85,22 @@
         .delete-btn:hover {
             background-color: darkred;
         }
+        .cancel-button {
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+        .update-button {
+            background-color: green;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 3px;
+        }
         .popup-overlay {
             position: fixed;
             top: 0;
@@ -153,10 +169,14 @@
                 </div>
             {% endfor %}
         </div>
-        <div class="buttons">
-            <button class="cancel-button" onclick="window.location.href='{% url 'dashboard' %}'">Cancel</button>
-            <button type = "submit" class="update-button">Update</button>
-        </div>
+        <form method="POST">
+            {% csrf_token %}
+            {{ form }}
+            <div class="buttons">
+                <button class="cancel-button" onclick="window.location.href='{% url 'dashboard' %}'">Cancel</button>
+                <button class="update-button" type = "submit" class="update-button">Update</button>
+            </div>
+        </form>
     </div>
 
     <div class="popup-overlay" id="popup-overlay">
