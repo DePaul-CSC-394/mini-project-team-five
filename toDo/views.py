@@ -258,8 +258,12 @@ def teams(request, id):
     if not request.user.is_authenticated:
         return redirect('login')
 
-    # Get the team by ID
-    team = get_object_or_404(Team, id=id)
+    if id == 0:
+        return redirect('teams_new')
+    team = Team.objects.get(id=id)
+    print("Team:", team)
+    # # Get the team by ID
+    # team = get_object_or_404(Team, id=id)
 
     if request.method == 'POST':
         if 'new_members' in request.POST:
@@ -285,6 +289,8 @@ def teams(request, id):
     team_members = team.members.all()
     todo_items = Task.objects.filter(team=team)
     users_not_in_team = CustomUser.objects.exclude(teams=team)
+    print("Tasks:", todo_items)
+    print("Users not in team:", users_not_in_team)
 
     context = {
         'form': form,
