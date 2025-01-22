@@ -1,3 +1,4 @@
+import datetime
 from django import forms 
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.models import User
@@ -47,8 +48,16 @@ class TaskForm(forms.ModelForm):
     title = forms.CharField(max_length=200, widget=forms.TextInput(attrs={'name':'title'}))
     description = forms.CharField(widget=forms.Textarea(attrs={'name':'description'}))
     dueDate = forms.DateField(widget=forms.DateTimeInput(attrs={'name':'dueDate'}), required=False)
-    category = forms.CharField(max_length=200, widget=forms.TextInput(attrs={'name':'category'}), required=False)
+    category = forms.CharField(max_length=200, widget=forms.TextInput(attrs={'name':'category'}))
     team = forms.ModelChoiceField(queryset=Team.objects.all(), widget=forms.Select(attrs={'name':'team'}), required=False)
+    
+    
+    def clean_dueDate(self):
+        dueDate = self.cleaned_data.get('dueDate')
+        if dueDate and dueDate <= datetime.date.today():
+            raise forms.ValidationError("The due date must be in the future.")
+        return dueDate
+    
     
     class Meta:
         model = Task
