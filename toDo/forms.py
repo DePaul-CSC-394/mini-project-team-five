@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.models import User
 from users.models import CustomUser
+from django.contrib.auth import authenticate
 from django.db import models
 
 from .models import Task, Team
@@ -11,9 +12,24 @@ class LoginForm(AuthenticationForm):
     email = forms.EmailField(widget=forms.EmailInput(attrs={'name':'email'}))
     password = forms.CharField(widget=forms.PasswordInput(attrs={'name':'password'}))
     
+    def clean(self):
+        cleaned_data = super().clean()
+        email = cleaned_data.get('email')
+        password = cleaned_data.get('password')
+        
+        if email and password:
+            if not CustomUser.objects.filter(email=email).exists():
+                raise forms.ValidationError("Invalid email or password")
+            user = authenticate(email=email, password=password)
+            if user is None:
+                raise forms.ValidationError("Invalid email or password")
+            
+        return cleaned_data
+    
     class Meta:
         model = CustomUser
         fields = ['email', 'password']
+    
         
 #https://www.devhandbook.com/django/user-registration/
 #https://www.crunchydata.com/blog/building-a-user-registration-form-with-djangos-built-in-authentication
@@ -30,7 +46,7 @@ class UserRegisterForm(UserCreationForm):
 class TaskForm(forms.ModelForm):
     title = forms.CharField(max_length=200, widget=forms.TextInput(attrs={'name':'title'}))
     description = forms.CharField(widget=forms.Textarea(attrs={'name':'description'}))
-    dueDate = forms.DateTimeField(widget=forms.DateTimeInput(attrs={'name':'dueDate'}), required=False)
+    dueDate = forms.DateField(widget=forms.DateTimeInput(attrs={'name':'dueDate'}), required=False)
     category = forms.CharField(max_length=200, widget=forms.TextInput(attrs={'name':'category'}), required=False)
     team = forms.ModelChoiceField(queryset=Team.objects.all(), widget=forms.Select(attrs={'name':'team'}), required=False)
     
