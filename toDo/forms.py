@@ -47,10 +47,9 @@ class UserRegisterForm(UserCreationForm):
 class TaskForm(forms.ModelForm):
     title = forms.CharField(max_length=200, widget=forms.TextInput(attrs={'name':'title'}))
     description = forms.CharField(widget=forms.Textarea(attrs={'name':'description'}))
-    dueDate = forms.DateField(widget=forms.DateTimeInput(attrs={'name':'dueDate'}), required=False)
+    dueDate = forms.DateField(widget=forms.DateInput(attrs={'name':'dueDate', 'type': 'date'}), required=False)
     category = forms.CharField(max_length=200, widget=forms.TextInput(attrs={'name':'category'}))
     team = forms.ModelChoiceField(queryset=Team.objects.all(), widget=forms.Select(attrs={'name':'team'}), required=False)
-    
     
     def clean_dueDate(self):
         dueDate = self.cleaned_data.get('dueDate')
@@ -58,11 +57,9 @@ class TaskForm(forms.ModelForm):
             raise forms.ValidationError("The due date must be in the future.")
         return dueDate
     
-    
     class Meta:
         model = Task
         fields = ['title', 'description', 'dueDate', 'category', 'team']
-        
         
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user', None)

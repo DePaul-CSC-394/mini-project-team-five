@@ -1,0 +1,32 @@
+.navbar {
+    width: 100%;
+    font-size: 1.25em;
+    display: flex;
+    background-color: lightgray;
+    padding: 10px 0px;
+    border-bottom: 1px solid gray;
+}
+.navbar-left{
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    justify-content: left;
+    align-self: center;
+    width: 48%;
+    margin-left: 2%;
+}
+.navbar-right{
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+    align-items: center;
+    width: 48%;
+    margin-right: 2%;
+    gap: 20px;
+}
+.navbar a {
+    text-decoration: none;
+    color: black;
+/*             font-weight: bold; */
+    margin: 0;
+}
