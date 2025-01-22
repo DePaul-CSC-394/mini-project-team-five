@@ -109,7 +109,7 @@
     <div class="form-container">
         <div class="form-box">
             <form method = "post" id="taskForm">
-<!--                  <label for="task-title">Task Title</label>
+<!--                 <label for="task-title">Task Title</label>
                 <input type="text" id="task-title" placeholder="Ex: Take out the trash">
                 <div class="error-message" id="task-title-error">Task Title is required</div>
 
@@ -134,10 +134,10 @@
                 <div class="button-container">
                     <button type="button" class="cancel-button" onclick="window.location.href='dashboard.html'">Cancel</button>
                     <button type="submit" class="save-button">Save</button>
-                </div> -->
+                </div>  -->
 
                 {% csrf_token %}
-                {{form}}
+                {{form.as_p}}
 
                 <button type="button" class="cancel-button" onclick="window.location.href='{% url 'dashboard' %}'">Cancel</button>
                 <input type="submit" value="Save" class="save-button">
@@ -145,7 +145,7 @@
         </div>
     </div>
 
-    <!-- <script>
+    <!--script>
         // Form validation
         document.getElementById('taskForm').addEventListener('submit', function (event) {
             event.preventDefault(); // Prevent form submission
@@ -216,6 +216,6 @@
             }
         }
     );
-    </script> -->
+    </script-->
 </body>
 </html>

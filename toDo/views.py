@@ -1,5 +1,7 @@
 from django.http import HttpResponseRedirect, HttpResponseServerError
 from django.shortcuts import get_object_or_404, redirect, render
+
+from users.models import CustomUser
 from .forms import LoginForm, TaskForm, TeamForm, UserRegisterForm
 from django.contrib.auth import authenticate, login as auth_login, logout
 from django.urls import reverse
@@ -211,13 +213,13 @@ def dashboard(request):
     try:
         # Get the first team (or return an error if no teams exist)
         team = Team.objects.first()
-        if not team:
-            logger.error("No teams found in the database.")
-            return render(request, 'toDo/dashboard.html', {
-                "message": 'No teams found. Please create a team first.', 'team_id': 0
-            })
+        # if not team:
+        #     logger.error("No teams found in the database.")
+        #     return render(request, 'toDo/dashboard.html', {
+        #         "message": 'No teams found. Please create a team first.', 'team_id': 0
+        #     })
 
-        team_id = team.id  # Access the ID of the first team
+        team_id = team.id if team else 0  # Access the ID of the first team, or 0 if no team exists
         teams = Team.objects.all()  # Get all teams
 
         # Get all tasks associated with the selected team
@@ -251,6 +253,8 @@ def teams(request, id):
 
 
     #list team name, description, and members
+    if id == 0:
+        return redirect('teams_new')
     team = Team.objects.get(id=id)
     print("Team:", team)
     team_id = team.id
@@ -260,7 +264,9 @@ def teams(request, id):
     
     # Get all tasks associated with the selected team
     todo_items = Task.objects.filter(team=team)
+    users_not_in_team = CustomUser.objects.exclude(teams=team)
     print("Tasks:", todo_items)
+    print("Users not in team:", users_not_in_team)
     
     # Pass the data to the template
     context = {
@@ -269,6 +275,7 @@ def teams(request, id):
         'team_description': team_description,
         'team_members': team_members,
         'todo_items': todo_items,
+        'users_not_in_team': users_not_in_team,
     }
     
     return render(request, 'toDo/teamdetails.html', context)
