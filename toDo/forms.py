@@ -70,11 +70,13 @@ class TaskForm(forms.ModelForm):
         
 class TeamForm(forms.ModelForm):
     name = forms.CharField(max_length=200, widget=forms.TextInput(attrs={'name':'name'}))
-    description = forms.CharField(widget=forms.Textarea(attrs={'name':'description'}), required=False)
-    members = forms.ModelMultipleChoiceField(queryset=CustomUser.objects.all(), widget=forms.SelectMultiple(attrs={'name':'members'}), required=False)
+    description = forms.CharField(widget=forms.Textarea(attrs={'name':'description'}))
+    # members = forms.ModelMultipleChoiceField(queryset=CustomUser.objects.all(), widget=forms.SelectMultiple(attrs={'name':'members'}), required=False)
     
     class Meta:
         model = Team
-        fields = ['name', 'description', 'members']
+        fields = ['name', 'description']
+        # fields = ['name', 'description', 'members']
+        
     
     
