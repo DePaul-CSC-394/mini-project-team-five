@@ -1,6 +1,8 @@
 from django.http import HttpResponseRedirect, HttpResponseServerError
-from django.shortcuts import redirect, render
-from .forms import LoginForm, UserRegisterForm
+from django.shortcuts import get_object_or_404, redirect, render
+
+from users.models import CustomUser
+from .forms import LoginForm, TaskForm, TeamForm, UserRegisterForm
 from django.contrib.auth import authenticate, login as auth_login, logout
 from django.urls import reverse
 from django.db import IntegrityError
@@ -46,9 +48,34 @@ def login(request):
     
     form = LoginForm(request.POST) #https://stackoverflow.com/questions/10023213/extracting-items-out-of-a-querydict
     if request.method == "POST":
-        # print("POST")
-        form = LoginForm(request.POST)
-        print("Form:", form)
+    #     # print("POST")
+    #     form = LoginForm(request.POST)
+    #     print("Form:", form)
+        
+    #     if form.is_valid():
+    #         email = form.cleaned_data.get("email")
+    #         password = form.cleaned_data.get("password")
+            
+    #         login_user = authenticate(request, email=email, password=password)
+    #         if login_user is not None:
+    #             login_user.backend = 'users.authBackend.emailBackend.EmailBackend'
+    #             auth_login(request, login_user)
+    #             return redirect('/dashboard')
+            
+    #         else:
+    #             return render(
+    #                 request,
+    #                 "toDo/login.html",
+    #                 {"message":"The user is not found.", "form": form},
+    #             )   
+    # else:
+    #     form = LoginForm()
+    
+    # context = {
+    #     "form": form
+    # }
+    # return render(request, "toDo/login.html", context)
+            
         
         if form:
             email = request.POST.get("email")
@@ -60,6 +87,13 @@ def login(request):
                 login_user.backend = 'users.authBackend.emailBackend.EmailBackend'
                 auth_login(request, login_user)
                 return redirect('/dashboard')
+            else:
+                print("The user is not found.")
+                return render(
+                    request,
+                    "toDo/login.html",
+                    {"message":"The user is not found.", "form": form},
+                )
             
             
             
@@ -72,22 +106,10 @@ def login(request):
             )
     
     return render(request, "toDo/login.html", {"form": form})
-
-
-# def register(request):
-#     #redirect already login used
-#     if request.user.id:
-#         return HttpResponseRedirect(reverse("dashboard"))
     
-#     #form = UserRegisterForm(request.POST)
-#     if request.method == "POST":
-#         form = UserRegisterForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             return redirect('login')
-#         else:
-#             form = UserRegisterForm()
-#         return render(request, "toDo/register.html", {"form": form})
+
+
+
 def register(request):
     try:
         if request.user.id:
@@ -114,54 +136,100 @@ def register(request):
     except Exception as e:
         print("Error occurred:", e)  # Print the exact error to console
         return HttpResponseServerError("Server error")    
-        
-        
-        
-        
-                      
-        
-        # if form.is_valid():
-        #     print("Form is valid")
-        #     email = form.cleaned_data.get("email")
-        #     password = form.cleaned_data.get("password")
-        #     user = authenticate(request, email=email, password=password)
-        #     if user is not None:
-        #         auth_login(request, user)
-        #         return HttpResponseRedirect("dashboard")
-                
-    #     else:
-    #         return render(
-    #             request,
-    #             "toDo/login.html",
-    #             {"message":"The user is not found.", "form": form},
-    #         )
-    # else :
-    #     form = LoginForm()
-    
-    # return render(request, "toDo/login.html", {"form": form})
 
 def logoutView(request):
     logout(request)
     return redirect("login")
 
+
 def todosNew(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    
+    # Get the first team (or return an error if no teams exist)
+    team = Team.objects.first()
+    # if not team:
+    #     logger.error("No teams found in the database.")
+    #     return render(request, 'toDo/dashboard.html', {
+    #         "message": 'No teams found. Please create a team first.', 'team_id': 0
+    #     })
+
+    team_id = team.id if team else 0  # Access the ID of the first team, or 0 if no team exists
+    teams = Team.objects.all()  # Get all teams
+
+    # return render(request, "toDo/createToDo.html", {'team_id': team_id})
+    if request.method == "POST":
+        form = TaskForm(request.POST)
+        print("Form:", form)
+        if form.is_valid():
+            form.instance.user = request.user
+            form.save()
+            print("Form saved")
+            return redirect('dashboard')
+    else:
+        form = TaskForm()
+    return render(request, "toDo/createToDo.html", {"form": form,'team_id': team_id})
+
+
+def todosEdit(request, id):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    
     team_id = 1  # Replace with actual logic to get team_id
-    return render(request, "toDo/createToDo.html", {'team_id': team_id})
+    
+    try:
+        task = get_object_or_404(Task, id=id)
+        
+        if request.method == "GET":
+            form = TaskForm(instance=task)
+            return render(request, "toDo/createToDo.html", {"form": form, "task": task, 'team_id': team_id})
+        
+        if request.method == "POST":
+            form = TaskForm(request.POST, instance=task)
+            if form.is_valid():
+                form.save()
+                return redirect('dashboard')
+            else:
+                return render(request, "toDo/createToDo.html", {"form": form, "task": task, 'team_id': team_id})
+    
+    except Task.DoesNotExist:
+        return HttpResponseServerError("Task not found")
+    except Exception as e:
+        logger.exception("An error occurred while editing the task.")
+        return HttpResponseServerError("Server error")
 
 def teamsNew(request):
-    return render(request, "toDo/createTeam.html")
+    if not request.user.is_authenticated:
+        return redirect('login')
+    
+    team_id = 1  # Replace with actual logic to get team_id
+    # return render(request, "toDo/createTeam.html")
+    form = TeamForm(request.POST)
+    if request.method == "POST":
+        #form = TeamForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('dashboard')
+    else:
+        form = TeamForm()
+    # return render(request, "toDo/createTeam.html", {"form": form})
+    return render(request, "toDo/createTeam.html", {"form": form, 'team_id': team_id})
+    
 
 def dashboard(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    
     try:
         # Get the first team (or return an error if no teams exist)
         team = Team.objects.first()
-        if not team:
-            logger.error("No teams found in the database.")
-            return render(request, 'toDo/dashboard.html', {
-                "message": 'No teams found. Please create a team first.', 'team_id': 0
-            })
+        # if not team:
+        #     logger.error("No teams found in the database.")
+        #     return render(request, 'toDo/dashboard.html', {
+        #         "message": 'No teams found. Please create a team first.', 'team_id': 0
+        #     })
 
-        team_id = team.id  # Access the ID of the first team
+        team_id = team.id if team else 0  # Access the ID of the first team, or 0 if no team exists
         teams = Team.objects.all()  # Get all teams
 
         # Get all tasks associated with the selected team
@@ -184,16 +252,91 @@ def dashboard(request):
         return HttpResponseServerError("Server error")
 
 
-def todosEdit(request, id):
-    team_id = 1  # Replace with actual logic to get team_id
-    return render(request, "toDo/createToDo.html", {'todo_id': id, 'team_id': team_id})
+
 
 def teams(request, id):
-    todo_id = 1  # Replace with actual logic to get team_id
-    return render(request, "toDo/teamdetails.html", {'team_id': id, 'todo_id': todo_id})
+    if not request.user.is_authenticated:
+        return redirect('login')
 
+    if id == 0:
+        return redirect('teams_new')
+    if not id:
+        id = 1
+    # team = Team.objects.get(id=id)
+    # # Get the team by ID
+    team = get_object_or_404(Team, id=id)
+    print("Team:", team)
+    team_members = team.members.all()
+
+    # print(request.POST)
+
+    # if request.method == "GET":
+    #         form = TaskForm(instance=team)
+    #         context = {
+    #             'form': form,
+    #             'team_id': team_id,
+    #             'team_name': team_name,
+    #             'team_description': team_description,
+    #             'team_members': team_members,
+    #             'todo_items': todo_items,
+    #             'users_not_in_team': users_not_in_team,
+    #         }
+    #         return render(request, 'toDo/teamdetails.html', context)
+    
+    if request.method == "GET":
+        form = TaskForm(instance=team)
+    elif request.method == 'POST':
+        if 'new_members' in request.POST:
+            form = TeamForm(request.POST, instance=team)
+            if form.is_valid():
+                team = form.save()
+                
+                new_members_str = request.POST.get('new_members')
+                if new_members_str:
+                    new_members_ids = new_members_str.split(',')
+                    new_members_ids = [int(id) for id in new_members_ids if id]  # Convert to integers
+                    if new_members_ids:
+                        new_members = CustomUser.objects.filter(id__in=new_members_ids)
+                        team.members.add(*new_members)
+                return redirect('dashboard')
+        else:
+            print("POST data:", request.POST)  # Debug log
+            if 'new_members' in request.POST:
+                print("New members found:", request.POST.get('new_members'))  # Debug log
+    else:
+        print("Form is not valid:", form.errors)
+        form = None
+    # else:
+    #     form = None
+    team_id = team.id
+    team_name = team.name
+    team_description = team.description
+    todo_items = Task.objects.filter(team=team)
+    users_not_in_team = CustomUser.objects.exclude(teams=team)
+    print("Tasks:", todo_items)
+    print("Users not in team:", users_not_in_team)
+
+    context = {
+        # 'form': form,
+        'team_id': team_id,
+        'team_name': team_name,
+        'team_description': team_description,
+        'team_members': team_members,
+        'todo_items': todo_items,
+        'users_not_in_team': users_not_in_team,
+    }
+
+    return render(request, 'toDo/teamdetails.html', context)
+
+    
+    
 def landing(request):
     return render(request, "toDo/landingpage.html")
+
+def delete(request, id):
+    task = Task.objects.get(id=id) # Get the task object
+    task.delete() # Delete the task
+    return redirect('dashboard')
 
 # def task(request):
 #     return render(request, "toDo/task.html")
@@ -210,3 +353,15 @@ def landing(request):
 #             return redirect("/")
 #         else:
 #             return render(request, "toDo/login.html", {"message": "Invalid credentials"})
+
+def delete_team(request, id):
+    if not request.user.is_authenticated:
+        return redirect('login')
+
+    team = get_object_or_404(Team, id=id)
+
+    if request.method == 'POST':
+        team.delete()
+        return redirect('dashboard')
+
+    return HttpResponseRedirect(reverse('teamdetails', args=[id]))

@@ -3,25 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../static/main.css">
     <title>To-Do Timer</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-        }
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: lightgray;
-            padding: 10px 20px;
-            border-bottom: 1px solid gray;
-        }
-        .navbar a {
-            text-decoration: none;
-            color: black;
-            margin: 0 10px;
         }
         .task-container {
             margin: 20px auto;
@@ -90,12 +78,12 @@
         <a href="/newdashboard">Dashboard</a>
         <a href="/todos">Todos</a>
         <a href="/teams">Teams</a>
-        <a href="mailto:@depaul.edu">@depaul.edu</a>
+        <a href="{% url 'logout' %}">{{ user.email }}</a>
     </div>
 
 
     <div class="new-todo-container">
-        <button type="button" class="new-todo" onclick="window.location.href='{% url 'createToDo' %}'">New ToDo</button>
+        <button type="button" class="new-todo" onclick="window.location.href='{% url 'todos_new' %}'">New ToDo</button>
     </div>
 
     <div class="task-container">

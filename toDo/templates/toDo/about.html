@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <head>
+    <link rel="stylesheet" href="../../static/main.css">
     <!--Yumna's code-->
     <title>About Page</title>
     <style>
@@ -8,22 +9,11 @@
             margin: 0;
             padding: 0;
         }
-        .navbar {
-            background-color: #0057B7;
-            padding: 10px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .navbar a {
-            text-decoration: none;
-            color: white;
-            font-weight: bold;
-        }
         .about-section {
             background-color: #e0e0e0;
             padding: 20px;
-            text-align: center;
+            text-align: left;
+            margin: 50px 5% 0;
         }
         .gridBox{
             justify-self: center;
@@ -48,6 +38,7 @@
             background-color: #f9f9f9;
             width: clamp(100px, 100%, 300px);
             padding: 5px;
+            margin: 0 auto; 
             text-align: center;
             border: 1px solid ;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -89,9 +80,13 @@
 </head>
 <body>
     <div class="navbar">
-        <a href="/">$APPNAME</a>
-        <a href="/about" >About</a>
-        <a href="">@depaul.edu</a>
+        <div class="navbar-left">
+            <a href="/">$APPNAME</a>
+            <a href="{% url 'about' %}" >About</a>
+        </div>
+        <div class="navbar-right">
+            <a href="{% url 'login' %}">Login</a>
+        </div>
     </div>
     <div class="about-section">
         <h1>About</h1>
@@ -107,9 +102,9 @@
                 <p>I'm a senior Computer Science major with a Software Engineering minor. I setup the Docker files & containers, NGINX, manage the GitHub. I also write documentation and help the team troubleshoot and debug.                	<br><br><b>Project Manager</b></p>
             </div>
             <div class="team-card">
-                <img src="insert here" alt="Image cap" class="backend-img">
+                <img src="https://lh3.googleusercontent.com/d/1H2ttzpLVDMQ_3rpXGHQyWiQALZI0a5RF?authuser=0" alt="Image cap" class="backend-img">
                 <h3>John</h3>
-                <p>Description TBA
+                <p>I am a senior Computer Science major with a minor in Data Scince. I have experience in Java, Python, and C. I worked on the backend of the application. 
                 <br><br><b>Requirements Manager</b></p>
             </div>
             <div class="team-card">
@@ -124,7 +119,7 @@
                 <p>Description TBA</p>
             </div>                
             <div class="team-card">
-                <img src="insert here" alt="Image cap" class="backend-img">
+                <img src="https://lh3.googleusercontent.com/d/1kxjy9keswjIOEqlrBVYDPLudrFSA4dAy" alt="Image cap" class="backend-img">
                 <h3>Yumna</h3>
                 <p>I’m a computer science major with an interest in data science and insurance. Familiar coding in 					HTML, C and debugging.
                 <br><br><b>Presentation Manager</b></p>

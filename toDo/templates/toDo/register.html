@@ -4,22 +4,12 @@
     <!--Yumna's code-->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../static/main.css">
     <title>Register</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
-        }
-        .navbar {
-            background-color: #0057B7;
-            padding: 10px 20px;
-            display: flex;
-            justify-content: space-between;
-        }
-        .navbar a {
-            text-decoration: none;
-            color: white;
-            font-weight: bold;
         }
         .form-container {
             display: flex;
@@ -28,9 +18,10 @@
             height: 80vh;
         }
         .form-box {
-            width: 300px;
+            width: clamp(300px, 90%, 1200px);
             border: 1px solid #000;
-            padding: 20px;
+            padding: 30px;
+            box-sizing: border-box;
         }
         .form-box label {
             display: block;
@@ -39,40 +30,64 @@
         .form-box input {
             width: 100%;
             padding: 8px;
-            margin-bottom: 15px;
+            margin-bottom: 5px;
             border: 1px solid #ccc;
+        }
+        .form-box input.error {
+            background-color: lightcoral;
+            border-color: red;
+        }
+        .error-message {
+            color: red;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+            display: none;
         }
         .form-box button {
             width: 100%;
             padding: 10px;
             background-color: blue;
             color: white;
-            border: none;
+            border: 1px solid transparent;
             cursor: pointer;
+        }
+        .form-box button:hover {
+            background-color: transparent;
+            color: black;
+            border: 1px solid blue;
+            cursor: pointer;
+            transition: all 0.2s ease-out; 
         }
     </style>
 </head>
 <body>
     <div class="navbar">
-        <a href="{% url 'dashboard'%}">$APPNAME</a>
-        <a href="{% url 'about'%}">About</a>
-        <a href="{% url 'login'%}">Login</a> 
+        <div class="navbar-left">
+            <a href="/">$APPNAME</a>
+            <a href="{% url 'about'%}">About</a>
+        </div>
+        <div class = "navbar-right">
+            <a href="{% url 'login'%}">Login</a> 
+        </div>
     </div>
     <div class="form-container">
         <div class="form-box">
-            {% comment %} <form method="post" action="{% url 'register' %}">
+            <!-- <form method="post" id="registerForm" action="{% url 'register' %}">
                 {% csrf_token %}
                 <label for="email">Email</label>
                 <input type="text" id="email" name="email" required>
+                <div class="error-message" id="email-error">Email is required.</div>
                 
                 <label for="password">Password</label>
                 <input type="password" id="password" name="password" required>
+                <div class="error-message" id="password-error-1">Password is required.</div>
                 
                 <label for="confirm">Confirm</label>
                 <input type="password" id="confirm" name="confirm" required>
+                <div class="error-message" id="confirm-error-1">Please confirm password.</div>
+                <div class="error-message" id="confirm-error-2">Passwords do not match.</div>
                 
-                <button type="submit">Register</button>
-            </form> {% endcomment %}
+            </form>  -->
             <form method="post" action="{% url 'register' %}">
                 {% csrf_token %}
                 {{ form.as_p }}
@@ -80,5 +95,62 @@
             </form>
         </div>
     </div>
+    <script>
+        // Form validation
+        document.getElementById('registerForm').addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent form submission
+
+            let isValid = true;
+
+            // Validate Task Title
+            const email = document.getElementById('email');
+            const emailError = document.getElementById('email-error');
+            if (email.value.trim() === '') {
+                email.classList.add('error');
+                emailError.style.display = 'block';
+                isValid = false;
+            } else {
+                email.classList.remove('error');
+                emailError.style.display = 'none';
+            }
+         
+            const pass1 = document.getElementById('password');
+            const pass1Error = document.getElementById('password-error');
+            if (pass1.value.trim() === '') {
+                pass1.classList.add('error');
+                pass1Error.style.display = 'block';
+                isValid = false;
+            } else {
+                pass1.classList.remove('error');
+                pass1.style.display = 'none';
+            }
+
+            const confirm = document.getElementById('confirm');
+            const confirmError1 = document.getElementById('confirm-error-1');
+            if (confirm.value.trim() === '') {
+                confirm.classList.add('error');
+                confirmError1.style.display = 'block';
+                isValid = false;
+            } else {
+                confirm.classList.remove('error');
+                confirm.style.display = 'none';
+            }
+
+            const confirmError2 = document.getElementById('confirm-error-2');
+            if (confirm.value.trim() != pass1.value.trim())
+            {
+                confirm.classList.add('error');
+                confirmError2.style.display = 'block';
+                isValid = false; 
+            } else {
+                confirm.classList.remove('error');
+                confirm.style.display = 'none';
+            }
+            if (isValid) {
+                alert('Form submitted successfully!');
+              
+            }
+        });
+    </script>
 </body>
 </html>

@@ -2,7 +2,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
+    <link rel="stylesheet" href="../../static/main.css">
     <title>Dashboard</title>
     <style>
         body {
@@ -10,20 +10,6 @@
             margin: 0;
             padding: 0;
             
-        }
-        .navbar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background-color: #f8f9fa;
-            padding: 10px 20px;
-            border-bottom: 1px solid #ddd;
-           
-        }
-        .navbar a {
-            text-decoration: none;
-            color: #333;
-            margin: 0 10px;
         }
         .navbar a:hover {
             color: #0056b3;
@@ -63,12 +49,12 @@
         <a href="/dashboard">Dashboard</a>
         <a href="{% url 'todos_new' %}">To-Do's</a>
         <a href="{% url 'teams' id=team_id %}">Teams</a>
-        <a href="">@depaul.edu</a>
+        <a href="{% url 'logout' %}">{{ user.email }}</a>
     </div>
 
     <div class="task-container">
         <h3>No ToDo's</h3>
-        <button class="create-todo" onclick="window.location.href='{% url 'createToDo' %}'">Create ToDo</button>
+        <button class="create-todo" onclick="window.location.href='{% url 'todos_new' %}'">Create ToDo</button>
     </div>
 </body>
 </html>

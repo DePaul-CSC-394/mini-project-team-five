@@ -5,25 +5,13 @@
     <!--Incorporates code from both Matteo and Yumna-->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../static/main.css">
     <title>Login</title>
 
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
-        }
-        .navbar {
-            background-color: #0057B7;
-            padding: 10px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .navbar a {
-            text-decoration: none;
-            color: white;
-            font-weight: bold;
-            margin: 0 10px;
         }
         .form-container {
             display: flex;
@@ -61,10 +49,13 @@
 </head>
 <body>
     <div class="navbar">
-        <a href="{% url 'dashboard'%}">$APPNAME</a>
-        <a href="{% url 'about'%}">About</a>
-        <a href="{% url 'login'%}">Login</a> 
-        
+        <div class="navbar-left">
+            <a href="/">$APPNAME</a>
+            <a href="/about" >About</a>
+        </div>
+        <div class="navbar-right">
+            <a href="">@depaul.edu</a>
+        </div>
     </div>
     <div class="form-container">
         <div class="form-box">

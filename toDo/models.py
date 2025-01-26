@@ -10,7 +10,7 @@ from users.models import CustomUser
 class Team(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField(null=True, blank=True)
-    members = models.ForeignKey(CustomUser, on_delete= models.CASCADE, default=None)
+    members = models.ManyToManyField(CustomUser, related_name='teams')
     
     def __str__(self):
         return self.name
@@ -42,7 +42,8 @@ class stopwatch(models.Model):
             return None
         
 class Task(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)  # on_delete=models.CASCADE means that if the user is deleted, all the tasks associated with that user will also be deleted
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True, blank=True)  # on_delete=models.CASCADE means that if the user is deleted, all the tasks associated with that user will also be deleted
     title = models.CharField(max_length=200)
     description = models.TextField(null=True, blank=True)
     dueDate= models.DateTimeField(null=True, blank=True)

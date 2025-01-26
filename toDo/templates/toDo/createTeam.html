@@ -4,6 +4,7 @@
     <!--Matteo's code-->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../static/main.css">
     <title>Create Team Page</title>
     <style>
         body {
@@ -13,18 +14,6 @@
             display: flex;
             flex-direction: column;
         } 
-        .navbar {
-            background-color: #0057B7;
-            padding: 10px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .navbar a {
-            text-decoration: none;
-            color: white;
-            font-weight: bold;
-        }
         main {
             margin-top: 50px;
             align-items: flex-start;
@@ -48,33 +37,132 @@
         text-align: center;
         cursor: pointer;
         }
-        input[type = save] {
-        	background-color: #06ad05;
+        .cancel-button {
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 3px;
         }
-        input[type = cancel] {
-           background-color: #FF0000;
+        .save-button {
+            background-color: green;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+        .form-container {
+            display: flex;
+            justify-content: center;
+            align-items: start;
+            height: 80vh;
+        }
+        .form-box {
+            width: 400px;
+            border: 1px solid gray;
+            padding: 20px;
+        }
+        .form-box label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-box input,
+        .form-box select {
+            width: 100%;
+            padding: 4px;
+            margin-bottom: 10px;
+            border: 1px solid gray;
+            border-radius: 3px;
+        }
+        .form-box input.error {
+            background-color: lightcoral;
+            border-color: red;
+        }
+        .error-message {
+            color: red;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+            display: none; /* Initially hidden */
         }
     </style>
 </head>
 <body>
         <div class = "navbar">
-        	<a href="{% url 'landing' %}">$APPNAME</a>
-        	<a href="{% url 'about' %}">About</a>
-            <a href="{% url 'dashboard' %}">Dashboard</a>
-            <a href="{% url 'createToDo' %}">To-Do's</a>
-            <a href="{% url 'teamList' %}">Teams</a>
-            <a href="mailto:@depaul.edu">@depaul.edu</a>
-                
+            <div class="navbar-left">
+                <a href="/">$APPNAME</a>
+                <a href="{% url 'about'%}" >About</a>
+            </div>
+            <div class="navbar-right">
+                <a href="{% url 'dashboard'%}">Dashboard</a>
+                <a href="{% url 'todos_new' %}">To-Do's</a>
+                <a href="{% url 'teams' id=team_id %}">Teams</a>
+                <a href="{% url 'logout' %}">{{ user.email }}</a>
+            </div>
         </div>
     <main>
-      <label for="tname">Team Name: </label>
-  	  <input type="text" id="tname" name="tname" placeholder = "Ex: Team Five" style = font-style:italic><br><br>
-      
-      <label for="desc">Description: </label>
-  	  <input type="text" id="desc" name="desc" placeholder = "Enter description here" style = font-style:italic><br><br>
-      
-      <input type="cancel" value="Cancel">
-      <input type="save" value="Save">
+    <div class="form-container">
+    <div class="form-box">
+        <form method = "post" id="taskForm">
+<!--             <label for="tname">Team Name: </label>
+            <input type="text" id="task-title" placeholder="Ex: Take out the trash">
+            <div class="error-message" id="task-title-error">Task Title is required</div>
+        <label for="desc">Description: </label>
+        <input type="text" id="description" placeholder="Add description">
+        <div class="error-message" id="description-error">Description is required</div>
+        <form method="post"> -->
+            {% csrf_token %}
+            {{ form }}
+            <div class="buttons">
+                <button class="cancel-button" type="button" onclick="window.location.href='/dashboard'">Cancel</button>
+                <button type="submit" class="save-button">Save</button>
+            </div>
+        </form>
+
+<!--         <button type="button" class="cancel-button" onclick="window.location.href='dashboard.html'">Cancel</button>
+        <button type="submit" class="save-button">Save</button>
+    </form> -->
+</div>
 </main>
+<!--script>
+    //JS breaking form submission
+    // Form validation
+    document.getElementById('taskForm').addEventListener('submit', function (event) {
+        event.preventDefault(); // Prevent form submission
+
+        let isValid = true;
+
+        // Validate Task Title
+        const taskTitle = document.getElementById('task-title');
+        const taskTitleError = document.getElementById('task-title-error');
+        if (taskTitle.value.trim() === '') {
+            taskTitle.classList.add('error');
+            taskTitleError.style.display = 'block';
+            isValid = false;
+        } else {
+            taskTitle.classList.remove('error');
+            taskTitleError.style.display = 'none';
+        }
+
+     
+        const description = document.getElementById('description');
+        const descriptionError = document.getElementById('description-error');
+        if (description.value.trim() === '') {
+            description.classList.add('error');
+            descriptionError.style.display = 'block';
+            isValid = false;
+        } else {
+            description.classList.remove('error');
+            descriptionError.style.display = 'none';
+        }
+
+        
+        if (isValid) {
+            alert('Form submitted successfully!');
+          
+        }
+    });
+</script-->
 </body>
 </html>

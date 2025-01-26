@@ -4,7 +4,8 @@
     <!-- Matteo's & Yumna's code-->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Unauthenticated Landing Page</title>
+    <link rel="stylesheet" href="../../static/main.css">
+    <title>Landing Page</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -14,52 +15,60 @@
             flex-direction: column;
             align-items: center; 
         }
-        header {
+        /* header {
             width: 100%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background-color: #0057B7; /* Blue */
+            background-color: lightgray;
             color: white;
             padding: 10px 20px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
         header .logo {
-            font-weight: bold;
             font-size: 20px;
             text-decoration: none;
-            color: white;
+            color: black;
         }
-        header nav a {
-            color: white;
+        header nav {
+            display: flex;
+            width: 100%;
+        }
+        header nav a, header nav span {
+            color: black;
             text-decoration: none;
             margin-left: 20px;
             margin-right: 20px;
         }
         header nav .login-btn {
-         color: white;
-         font size: 16px;
-}
-
+            color: black;
+            font-size: 16px;
+            margin-left: auto;
+        } */
         main {
             margin-top: 50px;
             text-align: center;
         }
         img {
-            max-width: 300px;
+            width: clamp(300px, 30vw, 500px);
             height: auto;
         }
     </style>
 </head>
 <body>
-    <header>
-        <a href="/" class="logo">$APPNAME</a> <!-- Redirects to landing.html -->
-        <nav>
+    <nav class="navbar">
+        <div class="navbar-left">
+            <a href="/" class="logo">$APPNAME</a>
             <a href="{% url 'about' %}">About</a>
-            <a href="mailto:@depaul.edu">@depaul.edu</a>
-            <a href="{% url 'login'%}" class="login-btn">Login</a>
-        </nav>
-    </header>
+        </div>
+        <div class="navbar-right">
+            {% if user.is_authenticated %}
+            <a href="{% url 'logout' %}" class="logout-btn">{{ user.email }}</a>
+            {% else %}
+                <a href="{% url 'login' %}" class="login-btn">Login</a>
+            {% endif %}
+        </div>
+    </nav>
     <main>
         <img src="https://applywave.com/wp-content/uploads/2023/03/depaul-logo.png" alt="DePaul University Logo">
     </main>

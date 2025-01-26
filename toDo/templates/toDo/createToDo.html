@@ -2,25 +2,11 @@
 <html lang="en">
 <head>
     <title>Task Form with Validation</title>
+    <link rel="stylesheet" href="../../static/main.css">
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
-        }
-        .navbar {
-            background-color: #0057B7;
-            padding: 10px 20px;
-            display: flex;
-            justify-content: space-evenly; /* Evenly space items */
-            align-items: center;
-            font-weight: bold;
-        }
-        .navbar a {
-            color: white;
-            text-decoration: none;
-            cursor: pointer;
-            flex: 1;
-            text-align: center; /* Center align each link */
         }
         .form-container {
             display: flex;
@@ -29,7 +15,7 @@
             height: 80vh;
         }
         .form-box {
-            width: 400px;
+            width: clamp(300px, 90%, 1200px);
             border: 1px solid gray;
             padding: 20px;
         }
@@ -80,17 +66,21 @@
 </head>
 <body>
     <div class="navbar">
-        <a href="/">$APPNAME</a>
-        <a href="/about">About</a>
-        <a href="/dashboard">Dashboard</a>
-        <a href="{% url 'todos_new' %}">To-Do's</a>
-        <a href="{% url 'teams' id=team_id %}">Teams</a>
-        <a href="mailto:@depaul.edu">@depaul.edu</a>
+        <div class="navbar-left">
+            <a href="/">$APPNAME</a>
+            <a href="{% url 'about'%}" >About</a>
+        </div>
+        <div class="navbar-right">
+            <a href="{% url 'dashboard'%}">Dashboard</a>
+            <a href="{% url 'todos_new' %}">To-Do's</a>
+            <a href="{% url 'teams' id=team_id %}">Teams</a>
+            <a href="/logout">{{ user.email }}</a>
+        </div>
     </div>
     <div class="form-container">
         <div class="form-box">
-            <form id="taskForm">
-                <label for="task-title">Task Title</label>
+            <form method = "post" id="taskForm">
+<!--                 <label for="task-title">Task Title</label>
                 <input type="text" id="task-title" placeholder="Ex: Take out the trash">
                 <div class="error-message" id="task-title-error">Task Title is required</div>
 
@@ -115,12 +105,18 @@
                 <div class="button-container">
                     <button type="button" class="cancel-button" onclick="window.location.href='dashboard.html'">Cancel</button>
                     <button type="submit" class="save-button">Save</button>
-                </div>
+                </div>  -->
+
+                {% csrf_token %}
+                {{form.as_p}}
+
+                <button type="button" class="cancel-button" onclick="window.location.href='{% url 'dashboard' %}'">Cancel</button>
+                <input type="submit" value="Save" class="save-button">
             </form>
         </div>
     </div>
 
-    <script>
+    <!--script>
         // Form validation
         document.getElementById('taskForm').addEventListener('submit', function (event) {
             event.preventDefault(); // Prevent form submission
@@ -139,7 +135,6 @@
                 taskTitleError.style.display = 'none';
             }
 
-         
             const description = document.getElementById('description');
             const descriptionError = document.getElementById('description-error');
             if (description.value.trim() === '') {
@@ -150,13 +145,48 @@
                 description.classList.remove('error');
                 descriptionError.style.display = 'none';
             }
-
+                        
+            const dueDate = document.getElementById('due-date');
+            const dueDateError = document.getElementById('due-date-error');
+            const dateRegex = /^(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])\/\d{4}$/;
             
+            
+            if (!dateRegex.test(dueDate.value.trim())) {
+                dueDate.classList.add('error');
+                dueDateError.style.display = 'block';
+                dueDateError.textContent = 'Please enter a valid date in MM/DD/YYYY format';
+                isValid = false;
+            } else {
+                const [month, day, year] = dueDate.value.split('/').map(Number);
+                const dueDateObj = new Date(year, month - 1, day);
+                const currentDate = new Date();
+            
+                if (
+                    dueDateObj.getFullYear() !== year ||
+                    dueDateObj.getMonth() + 1 !== month ||
+                    dueDateObj.getDate() !== day
+                ) {
+                    dueDate.classList.add('error');
+                    dueDateError.style.display = 'block';
+                    dueDateError.textContent = 'Invalid date. Please check the values entered.';
+                    isValid = false;
+                } 
+                else if (dueDateObj < currentDate) {
+                    dueDate.classList.add('error');
+                    dueDateError.style.display = 'block';
+                    dueDateError.textContent = 'Due date cannot be in the past.';
+                    isValid = false;
+                } else {
+                    dueDate.classList.remove('error');
+                    dueDateError.style.display = 'none';
+                }
+            }
             if (isValid) {
                 alert('Form submitted successfully!');
-              
+
             }
-        });
-    </script>
+        }
+    );
+    </script-->
 </body>
 </html>
