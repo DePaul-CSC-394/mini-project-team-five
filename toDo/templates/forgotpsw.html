@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Forgot Password</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+    }
+
+    .container {
+      max-width: 400px;
+      width: 100%;
+      padding: 20px;
+      margin: 100px auto 0;
+      background: #fff;
+      border: 1px solid #000;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .container h3 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    .form-group input.error {
+      background-color: lightcoral;
+      border-color: red;
+    }
+
+    .button-container {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .button-container button {
+      width: 100%;
+      padding: 10px;
+      background-color: blue;
+      color: white;
+      border: 1px solid transparent;
+      cursor: pointer;
+    }
+
+    .button-container button:hover {
+      background-color: transparent;
+      color: black;
+      border: 1px solid blue;
+      transition: all 0.2s ease-out;
+    }
+  </style>
+</head>
+<body>
+  
+  <div class="navbar">
+    <div class="navbar-left">
+      <a href="/">$APPNAME</a>
+      <a href="{% url 'about' %}">About</a>
+    </div>
+    <div class="navbar-right">
+      <a href="{% url 'login' %}">Login</a>
+    </div>
+  </div>
+
+  <div class="container">
+    <h3>Forgot Password</h3>
+  <form onsubmit="forgotPassword(event)">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" placeholder="Enter your email" required>
+      </div>
+      <div class="button-container">
+        <button type="submit">Forgot Password</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    function forgotPassword() {
+      const emailField = document.getElementById('email');
+      const email = emailField.value.trim();
+
+      if (!email) {
+        alert("Please enter your email address.");
+        return;
+      }
+
+      alert("Password reset email sent! Check your inbox.");
+    }
+  </script>
+</body>
+</html>
