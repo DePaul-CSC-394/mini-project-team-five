@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../static/main.css">
+    <title>To-Do Timer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .task-container {
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid lightgray;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+        }
+        .task {
+            padding: 20px;
+            border-bottom: 1px solid lightgray;
+        }
+        .new-todo-container {
+            display: flex;
+            justify-content: flex-end;
+            margin: 10px 20px;
+        }
+        .new-todo {
+            background-color: blue;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .new-todo:hover {
+            background-color: darkblue;
+        }
+        .task .timer {
+            font-size: 14px;
+            margin: 10px 0;
+        }
+        .task button {
+            margin: 5px;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .task .start-btn {
+            background-color: green;
+            color: white;
+        }
+        .task .stop-btn {
+            background-color: red;
+            color: white;
+        }
+        .task .edit-btn {
+            background-color: gray;
+            color: white;
+        }
+        .task .delete-btn {
+            background-color: red; 
+            color: white;
+        }
+        .task .delete-btn:hover {
+            background-color: darkred; 
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="">$APPNAME</a>
+        <a href="/about">About</a>
+        <a href="/newdashboard">Dashboard</a>
+        <a href="/todos">Todos</a>
+        <a href="/teams">Teams</a>
+        <a href="{% url 'logout' %}">{{ user.email }}</a>
+    </div>
+
+
+    <div class="new-todo-container">
+        <button type="button" class="new-todo" onclick="window.location.href='{% url 'todos_new' %}'">New ToDo</button>
+    </div>
+
+    <div class="task-container">
+        <div class="task" id="task-1">
+            <h4 contenteditable="false">$TITLE</h4>
+            <p contenteditable="false">$DESCRIPTION</p>
+            <div class="timer" id="timer-1">0m 0s</div>
+            <button class="start-btn" onclick="startTimer('timer-1')">Start</button>
+            <button class="stop-btn" onclick="stopTimer('timer-1')">Stop</button>
+            <button class="edit-btn" onclick="toggleEdit(this)">Edit</button>
+            <button class="delete-btn" onclick="removeTask(this)">Delete</button>
+        </div>
+    </div>
+
+    <script>
+        function removeTask(button) {
+            const taskElement = button.parentNode;
+            taskElement.remove();
+        }
+
+        const timers = {};
+
+        function startTimer(timerId) {
+            if (timers[timerId]?.interval) return; // Prevent multiple intervals for the same timer
+
+            if (!timers[timerId]) {
+                timers[timerId] = { seconds: 0, interval: null };
+            }
+
+            timers[timerId].interval = setInterval(() => {
+                timers[timerId].seconds += 1;
+                const minutes = Math.floor(timers[timerId].seconds / 60);
+                const seconds = timers[timerId].seconds % 60;
+                document.getElementById(timerId).innerText = `${minutes}m ${seconds}s`;
+            }, 1000);
+        }
+
+        function stopTimer(timerId) {
+            if (timers[timerId]?.interval) {
+                clearInterval(timers[timerId].interval);
+                timers[timerId].interval = null;
+            }
+        }
+
+        function toggleEdit(button) {
+            const taskElement = button.parentNode;
+            const title = taskElement.querySelector('h4');
+            const description = taskElement.querySelector('p');
+
+            if (title.isContentEditable) {
+                title.contentEditable = "false";
+                description.contentEditable = "false";
+                button.innerText = "Edit";
+                button.style.backgroundColor = "gray";
+            } else {
+                title.contentEditable = "true";
+                description.contentEditable = "true";
+                button.innerText = "Save";
+                button.style.backgroundColor = "green";
+            }
+        }
+    </script>
+</body>
+</html>

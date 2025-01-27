@@ -66,7 +66,6 @@ class Task(models.Model):
     team = models.ForeignKey(Team, on_delete=models.CASCADE, null=True, blank=True)
     
     
-    
     complete = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)
 

@@ -234,6 +234,7 @@ def dashboard(request):
 
         # Get all tasks associated with the selected team
         todo_items = Task.objects.filter(user=request.user)
+        todo_items = todo_items | Task.objects.filter(team=team) # | is the union operator
         print("Tasks:", todo_items)
 
         # Pass the data to the template
@@ -260,13 +261,13 @@ def teams(request, id):
 
     if id == 0:
         return redirect('teams_new')
-    if not id:
-        id = 1
     # team = Team.objects.get(id=id)
     # # Get the team by ID
     team = get_object_or_404(Team, id=id)
     print("Team:", team)
     team_members = team.members.all()
+    todo_items = Task.objects.filter(team=team)
+    users_not_in_team = CustomUser.objects.exclude(teams=team)
 
     # print(request.POST)
 
@@ -283,31 +284,47 @@ def teams(request, id):
     #         }
     #         return render(request, 'toDo/teamdetails.html', context)
     
-    if request.method == "GET":
-        form = TaskForm(instance=team)
-    elif request.method == 'POST':
-        if 'new_members' in request.POST:
-            form = TeamForm(request.POST, instance=team)
-            if form.is_valid():
-                team = form.save()
+    # if request.method == "GET":
+    #     form = TaskForm(instance=team)
+    if request.method == 'POST':
+        # if 'new_members' in request.POST:
+        #     form = TeamForm(request.POST, instance=team)
+        #     if form.is_valid():
+        #         team = form.save()
                 
-                new_members_str = request.POST.get('new_members')
-                if new_members_str:
-                    new_members_ids = new_members_str.split(',')
-                    new_members_ids = [int(id) for id in new_members_ids if id]  # Convert to integers
-                    if new_members_ids:
-                        new_members = CustomUser.objects.filter(id__in=new_members_ids)
-                        team.members.add(*new_members)
-                return redirect('dashboard')
-        else:
-            print("POST data:", request.POST)  # Debug log
-            if 'new_members' in request.POST:
-                print("New members found:", request.POST.get('new_members'))  # Debug log
-    else:
-        print("Form is not valid:", form.errors)
-        form = None
+        #         new_members_str = request.POST.get('new_members')
+        #         if new_members_str:
+        #             new_members_ids = new_members_str.split(',')
+        #             new_members_ids = [int(id) for id in new_members_ids if id]  # Convert to integers
+        #             if new_members_ids:
+        #                 new_members = CustomUser.objects.filter(id__in=new_members_ids)
+        #                 team.members.add(*new_members)
+        #         return redirect('dashboard')
+        # else:
+        #     print("POST data:", request.POST)  # Debug log
+        #     if 'new_members' in request.POST:
+        #         print("New members found:", request.POST.get('new_members'))  # Debug log
+    # else:
+    #     print("Form is not valid:", form.errors)
+    #     form = None
     # else:
     #     form = None
+        if 'new_members' in request.POST:
+            newMembers = request.POST.get('new_members')
+            if newMembers:
+                newMembers = newMembers.split(',')
+                newMembers = [int(id) for id in newMembers if id]
+                if newMembers:
+                    newMembers = CustomUser.objects.filter(id__in=newMembers)
+                    team.members.add(*newMembers)
+                    return HttpResponseRedirect(reverse('teamdetails', args=[id]))
+        elif 'delete_member' in request.POST:
+            member_id = request.POST.get('delete_member')
+            if member_id:
+                member = CustomUser.objects.get(id=member_id)
+                team.members.remove(member)
+                return HttpResponseRedirect(reverse('teamdetails', args=[id]))
+            
     team_id = team.id
     team_name = team.name
     team_description = team.description
