@@ -181,4 +181,7 @@ Run:
 
 If you get this:
 ![image](https://github.com/user-attachments/assets/e16c0c33-5f6f-4840-a414-24666a54a497)
+Or this:
+![image](https://github.com/user-attachments/assets/5783e301-885f-4c24-b2f4-644b63a6cd3d)
+
 Make sure Docker Desktop is running, if it is, restart and try again.
