@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!--Yumna's code-->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../../static/main.css">
@@ -38,10 +37,16 @@
             border-color: red;
         }
         .error-message {
-            color: red;
-            font-size: 0.9em;
-            margin-bottom: 10px;
-            display: none;
+        color: red;
+        font-size: 0.9em;
+        margin-bottom: 10px;
+        display: none; /* Changed by inline style when errors exist */
+        }
+        .messages {
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
         }
         .form-box button {
             width: 100%;
@@ -90,67 +95,104 @@
             </form>  -->
             <form method="post" action="{% url 'register' %}">
                 {% csrf_token %}
-                {{ form.as_p }}
+                {% if messages %}
+                <div class="messages">
+                    {% for message in messages %}
+                    <div class="error-message" style="display: block;">{{ message }}</div>
+                    {% endfor %}
+                </div>
+                <script>
+                    // Clear messages after 3 seconds
+                    setTimeout(function() {
+                        document.querySelector('.messages').style.display = 'none';
+                    }, 3000);
+                </script>
+                {% endif %}
+                
+                <div class="form-group">
+                    <label for="{{ form.email.id_for_label }}">Email</label>
+                    {{ form.email }}
+                    {% if form.email.errors %}
+                        <div class="error-message" style="display: block;">{{ form.email.errors }}</div>
+                    {% endif %}
+                </div>
+    
+                <div class="form-group">
+                    <label for="{{ form.password1.id_for_label }}">Password</label>
+                    {{ form.password1 }}
+                    {% if form.password1.errors %}
+                        <div class="error-message" style="display: block;">{{ form.password1.errors }}</div>
+                    {% endif %}
+                </div>
+    
+                <div class="form-group">
+                    <label for="{{ form.password2.id_for_label }}">Confirm Password</label>
+                    {{ form.password2 }}
+                    {% if form.password2.errors %}
+                        <div class="error-message" style="display: block;">{{ form.password2.errors }}</div>
+                    {% endif %}
+                </div>
+    
                 <button type="submit">Register</button>
             </form>
         </div>
     </div>
     <script>
-        // Form validation
-        document.getElementById('registerForm').addEventListener('submit', function (event) {
-            event.preventDefault(); // Prevent form submission
+        // // Form validation
+        // document.getElementById('registerForm').addEventListener('submit', function (event) {
+        //     event.preventDefault(); // Prevent form submission
 
-            let isValid = true;
+        //     let isValid = true;
 
-            // Validate Task Title
-            const email = document.getElementById('email');
-            const emailError = document.getElementById('email-error');
-            if (email.value.trim() === '') {
-                email.classList.add('error');
-                emailError.style.display = 'block';
-                isValid = false;
-            } else {
-                email.classList.remove('error');
-                emailError.style.display = 'none';
-            }
-         
-            const pass1 = document.getElementById('password');
-            const pass1Error = document.getElementById('password-error');
-            if (pass1.value.trim() === '') {
-                pass1.classList.add('error');
-                pass1Error.style.display = 'block';
-                isValid = false;
-            } else {
-                pass1.classList.remove('error');
-                pass1.style.display = 'none';
-            }
+        //     // Validate Task Title
+        //     const email = document.getElementById('email');
+        //     const emailError = document.getElementById('email-error');
+        //     if (email.value.trim() === '') {
+        //         email.classList.add('error');
+        //         emailError.style.display = 'block';
+        //         isValid = false;
+        //     } else {
+        //         email.classList.remove('error');
+        //         emailError.style.display = 'none';
+        //     }
+    
+        //     const pass1 = document.getElementById('password');
+        //     const pass1Error = document.getElementById('password-error');
+        //     if (pass1.value.trim() === '') {
+        //         pass1.classList.add('error');
+        //         pass1Error.style.display = 'block';
+        //         isValid = false;
+        //     } else {
+        //         pass1.classList.remove('error');
+        //         pass1.style.display = 'none';
+        //     }
 
-            const confirm = document.getElementById('confirm');
-            const confirmError1 = document.getElementById('confirm-error-1');
-            if (confirm.value.trim() === '') {
-                confirm.classList.add('error');
-                confirmError1.style.display = 'block';
-                isValid = false;
-            } else {
-                confirm.classList.remove('error');
-                confirm.style.display = 'none';
-            }
+        //     const confirm = document.getElementById('confirm');
+        //     const confirmError1 = document.getElementById('confirm-error-1');
+        //     if (confirm.value.trim() === '') {
+        //         confirm.classList.add('error');
+        //         confirmError1.style.display = 'block';
+        //         isValid = false;
+        //     } else {
+        //         confirm.classList.remove('error');
+        //         confirm.style.display = 'none';
+        //     }
 
-            const confirmError2 = document.getElementById('confirm-error-2');
-            if (confirm.value.trim() != pass1.value.trim())
-            {
-                confirm.classList.add('error');
-                confirmError2.style.display = 'block';
-                isValid = false; 
-            } else {
-                confirm.classList.remove('error');
-                confirm.style.display = 'none';
-            }
-            if (isValid) {
-                alert('Form submitted successfully!');
-              
-            }
-        });
+        //     const confirmError2 = document.getElementById('confirm-error-2');
+        //     if (confirm.value.trim() != pass1.value.trim())
+        //     {
+        //         confirm.classList.add('error');
+        //         confirmError2.style.display = 'block';
+        //         isValid = false; 
+        //     } else {
+        //         confirm.classList.remove('error');
+        //         confirm.style.display = 'none';
+        //     }
+        //     if (isValid) {
+        //         alert('Form submitted successfully!');
+        
+        //     }
+        // });
     </script>
 </body>
 </html>

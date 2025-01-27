@@ -111,31 +111,37 @@ def login(request):
 
 
 def register(request):
-    try:
-        if request.user.id:
-            return HttpResponseRedirect(reverse("dashboard"))
-
-        if request.method == "POST":
-            form = UserRegisterForm(request.POST)
-            print("Form submitted:", form)
-            if form.is_valid():
-                try:
-                    form.save()
-                except IntegrityError as e:
-                    print("IntegrityError occurred:", e)
-                    return render(request, "toDo/register.html", {"form": form, "message": "Username already exists."})
+    if request.user.is_authenticated:
+        return redirect('dashboard')
+    # if request.user.id:
+    #         return HttpResponseRedirect(reverse("dashboard"))
+    if request.method == "POST":
+        form = UserRegisterForm(request.POST)
+        print("Form submitted:", form)
+        if form.is_valid():
+            try:
                 form.save()
+                messages.success(request, "Registration successful. Please log in.")
                 return redirect("login")
-            else:
-                print("Form errors:", form.errors)
+            except IntegrityError as e:
+                print("IntegrityError occurred:", e)
+                messages.error(request, "An error occurred: " + str(e))
+                # return render(request, "toDo/register.html", {"form": form, "message": "Username already exists."})
+            # form.save()
+            # return redirect("login")
         else:
-            form = UserRegisterForm()  # Initialize a blank form for GET requests
-            print("Blank form initialized")
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f"{field}: {error}")
+            print("Form errors:", form.errors)
+    else:
+        form = UserRegisterForm()  # Initialize a blank form for GET requests
+        print("Blank form initialized")
 
-        return render(request, "toDo/register.html", {"form": form})
-    except Exception as e:
-        print("Error occurred:", e)  # Print the exact error to console
-        return HttpResponseServerError("Server error")    
+    return render(request, "toDo/register.html", {"form": form})
+    # except Exception as e:
+    #     print("Error occurred:", e)  # Print the exact error to console
+    #     return HttpResponseServerError("Server error")    
 
 def logoutView(request):
     logout(request)
