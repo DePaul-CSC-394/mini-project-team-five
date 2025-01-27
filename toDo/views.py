@@ -365,3 +365,6 @@ def delete_team(request, id):
         return redirect('dashboard')
 
     return HttpResponseRedirect(reverse('teamdetails', args=[id]))
+
+def forgot_password(request):
+    return render(request, "toDo/forgotpsw.html")
