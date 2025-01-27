@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../static/main.css">
+    <title>Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            
+        }
+        .navbar a:hover {
+            color: #0056b3;
+        }
+        .task-container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #f8f9fa; 
+            text-align: center;
+        }
+        .task-container h3 {
+            font-size: 18px;
+            margin: 10px 0 20px;
+            color: #333;
+        }
+        .task-container button {
+            display: inline-block;
+            margin: 10px 0;
+            padding: 10px 15px;
+            border-radius: 6px;
+            font-size: 14px;
+            background-color: blue;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="">$APPNAME</a>
+        <a href="/about">About</a>
+        <a href="/dashboard">Dashboard</a>
+        <a href="{% url 'todos_new' %}">To-Do's</a>
+        <a href="{% url 'teams' id=team_id %}">Teams</a>
+        <a href="{% url 'logout' %}">{{ user.email }}</a>
+    </div>
+
+    <div class="task-container">
+        <h3>No ToDo's</h3>
+        <button class="create-todo" onclick="window.location.href='{% url 'todos_new' %}'">Create ToDo</button>
+    </div>
+</body>
+</html>
