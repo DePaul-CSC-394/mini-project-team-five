@@ -15,28 +15,58 @@
             text-align: left;
             margin: 50px 5% 0;
         }
-        .gridBox{
+        /* .gridBox{
             justify-self: center;
             width: 80%;
+        } */
+        .gridBox {
+            max-width: 1200px;
+            width: 100%;
+            padding: 0;
+            margin: 0 auto;
         }
-        .team-container {
+        /* .team-container {
                 display: grid;
                 grid-template-columns: repeat(3, 1fr);
                 gap: 20px;
                 justify-content: center;
                 margin: 20px;
+        } */
+        .team-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            justify-content: center;
+            margin: 20px;
         }
         .team-card {
             background-color: #f9f9f9;
-            width: 30%;
-            padding: 10px;
+            padding: 5px;
             text-align: center;
-            border: 1px solid ;
+            border: 1px solid #ddd;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: transform 0.1s ease-in-out;
         }
-        .team-card {
+
+        .team-card:hover {
+            transform: scale(1.05);
+        }
+
+        .team-card img {
+            width: 100%;
+            height: 350px;
+            object-fit: center;
+        }
+
+        .team-card-content {
+            padding: 15px;
+        }
+        /* .team-card {
+            // display: flex;
+            // flex-direction: column;
+            // justify-content: space-between;
             background-color: #f9f9f9;
-            width: clamp(100px, 100%, 300px);
+            width: clamp(100px, 100%, 350px);
             padding: 5px;
             margin: 0 auto; 
             text-align: center;
@@ -45,15 +75,9 @@
         }
         .team-card img {
             width: 100%;
-            height: clamp(100px, 200px, 300px);
+            height: clamp(100px, 200px, 350px);
             object-fit: center;
-            background-color: grey;
-        }
-        .team-card img2 {
-            width: 300px;
-            height: 300px;
-            object-fit: center;
-            background-color: grey;
+            background-color: transparent;
         }
         .team-card h3 {
             margin: 10px 0;
@@ -67,15 +91,7 @@
             background-color: transparent;
             width: fit-content;
             height: auto;
-        }
-        .team-card {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-        .team-card img {
-            background-color: transparent;
-        }
+        } */
     </style>
 </head>
 <body>
@@ -98,31 +114,38 @@
         <div class="team-container">
             <div class="team-card">
                 <img src="https://lh3.googleusercontent.com/d/1dV6fxNiAayJDuKjPDdsMW83DS8ROet1x=s220?authuser=0" alt="Image cap" class="frontend-img">
-                <h3>Jake</h3>
-                <p>I'm a senior Computer Science major with a Software Engineering minor. I setup the Docker files & containers, NGINX, manage the GitHub. I also write documentation and help the team troubleshoot and debug.                	<br><br><b>Project Manager</b></p>
+                <div class="team-card-content">
+                    <h3>Jake</h3>
+                    <p>I'm a senior Computer Science major with a Software Engineering minor. I setup the Docker files & containers, NGINX, manage the GitHub. I also write documentation and help the team troubleshoot and debug. <br><br><b>Project & Documentation Manager</b></p>
+                </div>
             </div>
             <div class="team-card">
                 <img src="https://lh3.googleusercontent.com/d/1H2ttzpLVDMQ_3rpXGHQyWiQALZI0a5RF?authuser=0" alt="Image cap" class="backend-img">
-                <h3>John</h3>
-                <p>I am a senior Computer Science major with a minor in Data Scince. I have experience in Java, Python, and C. I worked on the backend of the application. 
-                <br><br><b>Requirements Manager</b></p>
+                <div class="team-card-content">
+                    <h3>John</h3>
+                    <p>I am a senior Computer Science major with a minor in Data Scince. I have experience in Java, Python, and C. I worked on the backend of the application. <br><br><b>Requirements Manager</b></p>
+                </div>
             </div>
             <div class="team-card">
                 <img src="https://lh3.googleusercontent.com/d/1mbp4c0UXAhiXQWekmqXMjcPrSFPecKRy" alt="Image cap" class="projectmanager-img">
-                <h3>Matteo</h3>
-                <p>I'm a senior in Computer Science with a Game Design minor. I built and troubleshooted many of the HTML files on display, as well as tested the application to ensure stability.</p>
-                <br><br><b>Testing / Design Manager</b></p>
+                <div class="team-card-content">
+                    <h3>Matteo</h3>
+                    <p>I'm a senior in Computer Science with a Game Design minor. I built and troubleshooted many of the HTML files on display, as well as tested the application to ensure stability. <br><br><b>Testing Manager</b></p>
+                </div>
             </div>
             <div class="team-card">
                 <img src="https://lh3.googleusercontent.com/d/1RX2y7gJMbD5KDSUQZqyvyM3q89vC7-OF" alt="Image cap" class="backend-img">
-                <h3>Syed</h3>
-                <p>I am a senior studying computer science. My role in this project is as a design manager plus backend developer. I’m excited to work with my peers and develop an awesome concept!</p>
+                <div class="team-card-content">
+                    <h3>Syed</h3>
+                    <p>I am a senior studying computer science. My role in this project is as a design manager plus backend developer. I’m excited to work with my peers and develop an awesome concept! <br><br><b>Design Manager</b></p>
+                </div>
             </div>                
             <div class="team-card">
                 <img src="https://lh3.googleusercontent.com/d/1kxjy9keswjIOEqlrBVYDPLudrFSA4dAy" alt="Image cap" class="backend-img">
-                <h3>Yumna</h3>
-                <p>I’m a computer science major with an interest in data science and insurance. Familiar coding in 					HTML, C and debugging.
-                <br><br><b>Presentation Manager</b></p>
+                <div class="team-card-content">
+                    <h3>Yumna</h3>
+                    <p>I’m a computer science major with an interest in data science and insurance. Familiar coding in HTML, C and debugging. <br><br><b>Presentation Manager</b></p>
+                </div>
             </div>
         </div>
     </div>
