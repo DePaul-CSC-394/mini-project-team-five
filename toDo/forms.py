@@ -35,13 +35,26 @@ class LoginForm(AuthenticationForm):
 #https://www.devhandbook.com/django/user-registration/
 #https://www.crunchydata.com/blog/building-a-user-registration-form-with-djangos-built-in-authentication
 class UserRegisterForm(UserCreationForm):
-    email = forms.EmailField(widget=forms.EmailInput(attrs={'name':'email'}))
+    # email = forms.EmailField(widget=forms.EmailInput(attrs={'name':'email'}))
     #password1 = forms.CharField(widget=forms.PasswordInput(attrs={'name':'password'}))
     #password2 = forms.CharField(widget=forms.PasswordInput(attrs={'name':'confirm'}))
-    
+    email = forms.EmailField(
+        widget=forms.EmailInput(attrs={
+            'name': 'email',
+            'class': 'form-control',
+            'placeholder': 'Enter your email'
+        })
+    )
     class Meta:
         model = CustomUser
         fields = ['email', 'password1', 'password2']
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.username = self.cleaned_data['email']  # Set username to email
+        if commit:
+            user.save()
+        return user
     
 #https://docs.djangoproject.com/en/5.1/topics/forms/    
 class TaskForm(forms.ModelForm):

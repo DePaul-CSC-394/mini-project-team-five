@@ -1,9 +1,9 @@
-from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 from django.conf import settings
 
-from users.models import CustomUser   
+from users.models import CustomUser
+from django.db import models   
 
 # Create your models here.
 
@@ -16,8 +16,18 @@ from users.models import CustomUser
 #         return self.name
 
 #     class Meta:
-#         ordering = ['name']
+# #         ordering = ['name']
 
+# class CustomUser(AbstractUser):
+#     email = models.EmailField(unique=True)
+#     username = models.CharField(max_length=150, blank=True, null=True)
+#     groups = models.ManyToManyField(Group, related_name='customuser_set', blank=True)
+#     user_permissions = models.ManyToManyField(Permission, related_name='customuser_set', blank=True)
+#     USERNAME_FIELD = 'email'
+#     REQUIRED_FIELDS = []
+
+#     def __str__(self):
+#         return self.email
 class stopwatch(models.Model):
     startTime = models.DateTimeField(default=timezone.now, null=True, blank=True)
     endTime = models.DateTimeField(null=True, blank=True)
@@ -83,4 +93,3 @@ class TeamMember(models.Model):
     
     def __str__(self):
         return self.member.email + ' is a member of ' + self.team.name
-    
