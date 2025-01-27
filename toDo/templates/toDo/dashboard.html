@@ -154,6 +154,7 @@
                 <div class="task">
                     <h3>{{ task.title }}</h3>
                     <p>{{ task.description }}</p>
+                    <p>{% if team_name %}Team: {{team_name}}{%endif%}</p>
                     <div class="timer" id="timer-{{ task.id }}">0m 0s</div>
                     <!-- Make this work <div class="teamName">{{ task.team }}</div> -->
                     <button class="start-btn" onclick="startTimer('timer-{{ task.id }}')">Start</button>
