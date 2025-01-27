@@ -10,6 +10,7 @@ from django.db import IntegrityError
 from .models import Task, Team
 
 import logging
+from django.db.models import Q
 
 logger = logging.getLogger(__name__)
 
@@ -87,14 +88,26 @@ def login(request):
                 login_user.backend = 'users.authBackend.emailBackend.EmailBackend'
                 auth_login(request, login_user)
                 return redirect('/dashboard')
-            else:
-                print("The user is not found.")
+            elif email not in CustomUser.objects.values_list('email', flat=True):
                 return render(
                     request,
                     "toDo/login.html",
                     {"message":"The user is not found.", "form": form},
                 )
+            else:
+                return render(
+                    request,
+                    "toDo/login.html",
+                    {"message":"The password is incorrect.", "form": form},
+                )
             
+            # else:
+            #     print("The user is not found.")
+            #     return render(
+            #         request,
+            #         "toDo/login.html",
+            #         {"message":"The user is not found.", "form": form},
+            #     )
             
             
             
@@ -181,8 +194,9 @@ def todosEdit(request, id):
     if not request.user.is_authenticated:
         return redirect('login')
     
-    team_id = 1  # Replace with actual logic to get team_id
-    
+    team = Team.objects.first()
+    team_id = team.id if team else 0 
+
     try:
         task = get_object_or_404(Task, id=id)
         
@@ -208,7 +222,8 @@ def teamsNew(request):
     if not request.user.is_authenticated:
         return redirect('login')
     
-    team_id = 1  # Replace with actual logic to get team_id
+    team = Team.objects.first()
+    team_id = team.id if team else 0 
     # return render(request, "toDo/createTeam.html")
     form = TeamForm(request.POST)
     if request.method == "POST":
@@ -267,12 +282,18 @@ def teams(request, id):
     # team = Team.objects.get(id=id)
     # # Get the team by ID
     team = get_object_or_404(Team, id=id)
-    print("Team:", team)
     team_members = team.members.all()
     todo_items = Task.objects.filter(team=team)
-    users_not_in_team = CustomUser.objects.exclude(teams=team)
-
+    team_id = team.id
+    team_name = team.name
+    team_description = team.description
+    # users_not_in_team = CustomUser.objects.exclude(teams=team)
+    users_not_in_team = CustomUser.objects.filter(~Q(teammember__team=team))
     # print(request.POST)
+    print("Team:", team)
+    print("Tasks:", todo_items)
+    print("Users not in team:", users_not_in_team)
+
 
     # if request.method == "GET":
     #         form = TaskForm(instance=team)
@@ -328,14 +349,6 @@ def teams(request, id):
                 team.members.remove(member)
                 return HttpResponseRedirect(reverse('teamdetails', args=[id]))
             
-    team_id = team.id
-    team_name = team.name
-    team_description = team.description
-    todo_items = Task.objects.filter(team=team)
-    users_not_in_team = CustomUser.objects.exclude(teams=team)
-    print("Tasks:", todo_items)
-    print("Users not in team:", users_not_in_team)
-
     context = {
         # 'form': form,
         'team_id': team_id,

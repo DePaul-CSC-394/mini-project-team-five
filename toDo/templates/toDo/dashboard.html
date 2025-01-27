@@ -155,6 +155,7 @@
                     <h3>{{ task.title }}</h3>
                     <p>{{ task.description }}</p>
                     <div class="timer" id="timer-{{ task.id }}">0m 0s</div>
+                    <!-- Make this work <div class="teamName">{{ task.team }}</div> -->
                     <button class="start-btn" onclick="startTimer('timer-{{ task.id }}')">Start</button>
                     <button class="stop-btn" onclick="stopTimer('timer-{{ task.id }}')">Stop</button>
                     <button class="pause-btn" onclick="pauseTimer('timer-{{ task.id }}')">Pause</button>
