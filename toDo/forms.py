@@ -75,8 +75,8 @@ class TeamForm(forms.ModelForm):
     
     class Meta:
         model = Team
-        fields = ['name', 'description']
-        # fields = ['name', 'description', 'members']
+        #fields = ['name', 'description']
+        fields = ['name', 'description', 'members'] # need to add members to fields
         
     
     

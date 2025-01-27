@@ -199,30 +199,31 @@
             form.submit();
         }
 
-        function addMember() {
-            const select = document.getElementById('add-member');
-            const selectedOption = select.options[select.selectedIndex];
-            const memberId = selectedOption.value;
-            const memberEmail = selectedOption.text;
+        // Jake's code
+        // function addMember() {
+        //     const select = document.getElementById('add-member');
+        //     const selectedOption = select.options[select.selectedIndex];
+        //     const memberId = selectedOption.value;
+        //     const memberEmail = selectedOption.text;
 
-            // Add to team list UI
-            const teamList = document.getElementById('team-list');
-            const newMemberDiv = document.createElement('div');
-            newMemberDiv.innerHTML = `
-                <span class="member-name">${memberEmail}</span>
-            `;
-            teamList.appendChild(newMemberDiv);
+        //     // Add to team list UI
+        //     const teamList = document.getElementById('team-list');
+        //     const newMemberDiv = document.createElement('div');
+        //     newMemberDiv.innerHTML = `
+        //         <span class="member-name">${memberEmail}</span>
+        //     `;
+        //     teamList.appendChild(newMemberDiv);
 
-            // Add member ID to newMembers array
-            if (!newMembers.includes(memberId)) {
-                newMembers.push(memberId);
-            }
+        //     // Add member ID to newMembers array
+        //     if (!newMembers.includes(memberId)) {
+        //         newMembers.push(memberId);
+        //     }
 
-            // Remove from dropdown
-            select.remove(select.selectedIndex);
-        }
+        //     // Remove from dropdown
+        //     select.remove(select.selectedIndex);
+        // }
 
-        
+        // not working
         // function addMember() {
         //     const select = document.getElementById('add-member');
         //     const selectedOption = select.options[select.selectedIndex];
@@ -259,6 +260,28 @@
             // memberToDelete = null;
             document.getElementById('popup-overlay').style.display = 'none';
         }
+
+        // John's code
+        function addMember() {
+            const select = document.getElementById('add-member');
+            const userId = select.value;
+            const userEmail = select.options[select.selectedIndex].text;
+
+            if (userId) {
+                const teamList = document.getElementById('team-list');
+                const newMemberDiv = document.createElement('div');
+                newMemberDiv.innerHTML = `
+                    <span class="member-name">${userEmail}</span>
+                    <button class="delete-btn" onclick="showPopup(this)">Delete</button>
+                `;
+                teamList.appendChild(newMemberDiv);
+
+                // Optionally, you can remove the added member from the select list
+                select.remove(select.selectedIndex);
+            }
+        }
+        
+
     </script>
 </body>
 </html>
