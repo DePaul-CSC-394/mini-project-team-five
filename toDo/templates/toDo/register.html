@@ -95,7 +95,7 @@
             </form>  -->
             <form method="post" action="{% url 'register' %}">
                 {% csrf_token %}
-                {% if messages %}
+                <!-- {% if messages %}
                 <div class="messages">
                     {% for message in messages %}
                     <div class="error-message" style="display: block;">{{ message }}</div>
@@ -105,9 +105,9 @@
                     // Clear messages after 3 seconds
                     setTimeout(function() {
                         document.querySelector('.messages').style.display = 'none';
-                    }, 3000);
+                    }, 10000);
                 </script>
-                {% endif %}
+                {% endif %} -->
                 
                 <div class="form-group">
                     <label for="{{ form.email.id_for_label }}">Email</label>

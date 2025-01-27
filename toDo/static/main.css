@@ -29,4 +29,5 @@
     color: black;
 /*             font-weight: bold; */
     margin: 0;
+    font-size: clamp(0.7em, 1.15vw, 1.2em);
 }
