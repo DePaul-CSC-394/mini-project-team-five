@@ -1,6 +1,6 @@
 from django.http import HttpResponseRedirect, HttpResponseServerError
 from django.shortcuts import get_object_or_404, redirect, render
-
+from django.contrib import messages
 from users.models import CustomUser
 from .forms import LoginForm, TaskForm, TeamForm, UserRegisterForm
 from django.contrib.auth import authenticate, login as auth_login, logout
@@ -252,9 +252,6 @@ def dashboard(request):
         print("Error occurred:", e)
         return HttpResponseServerError("Server error")
 
-
-
-
 def teams(request, id):
     if not request.user.is_authenticated:
         return redirect('login')
@@ -384,4 +381,11 @@ def delete_team(request, id):
     return HttpResponseRedirect(reverse('teamdetails', args=[id]))
 
 def forgot_password(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        if CustomUser.objects.filter(email=email).exists():
+            # Add code to send password reset email
+            messages.success(request, "Password reset email sent.")
+        else:
+            messages.error(request, "Email not found.")
     return render(request, "toDo/forgotpsw.html")
