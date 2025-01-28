@@ -1,3 +1,7 @@
+/* sets everything to inherit its font-size from its parent */
+*{  
+    font-size: 1em;
+} 
 body{
     background-color: #f9f9f9;
 }
@@ -47,7 +51,6 @@ body{
 }
 .form-group textarea, .form-group select, .form-group input {
     width: 100%;
-    min-height: 50px;
     height: fit-content;
 }
 .form-box {
@@ -60,8 +63,8 @@ body{
     background-color: white;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
-.form-box label, input, button {
-    font-size: 1em;
+.form-box > label, .form-box > input {
+    min-height: 50px;   
 }
 .form-box label {
     display: block;
@@ -75,7 +78,7 @@ body{
     border-radius: 3px;
     box-sizing: border-box;
 }
-.form-box button {
+button {
     padding: 10px 20px;
     background-color: blue; 
     color: white;
@@ -83,31 +86,26 @@ body{
     border-radius: 5px;
     cursor: pointer;
 }
-.form-box button:hover {
+button:hover {
     background-color: transparent;
     color: black;
     border: 1px solid blue;
     transition: all 0.2s ease-in-out;
 }
-form > .cancel-button {
+form > .cancel-button, .delete-button {
     background-color: red;
     color: white;
 }
-form > .cancel-button:hover {
+form > .cancel-button:hover, .delete-button:hover {
     background-color: transparent;
     color: red;
     border: 1px solid red;
 }
-form > .save-button {
+form > .save-button, .update-button {
     background-color: green;
     color: white;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    border-radius: 3px;
-    font-size: 1em;
 }
-form > .save-button:hover {
+form > .save-button:hover, .update-button:hover {
     background-color: transparent;
     color: green;
     border: 1px solid green;
