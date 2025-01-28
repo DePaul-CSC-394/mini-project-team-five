@@ -27,27 +27,6 @@
       margin-bottom: 20px;
     }
 
-    .form-group {
-      margin-bottom: 15px;
-    }
-
-    .form-group label {
-      display: block;
-      margin-bottom: 5px;
-    }
-
-    .form-group input {
-      width: 100%;
-      padding: 8px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-
-    .form-group input.error {
-      background-color: lightcoral;
-      border-color: red;
-    }
-
     .button-container {
       text-align: center;
       margin-top: 20px;
@@ -69,45 +48,6 @@
       transition: all 0.2s ease-out;
     }
 
-    .popup {
-      display: none;
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 50%;
-      height: 50%;
-      background-color: rgba(255, 255, 255, 0.9);
-      border: 1px solid black;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-    }
-
-    .popup-content {
-      text-align: center;
-    }
-
-    .popup::before {
-      z-index: -1;
-    }
-
-    .close-btn {
-      margin-top: 20px;
-      padding: 10px 20px;
-      background-color: green;
-      color: white;
-      border: 1px solid transparent;
-      cursor: pointer;
-    }
-
-    .close-btn:hover {
-      background-color: transparent;
-      border: 1px solid green;
-      color: green;
-      transition: all 0.2s ease-out;
-    }
-
   </style>
 </head>
 <body>
@@ -122,12 +62,12 @@
   </div>
 
   {% if messages %}
-  <div class="popup" id="popup">
+  <div class="message-popup" id="message-popup">
       <div class="popup-content">
           {% for message in messages %}
               <div class="message {{ message.tags }}">{{ message }}</div>
           {% endfor %}
-          <button class="close-btn" onclick="closePopup()">OK</button>
+          <button class="close-button" onclick="closePopup()">OK</button>
       </div>
   </div>
   {% endif %}
@@ -148,12 +88,12 @@
 
   <script>
     function closePopup() {
-        document.getElementById('popup').style.display = 'none';
+        document.getElementById('message-popup').style.display = 'none';
     }
 
     // Show the popup if there are messages
     document.addEventListener('DOMContentLoaded', function() {
-        const popup = document.getElementById('popup');
+        const popup = document.getElementById('message-popup');
         if (popup) {
             popup.style.display = 'flex';
         }
