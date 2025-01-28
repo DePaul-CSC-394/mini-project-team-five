@@ -8,34 +8,10 @@
     <title>Create Team Page</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
             display: flex;
             flex-direction: column;
         } 
-        /* main {
-            margin-top: 50px;
-            align-items: flex-start;
-        }
-        img {
-            max-width: 300px;
-            height: auto;
-        }
-        input::placeholder
-        {
-        	color: black;
-            opacity: 0.4;
-        }
-        input[type = "button"], input[type = "cancel"], input[type = "save"] {
-        border: none;
-        color: white;
-        padding: 8px;
-        margin: 4px 2px;
-        width: 100px;
-        text-align: center;
-        cursor: pointer;
-        } */
+        
     </style>
 </head>
 <body>
@@ -79,13 +55,13 @@
                 {% endif %}
             </div>
         
-            <div class="form-group">
+            <!-- <div class="form-group">
                 <label for="{{ form.members.id_for_label }}">Members</label>
                 {{ form.members }}
                 {% if form.members.errors %}
                     <div class="error-message">{{ form.members.errors }}</div>
                 {% endif %}
-            </div>
+            </div> -->
 
             <button class="cancel-button" type="button" onclick="window.location.href='/dashboard'">Cancel</button>
             <button type="submit" class="save-button">Save</button>
