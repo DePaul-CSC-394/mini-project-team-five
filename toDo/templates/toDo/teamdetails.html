@@ -133,6 +133,17 @@
         </form>
     </div>
 
+    {% if messages %}
+    <div class="popup" id="popup">
+        <div class="popup-content">
+            {% for message in messages %}
+                <div class="message {{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+            <button class="close-btn" onclick="closePopup()">OK</button>
+        </div>
+    </div>
+    {% endif %}
+
     <!-- Hidden form for team deletion -->
     <form id="delete-team-form" method="POST" action="{% url 'delete_team' id=team_id %}" style="display: none;">
         {% csrf_token %}
