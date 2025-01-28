@@ -31,6 +31,9 @@
             gap: 10px;
             margin-bottom: 20px;
         }
+        .team-members input {
+            height: 100%;
+        }
         .team-list div {
             display: flex;
             justify-content: space-between;
@@ -44,33 +47,6 @@
         .team-list .member-name {
             font-size: 1rem;
             font-weight: bold;
-        }
-        /* .delete-btn {
-            background-color: red;
-            color: white;
-            padding: 5px 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .delete-btn:hover {
-            background-color: darkred;
-        } */
-        .cancel-button, .delete-btn {
-            background-color: red;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-            border-radius: 3px;
-        }
-        .update-button {
-            background-color: green;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-            border-radius: 3px;
         }
         .popup-overlay {
             position: fixed;
@@ -124,10 +100,10 @@
     <div class="content">
         <h1>{{team_name}}</h1>
         <p>{{team_description}}</p>
-        <p>Team_Owner: {{ team_owner.email }}</p>
+        <p>Team Owner: {{ team_owner.email }}</p>
 
         <div class="team-members">
-                <input type="text" id="add-member" placeholder="Enter member email: ">                
+            <input type="text" id="add-member" placeholder="Enter member email: ">                
             <!-- <select id="add-member">
             <input type="email" id="add-member-email" placeholder="Add team member (email)" required>
 
@@ -136,7 +112,7 @@
                 {% endfor %} 
             </select> -->
             <!-- <input type="hidden" name="user_id" id="user_id"> -->
-              <button type="button" onclick="addMember()">Add</button>
+            <button type="button" onclick="addMember()">Add</button>
         </div>
         <div class="team-list" id="team-list">
             {% for member in team_members %}
@@ -150,12 +126,10 @@
             <!-- {% if form %}
                 {{ form.as_p }}
             {% endif %} -->
-            <div class="buttons">
-                <input type="hidden" name="new_members" id="new-members">
-                <button class="cancel-button" type="button" onclick="window.location.href='/dashboard'">Cancel</button>
-                <button class="update-button" type="button" onclick="updateTeam()">Update</button>
-                <button class="delete-btn" type="button" onclick="showPopup(this)">Delete</button>
-            </div>
+            <input type="hidden" name="new_members" id="new-members">
+            <button class="cancel-button" type="button" onclick="window.location.href='/dashboard'">Cancel</button>
+            <button class="update-button" type="button" onclick="updateTeam()">Update</button>
+            <button class="delete-button" type="button" onclick="showPopup(this)">Delete</button>
         </form>
     </div>
 
