@@ -221,44 +221,6 @@
             timerElement.innerText = `0m 0s`;
         }
 
-        // function pauseTimer(timerId) {
-        //     const timer = timers[timerId];
-        //     const pauseButton = document.getElementById(timerId).parentNode.querySelector('.pause-button');
-
-        //     if (timer) {
-        //         timer.isPaused = !timer.isPaused;
-        //         pauseButton.innerText = timer.isPaused ? 'Resume' : 'Pause';
-        //     }
-        //     const timerElement = document.getElementById(timerId);
-        //     const stopButton = timerElement.parentNode.querySelector('.stop-button');
-        //     const text = pauseButton.innerText;
-        //     if (text === 'Resume') {
-        //         pauseButton.style.color = 'green';
-        //         pauseButton.style.border = '1px solid green';
-        //         stopButton.style.display = 'none';
-        //         pauseButton.onmouseover = function() {
-        //             this.style.backgroundColor = 'green';
-        //             this.style.color = 'white';
-        //         };
-        //         pauseButton.onmouseout = function() {
-        //             this.style.backgroundColor = 'transparent';
-        //             this.style.color = 'green';
-        //         };
-        //     } else if (text === 'Pause') {
-        //         pauseButton.style.color = 'gold';
-        //         pauseButton.style.border = '1px solid gold';
-        //         stopButton.style.display = 'inline-block';
-        //         pauseButton.onmouseover = function() {
-        //             this.style.backgroundColor = 'gold';
-        //             this.style.color = 'white';
-        //         };
-        //         pauseButton.onmouseout = function() {
-        //             this.style.backgroundColor = 'transparent';
-        //             this.style.color = 'gold';
-        //         };
-        //     }
-        // }
-
         function pauseTimer(timerId) {
             const timerElement = document.getElementById(timerId);
             const pauseButton = timerElement.parentNode.querySelector('.pause-button');
