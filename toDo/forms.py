@@ -90,6 +90,11 @@ class TeamForm(forms.ModelForm):
         model = Team
         #fields = ['name', 'description']
         fields = ['name', 'description', 'members'] # need to add members to fields
-        
+
+class PasswordResetForm(forms.Form): #form for forgot password page
+    email = forms.EmailField(widget=forms.EmailInput(attrs={'name':'email'}))
+
+    
+    
     
     

@@ -57,6 +57,7 @@ class Team(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField(null=True, blank=True)
     members = models.ManyToManyField(CustomUser, through='TeamMember')
+    owner = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='owned_teams', null=False, blank=False)
     
     def __str__(self):
         return self.name

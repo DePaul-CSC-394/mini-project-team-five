@@ -1,11 +1,13 @@
 from django.http import HttpResponseRedirect, HttpResponseServerError
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib import messages
+from toDoList import settings
 from users.models import CustomUser
-from .forms import LoginForm, TaskForm, TeamForm, UserRegisterForm
+from .forms import LoginForm, PasswordResetForm, TaskForm, TeamForm, UserRegisterForm
 from django.contrib.auth import authenticate, login as auth_login, logout
 from django.urls import reverse
 from django.db import IntegrityError
+from django.core.mail import send_mail
 
 from .models import Task, Team
 
@@ -400,11 +402,27 @@ def delete_team(request, id):
     return HttpResponseRedirect(reverse('teamdetails', args=[id]))
 
 def forgot_password(request):
-    if request.method == 'POST':
-        email = request.POST.get('email')
-        if CustomUser.objects.filter(email=email).exists():
-            # Add code to send password reset email
-            messages.success(request, "Password reset email sent.")
-        else:
-            messages.error(request, "Email not found.")
-    return render(request, "toDo/forgotpsw.html")
+    form = PasswordResetForm()
+    if request.method == "POST":
+        email = request.POST.get("email")
+        try:
+            user = CustomUser.objects.get(email=email)
+            if user:
+                #send email
+                send_mail(
+                    'Password Reset',
+                    'Here is a test message.',
+                    settings.EMAIL_HOST_USER,
+                    [email],
+                    fail_silently=False,
+                )
+                
+                return render(request, "toDo/forgotpsw.html", {"message": "Email sent", "form": form})
+        except CustomUser.DoesNotExist:
+            return render(request, "toDo/forgotpsw.html", {"message": "Email not found", "form": form})
+    return render(request, "toDo/forgotpsw.html", {"form": form})
+
+
+def resetPassword(request):
+    #add logic to reset password
+    return render(request, "toDo/recoverPassword.html")
