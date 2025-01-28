@@ -129,7 +129,7 @@
             <input type="hidden" name="new_members" id="new-members">
             <button class="cancel-button" type="button" onclick="window.location.href='/dashboard'">Cancel</button>
             <button class="update-button" type="button" onclick="updateTeam()">Update</button>
-            <button class="delete-button" type="button" onclick="showPopup(this)">Delete</button>
+            <button class="delete-button" type="button" onclick="showPopup(this)">Delete Team</button>
         </form>
     </div>
 
@@ -243,6 +243,7 @@
             //     memberToDelete = null;
             // }
             document.getElementById('delete-team-form').submit();
+            document.getElementById('popup-overlay').style.display = 'none';
             window.location.href = '/dashboard';
         }
 
