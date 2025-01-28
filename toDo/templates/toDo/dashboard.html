@@ -104,6 +104,11 @@
         .task, .new-todo, .emptyMessage {
             font-size: 1em;
         }
+        .split:first-of-type .left{
+            flex-direction: column;
+            margin: 0;
+            gap: 0px;
+        }
     </style>
 </head>
 <body>
@@ -130,11 +135,15 @@
         {% if todo_items %}
             {% for task in todo_items %}
                 <div class="task">
-                    <h3>{{ task.title }}</h3>
-                    <p>{{ task.description }}</p>
-                    <p>{% if team_name %}Team: {{team_name}}{%endif%}</p>
-                    <div class="timer" id="timer-{{ task.id }}">0m 0s</div>
-                    <!-- Make this work <div class="teamName">{{ task.team }}</div> -->
+                    <div class="split">
+                        <div class="left">
+                            <h3>{{ task.title }}</h3>
+                            <p>{{ task.description }}</p>
+                            <div class="timer" id="timer-{{ task.id }}">0m 0s</div>
+                        </div>
+
+                    </div>
+                        <p style="float: right">{% if team_name %}Team: {{team_name}}{%endif%}</p>
                     <div class="split">
                         <div class="left">
                             <button class="start-button" onclick="startTimer('timer-{{ task.id }}')">Start</button>
@@ -171,11 +180,20 @@
         const timers = {};
         let taskToDelete = null;
 
-        function startTimer(timerId) {
+        function getButtons(timerId) {
             const timerElement = document.getElementById(timerId);
-            const startButton = timerElement.parentNode.querySelector('.start-button');
-            const stopButton = timerElement.parentNode.querySelector('.stop-button');
-            const pauseButton = timerElement.parentNode.querySelector('.pause-button');
+            const taskDiv = timerElement.parentNode.parentNode.parentNode;
+            return {
+                stopButton: taskDiv.querySelector('.stop-button'),
+                pauseButton: taskDiv.querySelector('.pause-button'),
+                resumeButton: taskDiv.querySelector('.resume-button'),
+                startButton: taskDiv.querySelector('.start-button')
+            };
+        }
+
+        function startTimer(timerId) {
+            const { stopButton, pauseButton, resumeButton, startButton } = getButtons(timerId);
+            const timerElement = document.getElementById(timerId);
 
             if (!timers[timerId]) {
                 timers[timerId] = { seconds: 0, interval: null, isPaused: false };
@@ -194,52 +212,45 @@
                 startButton.style.display = 'none';
                 stopButton.style.display = 'inline-block';
                 pauseButton.style.display = 'inline-block';
+                resumeButton.style.display = 'none';
             }
         }
 
         function stopTimer(timerId) {
+            const { stopButton, pauseButton, resumeButton, startButton } = getButtons(timerId);
             const timerElement = document.getElementById(timerId);
             clearInterval(timers[timerId].interval);
             timers[timerId].interval = null;
 
-            const startButton = timerElement.parentNode.querySelector('.start-button');
-            const stopButton = timerElement.parentNode.querySelector('.stop-button');
-            const pauseButton = timerElement.parentNode.querySelector('.pause-button');
-
             startButton.style.display = 'inline-block';
             stopButton.style.display = 'none';
             pauseButton.style.display = 'none';
-        
-    
+            resumeButton.style.display = 'none';
+
             timers[timerId] = { seconds: 0, interval: null, isPaused: false };
-            pauseButton.innerText = 'Pause';
             timerElement.innerText = `0m 0s`;
         }
 
         function pauseTimer(timerId) {
+            const { stopButton, pauseButton, resumeButton, startButton } = getButtons(timerId);
             const timerElement = document.getElementById(timerId);
-            const pauseButton = timerElement.parentNode.querySelector('.pause-button');
-            const resumeButton = timerElement.parentNode.querySelector('.resume-button');
-            const stopButton = timerElement.parentNode.querySelector('.stop-button');
 
             const timer = timers[timerId];
             if (timer) {
                 timer.isPaused = true;
                 pauseButton.style.display = 'none';
                 resumeButton.style.display = 'inline-block';
-                stopButton.style.display = 'none';
+                stopButton.style.display = 'inline-block';
             }
         }
 
         function resumeTimer(timerId) {
+            const { stopButton, pauseButton, resumeButton, startButton } = getButtons(timerId);
             const timerElement = document.getElementById(timerId);
-            const pauseButton = timerElement.parentNode.querySelector('.pause-button');
-            const resumeButton = timerElement.parentNode.querySelector('.resume-button');
-            const stopButton = timerElement.parentNode.querySelector('.stop-button');
-
+            
             const timer = timers[timerId];
             if (timer) {
-                timer.isPaused = true;
+                timer.isPaused = false;
                 pauseButton.style.display = 'inline-block';
                 resumeButton.style.display = 'none';
                 stopButton.style.display = 'inline-block';
