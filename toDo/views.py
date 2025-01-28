@@ -141,7 +141,7 @@ def register(request):
         if form.is_valid():
             try:
                 form.save()
-                messages.success(request, "Registration successful. Please log in.")
+                # messages.success(request, "Registration successful. Please log in.")
                 return redirect("login")
             except IntegrityError as e:
                 print("IntegrityError occurred:", e)
