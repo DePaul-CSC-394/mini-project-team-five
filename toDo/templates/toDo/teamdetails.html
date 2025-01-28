@@ -124,7 +124,7 @@
     <div class="content">
         <h1>{{team_name}}</h1>
         <p>{{team_description}}</p>
-        <p>Team_Owner: {{ team_owner.email }}</p>
+        <p>Team Owner: {{ team_owner.email }}</p>
 
         <div class="team-members">
                 <input type="text" id="add-member" placeholder="Enter member email: ">                
@@ -136,7 +136,7 @@
                 {% endfor %} 
             </select> -->
             <!-- <input type="hidden" name="user_id" id="user_id"> -->
-              <button type="button" onclick="addMember()">Add</button>
+            <button type="button" onclick="addMember()">Add</button>
         </div>
         <div class="team-list" id="team-list">
             {% for member in team_members %}

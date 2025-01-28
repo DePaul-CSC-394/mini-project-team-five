@@ -14,10 +14,9 @@
             display: flex;
             flex-direction: column;
         } 
-        main {
+        /* main {
             margin-top: 50px;
             align-items: flex-start;
-            text-align: center;
         }
         img {
             max-width: 300px;
@@ -36,56 +35,7 @@
         width: 100px;
         text-align: center;
         cursor: pointer;
-        }
-        .cancel-button {
-            background-color: red;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-            border-radius: 3px;
-        }
-        .save-button {
-            background-color: green;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-            border-radius: 3px;
-        }
-        .form-container {
-            display: flex;
-            justify-content: center;
-            align-items: start;
-            height: 80vh;
-        }
-        .form-box {
-            width: 400px;
-            border: 1px solid gray;
-            padding: 20px;
-        }
-        .form-box label {
-            display: block;
-            margin-bottom: 5px;
-        }
-        .form-box input,
-        .form-box select {
-            width: 100%;
-            padding: 4px;
-            margin-bottom: 10px;
-            border: 1px solid gray;
-            border-radius: 3px;
-        }
-        .form-box input.error {
-            background-color: lightcoral;
-            border-color: red;
-        }
-        .error-message {
-            color: red;
-            font-size: 0.9em;
-            margin-bottom: 10px;
-            display: none; /* Initially hidden */
-        }
+        } */
     </style>
 </head>
 <body>
@@ -113,11 +63,32 @@
         <div class="error-message" id="description-error">Description is required</div>
         <form method="post"> -->
             {% csrf_token %}
-            {{ form }}
-            <div class="buttons">
-                <button class="cancel-button" type="button" onclick="window.location.href='/dashboard'">Cancel</button>
-                <button type="submit" class="save-button">Save</button>
+            <div class="form-group">
+                <label for="{{ form.name.id_for_label }}">Team Name</label>
+                {{ form.name }}
+                {% if form.name.errors %}
+                    <div class="error-message">{{ form.name.errors }}</div>
+                {% endif %}
             </div>
+        
+            <div class="form-group">
+                <label for="{{ form.description.id_for_label }}">Description</label>
+                {{ form.description }}
+                {% if form.description.errors %}
+                    <div class="error-message">{{ form.description.errors }}</div>
+                {% endif %}
+            </div>
+        
+            <div class="form-group">
+                <label for="{{ form.members.id_for_label }}">Members</label>
+                {{ form.members }}
+                {% if form.members.errors %}
+                    <div class="error-message">{{ form.members.errors }}</div>
+                {% endif %}
+            </div>
+
+            <button class="cancel-button" type="button" onclick="window.location.href='/dashboard'">Cancel</button>
+            <button type="submit" class="save-button">Save</button>
         </form>
 
 <!--         <button type="button" class="cancel-button" onclick="window.location.href='dashboard.html'">Cancel</button>

@@ -12,13 +12,14 @@
             padding: 0;
         }
         .task-container {
+            font-size: clamp(1em, 1.2vw, 1.35em);
             margin: 20px auto;
             padding: 20px;
             border: 1px solid lightgray;
             border-radius: 8px;
             background-color: #f8f9fa;
             width: 75%;
-            min-width: 600px;
+            min-width: 300px;
         }
         .task {
             padding: 20px;
@@ -26,25 +27,28 @@
             margin-bottom: 10px;
         }
         .new-todo-container {
+            font-size: clamp(1em, 1.2vw, 1.35em);
             display: flex;
             flex-direction: row;
             width: 100%;
-            min-width: 500px;
+            min-width: 300px;
             justify-content: end;
         }
         .new-todo {
+            min-width: 100px;
+            padding: 10px 20px;
+            /* font-size: clamp(0.9em, 1.15vw, 1.1em); */
             background-color: blue;
             color: white;
-            border: none;
-            padding: 10px 15px;
+            border: 1px solid transparent;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 16px;
-            height: fit-content;
-            margin: 20px 12% 20px 0;
         }
         .new-todo:hover {
-            background-color: darkblue;
+            background-color: transparent;
+            color: black;
+            border: 1px solid blue;
+            transition: all 0.2s ease-out;
         }
         .emptyMessage {
             display: flex;
@@ -57,7 +61,6 @@
             margin: 0;
         }
         .task .timer {
-            font-size: 14px;
             margin: 10px 0;
         }
         .task button {
@@ -126,6 +129,9 @@
             background-color: gray;
             color: white;
         }
+        .task, .new-todo, .emptyMessage {
+            font-size: 1em;
+        }
     </style>
 </head>
 <body>
@@ -161,7 +167,7 @@
                     <button class="stop-btn" onclick="stopTimer('timer-{{ task.id }}')">Stop</button>
                     <button class="pause-btn" onclick="pauseTimer('timer-{{ task.id }}')">Pause</button>
                     <button type="button" onclick="window.location.href='{% url 'todos_edit' task.id %}'" class="edit-todo">Edit</button>
-                   <!-- <button class="edit-btn" onclick="toggleEdit(this)">Edit</button> -->
+                    <!-- <button class="edit-btn" onclick="toggleEdit(this)">Edit</button> -->
 
                     <button class="delete-btn" onclick="showPopup(this, '{{ task.id }}')">Delete</button>
                 </div>

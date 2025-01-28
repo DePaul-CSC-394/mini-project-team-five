@@ -10,7 +10,7 @@
             font-family: Arial, sans-serif;
             margin: 0;
         }
-        .form-container {
+        /* .form-container {
             display: flex;
             justify-content: center;
             align-items: center;
@@ -31,24 +31,8 @@
             padding: 8px;
             margin-bottom: 5px;
             border: 1px solid #ccc;
-        }
-        .form-box input.error {
-            background-color: lightcoral;
-            border-color: red;
-        }
-        .error-message {
-        color: red;
-        font-size: 0.9em;
-        margin-bottom: 10px;
-        display: none; /* Changed by inline style when errors exist */
-        }
-        .messages {
-            margin-bottom: 20px;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        .form-box button {
+        } */
+        /* .form-box button {
             width: 100%;
             padding: 10px;
             background-color: blue;
@@ -62,7 +46,7 @@
             border: 1px solid blue;
             cursor: pointer;
             transition: all 0.2s ease-out; 
-        }
+        } */
     </style>
 </head>
 <body>
@@ -113,7 +97,7 @@
                     <label for="{{ form.email.id_for_label }}">Email</label>
                     {{ form.email }}
                     {% if form.email.errors %}
-                        <div class="error-message" style="display: block;">{{ form.email.errors }}</div>
+                        <div class="error-message">{{ form.email.errors }}</div>
                     {% endif %}
                 </div>
     
@@ -121,7 +105,7 @@
                     <label for="{{ form.password1.id_for_label }}">Password</label>
                     {{ form.password1 }}
                     {% if form.password1.errors %}
-                        <div class="error-message" style="display: block;">{{ form.password1.errors }}</div>
+                        <div class="error-message">{{ form.password1.errors }}</div>
                     {% endif %}
                 </div>
     

@@ -13,47 +13,6 @@
             font-family: Arial, sans-serif;
             margin: 0;
         }
-        .form-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 80vh;
-        }
-        .form-box {
-            padding: clamp(5px, 2vw, 10px) clamp(10px, 5vw, 20px); 
-            font-size: clamp(0.8em, 1vw, 1em);
-            width: clamp(300px, 90%, 1200px);
-            border: 1px solid black;
-            padding: 20px;
-            border-radius: 5px;
-        }
-        .form-box label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-        .form-box input {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 15px;
-            border: 1px solid gray;
-            border-radius: 3px;
-        }
-        .form-box button {
-            padding: 10px 20px;
-            font-size: clamp(0.8em, 1.15vw, 1.2em);
-            background-color: blue;
-            color: white;
-            border: 1px solid transparent;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .form-box button:hover {
-            background-color: transparent;
-            color: black;
-            border: 1px solid blue;
-            transition: all 0.2s ease-out;
-        }
         .form-box button:last-of-type {
             background-color: transparent;
             color: black;
@@ -66,7 +25,7 @@
             border: 1px solid transparent;
             float: right;
             transition: all 0.2s ease-out;
-        }
+        } 
     </style>
 </head>
 <body>
@@ -83,21 +42,27 @@
         <div class="form-box">
             <form method="post", action="{% url 'login' %}">
                 {% csrf_token %}
-                <label for="email">Email</label>
-                {{form.email}}
-                
-                <label for="password">Password</label>
-                {{form.password}}
+                <div class="form-group">
+                    <label for="email">Email</label> {{form.email}}
+                </div>
+                <!-- {% if form.email.errors %}
+                        <div class="error-message" style="display: block;">{{ form.email.errors }}</div>
+                {% endif %} -->
+                <div class="form-group">
+                    <label for="password">Password</label> {{form.password}}
+                </div>
+                <!-- {% if form.password.errors %}
+                        <div class="error-message" style="display: block;">{{ form.password.errors }}</div>
+                {% endif %} -->
                 
                 <button type="submit">Login</button>
                 <button type="button" onclick= "window.location.href = '/forgot-password'">Forgot Password?</button>
                 <button type="button" onclick="window.location.href = '/register'">Register</button>
             </form>
-          
             {% if message %}
-                    <div>
-                        <p>{{ message }}</p>
-                    </div>
+                <div class="messages">
+                    <div class="error-message">{{ message }}</div>
+                </div>
             {% endif %}
             <!-- <form method="post">
                 {% csrf_token %}
@@ -106,24 +71,5 @@
             </form>  -->
         </div>
     </div>
-    {% comment %} <script>
-        // Add an event listener to the login button
-        document.querySelector("button[type='submit']").addEventListener("click", function(event) {
-            event.preventDefault(); // Prevent the default form submission
-        
-            // Example validation logic
-            const email = document.querySelector("input[name='email']").value;
-            const password = document.querySelector("input[name='password']").value;
-        
-            if (email === "" || password === "") {
-                alert("Please fill in all fields."); // Show an error message
-            }
-            // } else {
-            //     window.location.href = "/dashboard"; // Redirect to /dashboard
-            // }
-        });
-    </script> {% endcomment %}
-
 </body>
-
 </html>

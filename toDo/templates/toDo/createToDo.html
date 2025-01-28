@@ -9,7 +9,7 @@
             margin: 0;
             padding: 0;
         }
-        .form-container {
+        /* .form-container {
             display: flex;
             justify-content: center;
             align-items: center;
@@ -44,31 +44,8 @@
             color: red;
             font-size: 0.9em;
             margin-bottom: 10px;
-            display: none; /* Initially hidden */
-        }
-        .button-container {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 15px;
-        }
-        .cancel-button {
-            background-color: red;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-            border-radius: 3px;
-            font-size: 1em;
-        }
-        .save-button {
-            background-color: green;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-            border-radius: 3px;
-            font-size: 1em;
-        }
+            display: none; 
+        } */
     </style>
 </head>
 <body>
@@ -87,38 +64,49 @@
     <div class="form-container">
         <div class="form-box">
             <form method = "post" id="taskForm">
-<!--                 <label for="task-title">Task Title</label>
-                <input type="text" id="task-title" placeholder="Ex: Take out the trash">
-                <div class="error-message" id="task-title-error">Task Title is required</div>
-
-                <label for="description">Description</label>
-                <input type="text" id="description" placeholder="Add description">
-                <div class="error-message" id="description-error">Description is required</div>
-
-                <label for="due-date">Due Date</label>
-                <input type="text" id="due-date" placeholder="Ex: 02/01/2025">
-
-                <label for="category">Category</label>
-                <input type="text" id="category" placeholder="Add category">
-
-                <label for="team">Team</label>
-                <select id="team">
-                    <option value="" disabled selected>Team</option>
-                    <option>Team A</option>
-                    <option>Team B</option>
-                    <option>Team C</option>
-                </select>
-
-                <div class="button-container">
-                    <button type="button" class="cancel-button" onclick="window.location.href='dashboard.html'">Cancel</button>
-                    <button type="submit" class="save-button">Save</button>
-                </div>  -->
-
                 {% csrf_token %}
-                {{form.as_p}}
+                <div class="form-group">
+                    <label for="{{ form.title.id_for_label }}">Title</label>
+                    {{ form.title }}
+                    {% if form.title.errors %}
+                        <div class="error-message">{{ form.title.errors }}</div>
+                    {% endif %}
+                </div>
+            
+                <div class="form-group">
+                    <label for="{{ form.description.id_for_label }}">Description</label>
+                    {{ form.description }}
+                    {% if form.description.errors %}
+                        <div class="error-message">{{ form.description.errors }}</div>
+                    {% endif %}
+                </div>
+            
+                <div class="form-group">
+                    <label for="{{ form.dueDate.id_for_label }}">Due Date</label>
+                    {{ form.dueDate }}
+                    {% if form.dueDate.errors %}
+                        <div class="error-message">{{ form.dueDate.errors }}</div>
+                    {% endif %}
+                </div>
+            
+                <div class="form-group">
+                    <label for="{{ form.category.id_for_label }}">Category</label>
+                    {{ form.category }}
+                    {% if form.category.errors %}
+                        <div class="error-message">{{ form.category.errors }}</div>
+                    {% endif %}
+                </div>
+            
+                <div class="form-group">
+                    <label for="{{ form.team.id_for_label }}">Team</label>
+                    {{ form.team }}
+                    {% if form.team.errors %}
+                        <div class="error-message">{{ form.team.errors }}</div>
+                    {% endif %}
+                </div>
 
                 <button type="button" class="cancel-button" onclick="window.location.href='{% url 'dashboard' %}'">Cancel</button>
-                <input type="submit" value="Save" class="save-button">
+                <button type="submit" class="save-button">Save</button>
             </form>
         </div>
     </div>

@@ -1,3 +1,6 @@
+body{
+    background-color: #f9f9f9;
+}
 .navbar {
     width: 100%;
     font-size: 1.25em;
@@ -29,5 +32,106 @@
     color: black;
 /*             font-weight: bold; */
     margin: 0;
-    font-size: clamp(0.7em, 1.15vw, 1.2em);
+    font-size: clamp(0.9em, 1.2vw, 1.2em);
+}
+.form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    padding: 20px;
+}
+.form-group {
+    margin-bottom: 15px;
+    width: 100%;
+}
+.form-group textarea, .form-group select, .form-group input {
+    width: 100%;
+    min-height: 50px;
+    height: fit-content;
+}
+.form-box {
+    padding: clamp(5px, 2vw, 10px) clamp(10px, 5vw, 20px); 
+    font-size: clamp(1em, 1.2vw, 1.35em);
+    width: clamp(300px, 90%, 1200px);
+    border: 1px solid black;
+    padding: 20px;
+    border-radius: 5px;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.form-box label, input, button {
+    font-size: 1em;
+}
+.form-box label {
+    display: block;
+    margin-bottom: 5px;
+}
+.form-box input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid gray;
+    border-radius: 3px;
+    box-sizing: border-box;
+}
+.form-box button {
+    padding: 10px 20px;
+    background-color: blue; 
+    color: white;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.form-box button:hover {
+    background-color: transparent;
+    color: black;
+    border: 1px solid blue;
+    transition: all 0.2s ease-in-out;
+}
+form > .cancel-button {
+    background-color: red;
+    color: white;
+}
+form > .cancel-button:hover {
+    background-color: transparent;
+    color: red;
+    border: 1px solid red;
+}
+form > .save-button {
+    background-color: green;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 3px;
+    font-size: 1em;
+}
+form > .save-button:hover {
+    background-color: transparent;
+    color: green;
+    border: 1px solid green;
+}
+.form-box input.error {
+    background-color: lightcoral;
+    border-color: red;
+}
+.error-message {
+    color: red;
+    margin-bottom: 10px;
+    display: block;
+}
+.messages {
+    margin: 15px 0;
+}
+@media screen and (max-width: 500px) {
+    .navbar {
+        flex-direction: column;
+        align-items: center;
+    }
+    .navbar-left, .navbar-right {
+        width: 100%;
+        justify-content: center;
+        margin: 5px 0;
+    }
 }
