@@ -61,11 +61,42 @@
             z-index: 1000;
         }
         .popup {
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
+              text-align: center;
+              display: none;
+              position: fixed;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%);
+              width: 50%;
+              height: 50%;
+              background-color: rgba(255, 255, 255, 0.9);
+              border: 1px solid black;
+              justify-content: center;
+              align-items: center;
+              z-index: 1000;
+              border-radius: 8px;
+              box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+              padding: 20px;
+        }
+        .popup-content {
+              text-align: center;
+        }
+        .popup::before {
+              z-index: -1;
+        }
+        .close-btn {
+              margin-top: 20px;
+              padding: 10px 20px;
+              background-color: green;
+              color: white;
+              border: 1px solid transparent;
+              cursor: pointer;
+        }
+        .close-btn:hover {
+              background-color: transparent;
+              border: 1px solid green;
+              color: green;
+              transition: all 0.2s ease-out;
         }
         .popup button {
             margin: 10px;
@@ -132,6 +163,17 @@
             <button class="delete-button" type="button" onclick="showPopup(this)">Delete</button>
         </form>
     </div>
+
+    {% if messages %}
+    <div class="popup" id="popup">
+        <div class="popup-content">
+            {% for message in messages %}
+                <div class="message {{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+            <button class="close-btn" onclick="closePopup()">OK</button>
+        </div>
+    </div>
+    {% endif %}
 
     <!-- Hidden form for team deletion -->
     <form id="delete-team-form" method="POST" action="{% url 'delete_team' id=team_id %}" style="display: none;">
@@ -226,12 +268,25 @@
             document.getElementById('popup-overlay').style.display = 'flex';
         }
 
+        function closePopup() {
+            document.getElementById('popup').style.display = 'none';
+        }
+        
+        // Show the message popup if there are messages
+        document.addEventListener('DOMContentLoaded', function() {
+            const popup = document.getElementById('popup');
+            if (popup) {
+                popup.style.display = 'flex';
+            }
+        });
+
         function confirmDelete() {
             // if (memberToDelete) {
             //     memberToDelete.remove();
             //     memberToDelete = null;
             // }
             document.getElementById('delete-team-form').submit();
+            document.getElementById('popup-overlay').style.display = 'none';
             window.location.href = '/dashboard';
         }
 
