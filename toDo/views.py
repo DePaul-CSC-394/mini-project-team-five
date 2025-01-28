@@ -8,6 +8,10 @@ from django.contrib.auth import authenticate, login as auth_login, logout
 from django.urls import reverse
 from django.db import IntegrityError
 from django.core.mail import send_mail
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_decode
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
 
 from .models import Task, Team
 
@@ -408,10 +412,17 @@ def forgot_password(request):
         try:
             user = CustomUser.objects.get(email=email)
             if user:
+                #generate token and uid
+                token = PasswordResetTokenGenerator().make_token(user)
+                uid = urlsafe_base64_encode(force_bytes(user.pk))
+                
+                resetLink = request.build_absolute_uri(reverse('reset_password', kwargs={'uidb64': uid, 'token': token})).replace(request.get_host(), f"{request.get_host().split(':')[0]}:1337")
+                
+                
                 #send email
                 send_mail(
                     'Password Reset',
-                    'Here is a test message.',
+                    f'Click the link to reset your password: {resetLink}',
                     settings.EMAIL_HOST_USER,
                     [email],
                     fail_silently=False,
@@ -423,6 +434,29 @@ def forgot_password(request):
     return render(request, "toDo/forgotpsw.html", {"form": form})
 
 
-def resetPassword(request):
-    #add logic to reset password
-    return render(request, "toDo/recoverPassword.html")
+def resetPassword(request, uidb64, token):
+    #return render(request, "toDo/recoverPassword.html")
+
+    try:
+        uid = urlsafe_base64_decode(uidb64).decode()
+        user = get_object_or_404(CustomUser, pk=uid)
+        
+        if not PasswordResetTokenGenerator().check_token(user, token):
+            return render(request, "toDo/recoverPassword.html", {"message": "Invalid or expired token"})
+        
+        if request.method == "POST":
+            newPassword = request.POST.get("password")
+            confirmPassword = request.POST.get("confirm-password")
+            
+            if newPassword != confirmPassword:
+                return render(request, "toDo/recoverPassword.html", {"message": "Passwords do not match"})
+            
+            user.set_password(newPassword)
+            user.save()
+            
+            return render(request, "toDo/recoverPassword.html", {"message": "Password reset successful"})
+        return render(request, "toDo/recoverPassword.html")
+    except Exception as e:
+        print("Error occurred:", e)
+        return render(request, "toDo/recoverPassword.html", {"message": "Error occurred"})
+        
