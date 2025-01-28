@@ -120,7 +120,7 @@
       <a href="{% url 'login' %}">Login</a>
     </div>
   </div>
-
+<!--
   {% if messages %}
   <div class="popup" id="popup">
       <div class="popup-content">
@@ -131,6 +131,7 @@
       </div>
   </div>
   {% endif %}
+-->
 
   <div class="container">
     <h3>Forgot Password</h3>
@@ -139,11 +140,11 @@
         {% csrf_token %}
         <label for="email">Email</label>
         {{ form.email }}
-        <!--
+        
         {% if message %}
           <p style="color: red;">{{ message }}</p>
         {% endif %}
-         -->
+         
       </div>
       <div class="button-container">
         <button type="submit">Forgot Password</button>
