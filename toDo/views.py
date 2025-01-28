@@ -476,7 +476,7 @@ def addMember(request, id):
         new_member_id = request.POST.get("email")
         
         if not new_member_id:
-            messages.error(request, "Member not found--Here")
+            messages.error(request, "Member not found")
             return redirect('teams', id=id)
         try:
             new_member = get_object_or_404(CustomUser, email=new_member_id)
@@ -490,7 +490,7 @@ def addMember(request, id):
                 return redirect('teams', id=id)
             
         except CustomUser.DoesNotExist:
-            messages.error(request, "Member not found--There")
+            messages.error(request, "Member not found")
             return redirect('teams', id=id)
             
         #return redirect('teams', id=id)
