@@ -95,6 +95,15 @@ class TeamForm(forms.ModelForm):
 
 class PasswordResetForm(forms.Form): #form for forgot password page
     email = forms.EmailField(widget=forms.EmailInput(attrs={'name':'email'}))
+    
+class AddMemeberForm(forms.Form):
+    email = forms.EmailField()
+    
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if not CustomUser.objects.filter(email=email).exists():
+            raise forms.ValidationError("User does not exist.")
+        return email
 
     
     

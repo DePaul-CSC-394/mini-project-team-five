@@ -69,10 +69,10 @@
     <div class="content">
         <h1>{{team_name}}</h1>
         <p>{{team_description}}</p>
-        <p class="team-owner">Team Owner: {{ team_owner.email }}</p>
+        <p class="team-owner">Team Owner: {{ team_owner}}</p>
 
         <div class="team-members">
-            <input type="text" id="add-member" placeholder="Enter member email: ">                
+            <!--input type="email" id="add-member-email" placeholder="Enter member email"-->                
             <!-- <select id="add-member">
             <input type="email" id="add-member-email" placeholder="Add team member (email)" required>
 
@@ -81,7 +81,14 @@
                 {% endfor %} 
             </select> -->
             <!-- <input type="hidden" name="user_id" id="user_id"> -->
-            <button type="button" onclick="addMember()">Add</button>
+            <!--button type="button" onclick="addMember()">Add</button-->
+
+            <form method="post" action="{% url 'add_member' id=team_id %}">
+                {% csrf_token %}
+                <input type="email" name="email" id="add-member-email" placeholder="Add team member (email)" required>
+                <button type="submit">Add</button>
+            </form>
+                
         </div>
         <div class="team-list" id="team-list">
             {% for member in team_members %}
@@ -238,22 +245,31 @@
 
         // John's code
         function addMember() {
-            const select = document.getElementById('add-member');
-            const userId = select.value;
-            const userEmail = select.options[select.selectedIndex].text;
+            //const select = document.getElementById('add-member');
+            //const userId = select.value;
+            //const userEmail = select.options[select.selectedIndex].text;
+//
+            //if (userId) {
+            //    const teamList = document.getElementById('team-list');
+            //    const newMemberDiv = document.createElement('div');
+            //    newMemberDiv.innerHTML = `
+            //        <span class="member-name">${userEmail}</span>
+            //        <button class="delete-btn" onclick="showPopup(this)">Delete</button>
+            //    `;
+            //    teamList.appendChild(newMemberDiv);
+//
+            //    // Optionally, you can remove the added member from the select list
+            //    select.remove(select.selectedIndex);
+            //}
 
-            if (userId) {
-                const teamList = document.getElementById('team-list');
-                const newMemberDiv = document.createElement('div');
-                newMemberDiv.innerHTML = `
-                    <span class="member-name">${userEmail}</span>
-                    <button class="delete-btn" onclick="showPopup(this)">Delete</button>
-                `;
-                teamList.appendChild(newMemberDiv);
+            const emailInput = document.getElementById('add-member-email');
+            const email = emailInput.value.trim();
 
-                // Optionally, you can remove the added member from the select list
-                select.remove(select.selectedIndex);
+            if(!email) {
+                return;
             }
+
+            
         }
         
 

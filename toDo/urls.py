@@ -19,4 +19,5 @@ urlpatterns = [
     path('teams/<int:id>/delete/', views.delete_team, name='delete_team'),
     path('forgot-password/', views.forgot_password, name='forgot_password'),
     path('reset-password/<uidb64>/<token>/', views.resetPassword, name='reset_password'),
+    path('teams/<int:id>/add-member', views.addMember, name='add_member'),
 ]
