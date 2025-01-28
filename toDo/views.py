@@ -181,8 +181,8 @@ def todosNew(request):
 
     team_id = team.id if team else 0  # Access the ID of the first team, or 0 if no team exists
     teams = Team.objects.all()  # Get all teams
-
     # return render(request, "toDo/createToDo.html", {'team_id': team_id})
+    
     if request.method == "POST":
         form = TaskForm(request.POST)
         print("Form:", form)
@@ -231,12 +231,18 @@ def teamsNew(request):
     team = Team.objects.first()
     team_id = team.id if team else 0 
     # return render(request, "toDo/createTeam.html")
-    form = TeamForm(request.POST)
+    
+    #form = TeamForm(request.POST)
     if request.method == "POST":
-        #form = TeamForm(request.POST)
+        form = TeamForm(request.POST)
         if form.is_valid():
-            form.save()
+            team = form.save(commit=False)
+            team.owner = request.user
+            team.save()
+            
             return redirect('dashboard')
+            # form.save()
+            # return redirect('dashboard')
     else:
         form = TeamForm()
     # return render(request, "toDo/createTeam.html", {"form": form})
