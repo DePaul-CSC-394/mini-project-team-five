@@ -1,4 +1,5 @@
 from django.http import HttpResponseRedirect, HttpResponseServerError
+from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib import messages
 from toDoList import settings
@@ -299,6 +300,7 @@ def teams(request, id):
     team_id = team.id
     team_name = team.name
     team_description = team.description
+    team_owner = team.owner
     # users_not_in_team = CustomUser.objects.exclude(teams=team)
     users_not_in_team = CustomUser.objects.filter(~Q(teammember__team=team))
     # print(request.POST)
@@ -366,6 +368,7 @@ def teams(request, id):
         'team_id': team_id,
         'team_name': team_name,
         'team_description': team_description,
+        'team_owner': team_owner,
         'team_members': team_members,
         'todo_items': todo_items,
         'users_not_in_team': users_not_in_team,
@@ -466,3 +469,31 @@ def resetPassword(request, uidb64, token):
         print("Error occurred:", e)
         return render(request, "toDo/recoverPassword.html", {"message": "Error occurred"})
         
+def addMember(request, id):
+    team = get_object_or_404(Team, id=id)
+    
+    if request.method == "POST":
+        new_member_id = request.POST.get("email")
+        
+        if not new_member_id:
+            messages.error(request, "Member not found--Here")
+            return redirect('teams', id=id)
+        try:
+            new_member = get_object_or_404(CustomUser, email=new_member_id)
+            
+            #check if member is already in the team
+            if new_member in team.members.all():
+                messages.error(request, "Member already in team")
+                return redirect('teams', id=id)
+            else:
+                team.members.add(new_member)
+                return redirect('teams', id=id)
+            
+        except CustomUser.DoesNotExist:
+            messages.error(request, "Member not found--There")
+            return redirect('teams', id=id)
+            
+        #return redirect('teams', id=id)
+
+    return redirect('teams', id=id)
+
