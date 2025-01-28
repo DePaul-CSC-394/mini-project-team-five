@@ -1,11 +1,17 @@
 from django.http import HttpResponseRedirect, HttpResponseServerError
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib import messages
+from toDoList import settings
 from users.models import CustomUser
-from .forms import LoginForm, TaskForm, TeamForm, UserRegisterForm
+from .forms import LoginForm, PasswordResetForm, TaskForm, TeamForm, UserRegisterForm
 from django.contrib.auth import authenticate, login as auth_login, logout
 from django.urls import reverse
 from django.db import IntegrityError
+from django.core.mail import send_mail
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_decode
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
 
 from .models import Task, Team
 
@@ -175,8 +181,8 @@ def todosNew(request):
 
     team_id = team.id if team else 0  # Access the ID of the first team, or 0 if no team exists
     teams = Team.objects.all()  # Get all teams
-
     # return render(request, "toDo/createToDo.html", {'team_id': team_id})
+    
     if request.method == "POST":
         form = TaskForm(request.POST)
         print("Form:", form)
@@ -225,12 +231,18 @@ def teamsNew(request):
     team = Team.objects.first()
     team_id = team.id if team else 0 
     # return render(request, "toDo/createTeam.html")
-    form = TeamForm(request.POST)
+    
+    #form = TeamForm(request.POST)
     if request.method == "POST":
-        #form = TeamForm(request.POST)
+        form = TeamForm(request.POST)
         if form.is_valid():
-            form.save()
+            team = form.save(commit=False)
+            team.owner = request.user
+            team.save()
+            
             return redirect('dashboard')
+            # form.save()
+            # return redirect('dashboard')
     else:
         form = TeamForm()
     # return render(request, "toDo/createTeam.html", {"form": form})
@@ -400,11 +412,57 @@ def delete_team(request, id):
     return HttpResponseRedirect(reverse('teamdetails', args=[id]))
 
 def forgot_password(request):
-    if request.method == 'POST':
-        email = request.POST.get('email')
-        if CustomUser.objects.filter(email=email).exists():
-            # Add code to send password reset email
-            messages.success(request, "Password reset email sent.")
-        else:
-            messages.error(request, "Email not found.")
-    return render(request, "toDo/forgotpsw.html")
+    form = PasswordResetForm()
+    if request.method == "POST":
+        email = request.POST.get("email")
+        try:
+            user = CustomUser.objects.get(email=email)
+            if user:
+                #generate token and uid
+                token = PasswordResetTokenGenerator().make_token(user)
+                uid = urlsafe_base64_encode(force_bytes(user.pk))
+                
+                resetLink = request.build_absolute_uri(reverse('reset_password', kwargs={'uidb64': uid, 'token': token})).replace(request.get_host(), f"{request.get_host().split(':')[0]}:1337")
+                
+                
+                #send email
+                send_mail(
+                    'Password Reset',
+                    f'Click the link to reset your password: {resetLink}',
+                    settings.EMAIL_HOST_USER,
+                    [email],
+                    fail_silently=False,
+                )
+                
+                return render(request, "toDo/forgotpsw.html", {"message": "Email sent", "form": form})
+        except CustomUser.DoesNotExist:
+            return render(request, "toDo/forgotpsw.html", {"message": "Email not found", "form": form})
+    return render(request, "toDo/forgotpsw.html", {"form": form})
+
+
+def resetPassword(request, uidb64, token):
+    #return render(request, "toDo/recoverPassword.html")
+
+    try:
+        uid = urlsafe_base64_decode(uidb64).decode()
+        user = get_object_or_404(CustomUser, pk=uid)
+        
+        if not PasswordResetTokenGenerator().check_token(user, token):
+            return render(request, "toDo/recoverPassword.html", {"message": "Invalid or expired token"})
+        
+        if request.method == "POST":
+            newPassword = request.POST.get("password")
+            confirmPassword = request.POST.get("confirm-password")
+            
+            if newPassword != confirmPassword:
+                return render(request, "toDo/recoverPassword.html", {"message": "Passwords do not match"})
+            
+            user.set_password(newPassword)
+            user.save()
+            
+            return render(request, "toDo/recoverPassword.html", {"message": "Password reset successful"})
+        return render(request, "toDo/recoverPassword.html")
+    except Exception as e:
+        print("Error occurred:", e)
+        return render(request, "toDo/recoverPassword.html", {"message": "Error occurred"})
+        
