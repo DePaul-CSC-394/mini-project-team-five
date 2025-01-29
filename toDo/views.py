@@ -276,6 +276,7 @@ def dashboard(request):
             'team_id': team_id,
             'todo_items': todo_items,
             'teams': teams,
+            'team_name': team.name if team else None,
         }
 
         return render(request, 'toDo/dashboard.html', context)

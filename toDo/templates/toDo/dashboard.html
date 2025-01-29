@@ -59,6 +59,9 @@
         .task .timer {
             margin: 10px 0;
         }
+        .task button {
+            margin-top: 10px;
+        }
         .stop-button {
             background-color: transparent;
             color: red;
@@ -104,10 +107,14 @@
         .task, .new-todo, .emptyMessage {
             font-size: 1em;
         }
-        .split:first-of-type .left{
+        #task-info .left {
+            display: flex;
             flex-direction: column;
             margin: 0;
             gap: 0px;
+        }
+        #task-info .left > * {
+            margin: 0;
         }
     </style>
 </head>
@@ -135,15 +142,16 @@
         {% if todo_items %}
             {% for task in todo_items %}
                 <div class="task">
-                    <div class="split">
+                    <div class="split" id="task-info">
                         <div class="left">
                             <h3>{{ task.title }}</h3>
                             <p>{{ task.description }}</p>
                             <div class="timer" id="timer-{{ task.id }}">0m 0s</div>
                         </div>
-
+                        <div class="right">
+                            <p>{% if team_name %}<strong>Team:</strong> {{ team_name }}{% endif %}</p>
+                        </div>
                     </div>
-                        <p style="float: right">{% if team_name %}Team: {{team_name}}{%endif%}</p>
                     <div class="split">
                         <div class="left">
                             <button class="start-button" onclick="startTimer('timer-{{ task.id }}')">Start</button>
@@ -247,7 +255,7 @@
         function resumeTimer(timerId) {
             const { stopButton, pauseButton, resumeButton, startButton } = getButtons(timerId);
             const timerElement = document.getElementById(timerId);
-            
+
             const timer = timers[timerId];
             if (timer) {
                 timer.isPaused = false;
