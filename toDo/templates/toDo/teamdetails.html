@@ -229,7 +229,7 @@
             // }
             document.getElementById('delete-team-form').submit();
             document.getElementById('popup-overlay').style.display = 'none';
-            window.location.href = '/dashboard';
+            window.location.href = '{% url "delete_team" id=team_id %}';
         }
 
         function cancelDelete() {
