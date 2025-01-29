@@ -276,6 +276,7 @@ def dashboard(request):
             'team_id': team_id,
             'todo_items': todo_items,
             'teams': teams,
+            'team_name': team.name if team else None,
         }
 
         return render(request, 'toDo/dashboard.html', context)
@@ -401,7 +402,6 @@ def delete(request, id):
 #             return redirect("/")
 #         else:
 #             return render(request, "toDo/login.html", {"message": "Invalid credentials"})
-
 def delete_team(request, id):
     if not request.user.is_authenticated:
         return redirect('login')
@@ -418,6 +418,8 @@ def forgot_password(request):
     form = PasswordResetForm()
     if request.method == "POST":
         email = request.POST.get("email")
+        # if not CustomUser.objects.filter(email=email).exists():
+        #     messages.error(request, "Email not found.")
         try:
             user = CustomUser.objects.get(email=email)
             if user:
@@ -436,8 +438,9 @@ def forgot_password(request):
                     [email],
                     fail_silently=False,
                 )
-                
-                return render(request, "toDo/forgotpsw.html", {"message": "Email sent", "form": form})
+                # Add code to send password reset email
+                messages.success(request, "Password reset email sent.")
+                return render(request, "toDo/forgotpsw.html", {"form": form})
         except CustomUser.DoesNotExist:
             return render(request, "toDo/forgotpsw.html", {"message": "Email not found", "form": form})
     return render(request, "toDo/forgotpsw.html", {"form": form})
