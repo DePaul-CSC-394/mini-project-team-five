@@ -495,8 +495,13 @@ def addMember(request, id):
         except CustomUser.DoesNotExist:
             messages.error(request, "Member not found")
             return redirect('teams', id=id)
+        
+        except Exception as e:
+            messages.error(request, f"Error occurred: {e}")
+            return redirect('teams', id=id)
+        
             
-        #return redirect('teams', id=id)
+        return redirect('teams', id=id)
 
     return redirect('teams', id=id)
 
