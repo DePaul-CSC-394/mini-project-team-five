@@ -402,17 +402,20 @@ def delete(request, id):
 #             return redirect("/")
 #         else:
 #             return render(request, "toDo/login.html", {"message": "Invalid credentials"})
+# def update_team(request, id):
+
+
+
 def delete_team(request, id):
     if not request.user.is_authenticated:
         return redirect('login')
 
     team = get_object_or_404(Team, id=id)
 
-    if request.method == 'POST':
+    if request.method == 'GET' or request.method == 'POST':
         team.delete()
         return redirect('dashboard')
-
-    return HttpResponseRedirect(reverse('teamdetails', args=[id]))
+    return redirect('dashboard')
 
 def forgot_password(request):
     form = PasswordResetForm()
@@ -466,7 +469,7 @@ def reset_password(request, uidb64, token):
             user.set_password(newPassword)
             user.save()
             
-            return render(request, "toDo/recoverPassword.html", {"message": "Password reset successful"})
+            return redirect('login')
         return render(request, "toDo/recoverPassword.html")
     except Exception as e:
         print("Error occurred:", e)
