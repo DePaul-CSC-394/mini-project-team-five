@@ -367,7 +367,7 @@ def teams(request, id):
     context = {
         # 'form': form,
         'team_id': team_id,
-        'team_name': team_name,
+        # 'team_name': team_name,
         'team_description': team_description,
         'team_owner': team_owner,
         'team_members': team_members,
