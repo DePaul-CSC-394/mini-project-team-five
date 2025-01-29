@@ -446,8 +446,8 @@ def forgot_password(request):
     return render(request, "toDo/forgotpsw.html", {"form": form})
 
 
-def resetPassword(request, uidb64, token):
-    #return render(request, "toDo/recoverPassword.html")
+def reset_password(request, uidb64, token):
+    # return render(request, "toDo/recoverPassword.html")
 
     try:
         uid = urlsafe_base64_decode(uidb64).decode()
