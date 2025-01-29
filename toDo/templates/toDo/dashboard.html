@@ -116,6 +116,9 @@
         #task-info .left > * {
             margin: 0;
         }
+        .right strong{
+            margin-right: 10px;
+        }
     </style>
 </head>
 <body>
@@ -149,7 +152,7 @@
                             <div class="timer" id="timer-{{ task.id }}">0m 0s</div>
                         </div>
                         <div class="right">
-                            <p>{% if team_name %}<strong>Team:</strong> {{ team_name }}{% endif %}</p>
+                            <p>{% if task.team.name %}<strong>Team:</strong> {{ task.team.name }}{% endif %}</p>
                         </div>
                     </div>
                     <div class="split">
