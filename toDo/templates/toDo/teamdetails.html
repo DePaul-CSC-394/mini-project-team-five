@@ -64,7 +64,7 @@
     <div class="content">
         <h1>{{team_name}}</h1>
         <p>{{team_description}}</p>
-        <p class="team-owner">Team Owner: {{ team_owner}}</p>
+        <p class="team-owner"><strong>Team Owner: </strong>{{ team_owner}}</p>
 
         <div class="team-members">
             <!--input type="email" id="add-member-email" placeholder="Enter member email"-->                
@@ -247,6 +247,7 @@
             // }
             document.getElementById('delete-team-form').submit();
             document.getElementById('popup-overlay').style.display = 'none';
+            window.location.href = '{% url "delete_team" id=team_id %}';
             window.location.href = '/dashboard';
         }
 
