@@ -133,6 +133,7 @@
             <a href="{% url 'teams' id=team_id %}">Teams</a>
             <a href="{% url 'logout' %}">{{ user.email }}</a>
         </div>
+    </div>
         {% if todo_items %}
         <div class="filter-container">
             <select id="categoryFilter" name="categoryFilter" onchange="filterTasks()">
