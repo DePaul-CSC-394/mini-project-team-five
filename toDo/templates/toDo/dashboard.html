@@ -133,22 +133,23 @@
             <a href="{% url 'teams' id=team_id %}">Teams</a>
             <a href="{% url 'logout' %}">{{ user.email }}</a>
         </div>
-    </div>  
-    <div class="filter-container">
-        <select id="team-filter" name="team" onchange="filterTasks()">
-            <option value="">Team</option>
-            {% for team in teams %}
-                <option value="{{ team.id }}">{{ team.name }}</option>
-            {% endfor %}
-        </select>
+        {% if todo_items %}
+        <div class="filter-container">
+            <select id="categoryFilter" name="categoryFilter" onchange="filterTasks()">
+                <option value="all">All Categories</option>
+                {% for category in categories %}
+                    <option value="{{ category.id }}">{{ category.name }}</option>
+                {% endfor %}
+            </select>
     
-        <select id="category-filter" name="category" onchange="filterTasks()">
-            <option value="">Category</option>
-            {% for category in categories %}
-                <option value="{{ category.id }}">{{ category.name }}</option>
-            {% endfor %}
-        </select>
-    </div>
+            <select id="teamFilter" name="teamFilter" onchange="filterTasks()">
+                <option value="all">All Teams</option>
+                {% for team in teams %}
+                    <option value="{{ team.id }}">{{ team.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    
     
     
     
@@ -309,7 +310,6 @@
             taskToDelete = null;
             document.getElementById('popup-overlay').style.display = 'none';
         }
-
 
 
 
