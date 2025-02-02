@@ -134,6 +134,25 @@
             <a href="{% url 'logout' %}">{{ user.email }}</a>
         </div>
     </div>  
+    <div class="filter-container">
+        <select id="team-filter" name="team" onchange="filterTasks()">
+            <option value="">Team</option>
+            {% for team in teams %}
+                <option value="{{ team.id }}">{{ team.name }}</option>
+            {% endfor %}
+        </select>
+    
+        <select id="category-filter" name="category" onchange="filterTasks()">
+            <option value="">Category</option>
+            {% for category in categories %}
+                <option value="{{ category.id }}">{{ category.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    
+    
+    
+    
 
     {% if todo_items %}
         <div class="new-todo-container">
@@ -290,6 +309,42 @@
             taskToDelete = null;
             document.getElementById('popup-overlay').style.display = 'none';
         }
+
+
+
+
+
+
+
+
+        
+        function filterTasks() {
+            let selectedTeam = document.getElementById("teamFilter").value; 
+            let selectedCategory = document.getElementById("categoryFilter").value; 
+            let tasks = document.querySelectorAll(".task"); 
+            let hasVisibleTasks = false; 
+
+            tasks.forEach(task => {
+                let taskTeam = task.getAttribute("data-team"); 
+                let taskCategory = task.getAttribute("data-category"); 
+
+                let teamMatch = (selectedTeam === "all" || taskTeam === selectedTeam);
+                let categoryMatch = (selectedCategory === "all" || taskCategory === selectedCategory);
+
+                if (teamMatch && categoryMatch) {
+                    task.style.display = "block"; 
+                    hasVisibleTasks = true;
+                } else {
+                    task.style.display = "none"; 
+                }
+            });
+
+            document.getElementById("no-results").style.display = hasVisibleTasks ? "none" : "block";
+        }
     </script>
+</body>
+</html>
+    </script>
+
 </body>
 </html>
