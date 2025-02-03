@@ -268,13 +268,17 @@ def dashboard(request):
 
         # Get all tasks associated with the selected team
         todo_items = Task.objects.filter(user=request.user)
-        todo_items = todo_items | Task.objects.filter(team=team) # | is the union operator
+        # commented out because we want team filtering to occur with dropdown box
+        # todo_items = todo_items | Task.objects.filter(team=team) # | is the union operator
+        categories = todo_items.values_list('category', flat=True).distinct()
+
         print("Tasks:", todo_items)
 
         # Pass the data to the template
         context = {
             'team_id': team_id,
             'todo_items': todo_items,
+            'categories': categories,
             'teams': teams,
             'team_name': team.name if team else None,
         }
