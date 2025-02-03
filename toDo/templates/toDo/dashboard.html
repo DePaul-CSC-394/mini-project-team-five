@@ -6,6 +6,11 @@
     <link rel="stylesheet" href="../../static/main.css">
     <title>Dashboard</title>
     <style>
+        .dropdown {
+            padding: 10px;
+            margin: 10px;
+            font-size: 1em;
+        }
         .task-container {
             font-size: clamp(1em, 1.2vw, 1.35em);
             margin: 20px auto;
@@ -135,38 +140,30 @@
         </div>
     </div>
         {% if todo_items %}
-        <div class="filter-container">
-            <select id="categoryFilter" name="categoryFilter" onchange="filterTasks()">
-                <option value="all">All Categories</option>
-                {% for category in categories %}
-                    <option value="{{ category.id }}">{{ category.name }}</option>
-                {% endfor %}
-            </select>
-    
-            <select id="teamFilter" name="teamFilter" onchange="filterTasks()">
-                <option value="all">All Teams</option>
-                {% for team in teams %}
-                    <option value="{{ team.id }}">{{ team.name }}</option>
-                {% endfor %}
-            </select>
-        </div>
-        {% endif %}
-
-    
-    
-    
-    
-
-    {% if todo_items %}
         <div class="new-todo-container">
+            <div class="filter-container">
+                <select id="categoryFilter" name="categoryFilter" onchange="filterTasks()">
+                    <option value="all">All Categories</option>
+                    {% for category in categories %}
+                        <option value="{{ category.id }}">{{ category.name }}</option>
+                    {% endfor %}
+                </select>
+        
+                <select id="teamFilter" name="teamFilter" onchange="filterTasks()">
+                    <option value="all">All Teams</option>
+                    {% for team in teams %}
+                        <option value="{{ team.id }}">{{ team.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
             <button type="button" class="new-todo" onclick="window.location.href='/todos/new'">New ToDo</button>
         </div>
-    {% endif %}
+        {% endif %}
 
     <div class="task-container" id="task-container">
         {% if todo_items %}
             {% for task in todo_items %}
-                <div class="task">
+                <div class="task" data-team="{{ task.team.id }}" data-category="{{ task.category.id }}">
                     <div class="split" id="task-info">
                         <div class="left">
                             <h3>{{ task.title }}</h3>
@@ -344,9 +341,5 @@
             document.getElementById("no-results").style.display = hasVisibleTasks ? "none" : "block";
         }
     </script>
-</body>
-</html>
-    </script>
-
 </body>
 </html>
