@@ -6,6 +6,13 @@
     <link rel="stylesheet" href="../../static/main.css">
     <title>Dashboard</title>
     <style>
+        .dropdown {
+            padding: 10px;
+            margin: 10px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1.11em;
+        }
         .task-container {
             font-size: clamp(1em, 1.2vw, 1.35em);
             margin: 20px auto;
@@ -22,16 +29,17 @@
             margin-bottom: 10px;
         }
         .new-todo-container {
-            margin-top: 20px;
+            margin: 20px auto 0;
             font-size: clamp(1em, 1.2vw, 1.35em);
             display: flex;
             flex-direction: row;
-            width: 90%;
+            width: 80%;
             min-width: 300px;
             justify-content: end;
         }
         .new-todo {
             min-width: 100px;
+            margin: auto 0;
             padding: 10px 20px;
             /* font-size: clamp(0.9em, 1.15vw, 1.1em); */
             background-color: blue;
@@ -133,48 +141,68 @@
             <a href="{% url 'teams' id=team_id %}">Teams</a>
             <a href="{% url 'logout' %}">{{ user.email }}</a>
         </div>
-    </div>  
-
+    </div>
     {% if todo_items %}
-        <div class="new-todo-container">
+    <div class="new-todo-container">
+        <div class="split">
+            <div class="left">
+                <div class="filter-container">
+                    <select id="categoryFilter" class="dropdown" name="categoryFilter" onchange="filterTasks()">
+                        <option value="all">Categories</option>
+                        {% for category in categories %}
+                            <option value="{{ category }}">{{ category }}</option>
+                        {% endfor %}
+                    </select>
+            
+                    <select id="teamFilter" class="dropdown" name="teamFilter" onchange="filterTasks()">
+                        <option value="all">Teams</option>
+                        {% for team in teams %}
+                            <option value="{{ team.name }}">{{ team.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="right">
+                <button type="button" class="new-todo" onclick="window.location.href='/todos/new'">New ToDo</button>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+<div class="task-container" id="task-container">
+    {% if todo_items %}
+        {% for task in todo_items %}
+            <div class="task" data-team="{{ task.team }}" data-category="{{ task.category }}">
+                <div class="split" id="task-info">
+                    <div class="left">
+                        <h3>{{ task.title }}</h3>
+                        <p>{{ task.description }}</p>
+                        <div class="timer" id="timer-{{ task.id }}">0m 0s</div>
+                    </div>
+                    <div class="right">
+                        <p>{% if task.team.name %}<strong>Team:</strong> {{ task.team.name }}{% endif %}</p>
+                    </div>
+                </div>
+                <div class="split">
+                    <div class="left">
+                        <button class="start-button" onclick="startTimer('timer-{{ task.id }}')">Start</button>
+                        <button class="stop-button" onclick="stopTimer('timer-{{ task.id }}')">Stop</button>
+                        <button class="pause-button" onclick="pauseTimer('timer-{{ task.id }}')">Pause</button>
+                        <button class="resume-button" onclick="resumeTimer('timer-{{ task.id }}')">Resume</button>
+                    </div>
+                    <div class="right">
+                        <button type="button" class="edit-button" onclick="window.location.href='{% url 'todos_edit' task.id %}'" class="edit-todo">Edit</button>
+                        <button class="delete-button" onclick="showPopup(this, '{{ task.id }}')">Delete</button>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="emptyMessage">
+            <p>No ToDo's available. Create a new task to get started!</p>
             <button type="button" class="new-todo" onclick="window.location.href='/todos/new'">New ToDo</button>
         </div>
     {% endif %}
-
-    <div class="task-container" id="task-container">
-        {% if todo_items %}
-            {% for task in todo_items %}
-                <div class="task">
-                    <div class="split" id="task-info">
-                        <div class="left">
-                            <h3>{{ task.title }}</h3>
-                            <p>{{ task.description }}</p>
-                            <div class="timer" id="timer-{{ task.id }}">0m 0s</div>
-                        </div>
-                        <div class="right">
-                            <p>{% if task.team.name %}<strong>Team:</strong> {{ task.team.name }}{% endif %}</p>
-                        </div>
-                    </div>
-                    <div class="split">
-                        <div class="left">
-                            <button class="start-button" onclick="startTimer('timer-{{ task.id }}')">Start</button>
-                            <button class="stop-button" onclick="stopTimer('timer-{{ task.id }}')">Stop</button>
-                            <button class="pause-button" onclick="pauseTimer('timer-{{ task.id }}')">Pause</button>
-                            <button class="resume-button" onclick="resumeTimer('timer-{{ task.id }}')">Resume</button>
-                        </div>
-                        <div class="right">
-                            <button type="button" class="edit-button" onclick="window.location.href='{% url 'todos_edit' task.id %}'" class="edit-todo">Edit</button>
-                            <button class="delete-button" onclick="showPopup(this, '{{ task.id }}')">Delete</button>
-                        </div>
-                    </div>
-                </div>
-            {% endfor %}
-        {% else %}
-            <div class="emptyMessage">
-                <p>No ToDo's available. Create a new task to get started!</p>
-                <button type="button" class="new-todo" onclick="window.location.href='/todos/new'">New ToDo</button>
-            </div>
-        {% endif %}
     </div>
 
     <div class="popup-overlay" id="popup-overlay">
@@ -187,109 +215,133 @@
         </div>
     </div>
 
-    <script>
-        const timers = {};
-        let taskToDelete = null;
+<script>
+const timers = {};
+let taskToDelete = null;
 
-        function getButtons(timerId) {
-            const timerElement = document.getElementById(timerId);
-            const taskDiv = timerElement.parentNode.parentNode.parentNode;
-            return {
-                stopButton: taskDiv.querySelector('.stop-button'),
-                pauseButton: taskDiv.querySelector('.pause-button'),
-                resumeButton: taskDiv.querySelector('.resume-button'),
-                startButton: taskDiv.querySelector('.start-button')
-            };
-        }
+function getButtons(timerId) {
+    const timerElement = document.getElementById(timerId);
+    const taskDiv = timerElement.parentNode.parentNode.parentNode;
+    return {
+        stopButton: taskDiv.querySelector('.stop-button'),
+        pauseButton: taskDiv.querySelector('.pause-button'),
+        resumeButton: taskDiv.querySelector('.resume-button'),
+        startButton: taskDiv.querySelector('.start-button')
+    };
+}
 
-        function startTimer(timerId) {
-            const { stopButton, pauseButton, resumeButton, startButton } = getButtons(timerId);
-            const timerElement = document.getElementById(timerId);
+function startTimer(timerId) {
+    const { stopButton, pauseButton, resumeButton, startButton } = getButtons(timerId);
+    const timerElement = document.getElementById(timerId);
 
-            if (!timers[timerId]) {
-                timers[timerId] = { seconds: 0, interval: null, isPaused: false };
+    if (!timers[timerId]) {
+        timers[timerId] = { seconds: 0, interval: null, isPaused: false };
+    }
+
+    if (!timers[timerId].interval) {
+        timers[timerId].interval = setInterval(() => {
+            if (!timers[timerId].isPaused) {
+                timers[timerId].seconds++;
+                const minutes = Math.floor(timers[timerId].seconds / 60);
+                const seconds = timers[timerId].seconds % 60;
+                timerElement.innerText = `${minutes}m ${seconds}s`;
             }
+        }, 1000);
 
-            if (!timers[timerId].interval) {
-                timers[timerId].interval = setInterval(() => {
-                    if (!timers[timerId].isPaused) {
-                        timers[timerId].seconds++;
-                        const minutes = Math.floor(timers[timerId].seconds / 60);
-                        const seconds = timers[timerId].seconds % 60;
-                        timerElement.innerText = `${minutes}m ${seconds}s`;
-                    }
-                }, 1000);
+        startButton.style.display = 'none';
+        stopButton.style.display = 'inline-block';
+        pauseButton.style.display = 'inline-block';
+        resumeButton.style.display = 'none';
+    }
+}
 
-                startButton.style.display = 'none';
-                stopButton.style.display = 'inline-block';
-                pauseButton.style.display = 'inline-block';
-                resumeButton.style.display = 'none';
-            }
+function stopTimer(timerId) {
+    const { stopButton, pauseButton, resumeButton, startButton } = getButtons(timerId);
+    const timerElement = document.getElementById(timerId);
+    clearInterval(timers[timerId].interval);
+    timers[timerId].interval = null;
+
+    startButton.style.display = 'inline-block';
+    stopButton.style.display = 'none';
+    pauseButton.style.display = 'none';
+    resumeButton.style.display = 'none';
+
+    timers[timerId] = { seconds: 0, interval: null, isPaused: false };
+    timerElement.innerText = `0m 0s`;
+}
+
+function pauseTimer(timerId) {
+    const { stopButton, pauseButton, resumeButton, startButton } = getButtons(timerId);
+    const timerElement = document.getElementById(timerId);
+
+    const timer = timers[timerId];
+    if (timer) {
+        timer.isPaused = true;
+        pauseButton.style.display = 'none';
+        resumeButton.style.display = 'inline-block';
+        stopButton.style.display = 'inline-block';
+    }
+}
+
+function resumeTimer(timerId) {
+    const { stopButton, pauseButton, resumeButton, startButton } = getButtons(timerId);
+    const timerElement = document.getElementById(timerId);
+
+    const timer = timers[timerId];
+    if (timer) {
+        timer.isPaused = false;
+        pauseButton.style.display = 'inline-block';
+        resumeButton.style.display = 'none';
+        stopButton.style.display = 'inline-block';
+    }
+}
+
+function showPopup(button, taskId) {
+    taskToDelete = taskId;
+    document.getElementById('popup-overlay').style.display = 'flex';
+    document.getElementById('popup').style.display = 'flex';
+}
+
+function confirmDelete() {
+    if (taskToDelete) {
+        window.location.href = `{% url 'delete' 0 %}`.replace('0', taskToDelete);
+        taskToDelete = null;
+    }
+    delete timers[timerId];
+    taskToDelete.remove();
+    taskToDelete = null;
+
+    document.getElementById('popup-overlay').style.display = 'none';
+}
+
+function cancelDelete() {
+    taskToDelete = null;
+    document.getElementById('popup-overlay').style.display = 'none';
+}
+
+function filterTasks() {
+    let selectedTeam = document.getElementById("teamFilter").value; 
+    let selectedCategory = document.getElementById("categoryFilter").value; 
+    let tasks = document.querySelectorAll(".task"); 
+    let hasVisibleTasks = false; 
+
+    tasks.forEach(task => {
+        let taskTeam = task.getAttribute("data-team"); 
+        let taskCategory = task.getAttribute("data-category"); 
+
+        let teamMatch = (selectedTeam === "all" || taskTeam === selectedTeam);
+        let categoryMatch = (selectedCategory === "all" || taskCategory === selectedCategory);
+
+        if (teamMatch && categoryMatch) {
+            task.style.display = "block"; 
+            hasVisibleTasks = true;
+        } else {
+            task.style.display = "none"; 
         }
+    });
 
-        function stopTimer(timerId) {
-            const { stopButton, pauseButton, resumeButton, startButton } = getButtons(timerId);
-            const timerElement = document.getElementById(timerId);
-            clearInterval(timers[timerId].interval);
-            timers[timerId].interval = null;
-
-            startButton.style.display = 'inline-block';
-            stopButton.style.display = 'none';
-            pauseButton.style.display = 'none';
-            resumeButton.style.display = 'none';
-
-            timers[timerId] = { seconds: 0, interval: null, isPaused: false };
-            timerElement.innerText = `0m 0s`;
-        }
-
-        function pauseTimer(timerId) {
-            const { stopButton, pauseButton, resumeButton, startButton } = getButtons(timerId);
-            const timerElement = document.getElementById(timerId);
-
-            const timer = timers[timerId];
-            if (timer) {
-                timer.isPaused = true;
-                pauseButton.style.display = 'none';
-                resumeButton.style.display = 'inline-block';
-                stopButton.style.display = 'inline-block';
-            }
-        }
-
-        function resumeTimer(timerId) {
-            const { stopButton, pauseButton, resumeButton, startButton } = getButtons(timerId);
-            const timerElement = document.getElementById(timerId);
-
-            const timer = timers[timerId];
-            if (timer) {
-                timer.isPaused = false;
-                pauseButton.style.display = 'inline-block';
-                resumeButton.style.display = 'none';
-                stopButton.style.display = 'inline-block';
-            }
-        }
-
-        function showPopup(button, taskId) {
-            taskToDelete = taskId;
-            document.getElementById('popup-overlay').style.display = 'flex';
-            document.getElementById('popup').style.display = 'flex';
-        }
-
-        function confirmDelete() {
-            if (taskToDelete) {
-                window.location.href = `{% url 'delete' 0 %}`.replace('0', taskToDelete);
-                taskToDelete = null;
-            }
-            delete timers[timerId];
-            taskToDelete.remove();
-            taskToDelete = null;
-
-            document.getElementById('popup-overlay').style.display = 'none';
-        }
-
-        function cancelDelete() {
-            taskToDelete = null;
-            document.getElementById('popup-overlay').style.display = 'none';
-        }
-    </script>
+    document.getElementById("no-results").style.display = hasVisibleTasks ? "none" : "block";
+}
+</script>
 </body>
 </html>
