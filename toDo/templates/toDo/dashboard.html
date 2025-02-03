@@ -202,6 +202,24 @@
             };
         }
 
+        function updateTimerState(taskId, state, seconds) {
+            fetch(`/update-timer/${taskId}/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                },
+                body: JSON.stringify({ state: state, seconds: seconds })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Timer state updated:', data);
+            })
+            .catch(error => {
+                console.error('Error updating timer state:', error);
+            });
+        }
+
         function startTimer(timerId) {
             const { stopButton, pauseButton, resumeButton, startButton } = getButtons(timerId);
             const timerElement = document.getElementById(timerId);
@@ -217,6 +235,8 @@
                         const minutes = Math.floor(timers[timerId].seconds / 60);
                         const seconds = timers[timerId].seconds % 60;
                         timerElement.innerText = `${minutes}m ${seconds}s`;
+
+                        updateTimerState(taskId, 'running', timers[timerId].seconds);
                     }
                 }, 1000);
 
@@ -240,6 +260,8 @@
 
             timers[timerId] = { seconds: 0, interval: null, isPaused: false };
             timerElement.innerText = `0m 0s`;
+
+            updateTimerState(taskId, 'stopped', timers[timerId].seconds);
         }
 
         function pauseTimer(timerId) {
@@ -252,6 +274,8 @@
                 pauseButton.style.display = 'none';
                 resumeButton.style.display = 'inline-block';
                 stopButton.style.display = 'inline-block';
+
+                updateTimerState(taskId, 'paused', timer.seconds);
             }
         }
 
@@ -265,6 +289,8 @@
                 pauseButton.style.display = 'inline-block';
                 resumeButton.style.display = 'none';
                 stopButton.style.display = 'inline-block';
+
+                updateTimerState(taskId, 'running', timer.seconds);
             }
         }
 

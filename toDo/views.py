@@ -404,6 +404,20 @@ def delete(request, id):
 #             return render(request, "toDo/login.html", {"message": "Invalid credentials"})
 # def update_team(request, id):
 
+def update_timer(request, task_id):
+    if request.method == 'POST':
+        import json
+        data = json.loads(request.body)
+        state = data.get('state')
+        seconds = data.get('seconds')
+
+        # Get the task object
+        task = Task.objects.get(id=task_id)
+
+        # Update the timer state and seconds
+        task.timer_status = state
+        task.timer_seconds = seconds
+        task.save()
 
 
 def delete_team(request, id):

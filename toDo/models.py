@@ -76,6 +76,8 @@ class Task(models.Model):
     dueDate= models.DateTimeField(null=True, blank=True)
     category = models.CharField(max_length=200, null=True, blank=True)
     team = models.ForeignKey(Team, on_delete=models.CASCADE, null=True, blank=True)
+    timer_seconds = models.IntegerField(default=0)  # Time in seconds
+    timer_status = models.CharField(max_length=20, default='stopped') 
     
     
     complete = models.BooleanField(default=False)

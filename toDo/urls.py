@@ -6,6 +6,7 @@ urlpatterns = [
     path("", views.index, name="index"),
     path("about/", views.about, name="about"),
     # path("task/<int:pk>/", views.todosNew, name = "task"),
+    path('update-timer/<int:task_id>/', views.update_timer, name='update_timer'),
     path("register/", views.register, name = "register"),
     path("login/", views.login, name = "login"),
     path("dashboard/", views.dashboard, name = "dashboard"),
@@ -21,3 +22,4 @@ urlpatterns = [
     path('reset-password/<uidb64>/<token>/', views.reset_password, name='reset_password'),
     path('teams/<int:id>/add-member', views.addMember, name='add_member'),
 ]
+
