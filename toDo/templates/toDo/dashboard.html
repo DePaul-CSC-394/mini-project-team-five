@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../static/main.css">
+    <title>Dashboard</title>
+    <style>
+        .dropdown {
+            padding: 10px;
+            margin: 10px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1.11em;
+        }
+        .task-container {
+            font-size: clamp(1em, 1.2vw, 1.35em);
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid lightgray;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+            width: 75%;
+            min-width: 300px;
+        }
+        .task {
+            padding: 20px;
+            border-bottom: 1px solid lightgray;
+            margin-bottom: 10px;
+        }
+        .new-todo-container {
+            margin: 20px auto 0;
+            font-size: clamp(1em, 1.2vw, 1.35em);
+            display: flex;
+            flex-direction: row;
+            width: 80%;
+            min-width: 300px;
+            justify-content: end;
+        }
+        .new-todo {
+            min-width: 100px;
+            margin: auto 0;
+            padding: 10px 20px;
+            /* font-size: clamp(0.9em, 1.15vw, 1.1em); */
+            background-color: blue;
+            color: white;
+            border: 1px solid transparent;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .new-todo:hover {
+            background-color: transparent;
+            color: black;
+            border: 1px solid blue;
+            transition: all 0.2s ease-out;
+        }
+        .emptyMessage {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .emptyMessage > .new-todo{
+            width: 20%;
+            margin: 0;
+        }
+        .task .timer {
+            margin: 10px 0;
+            display: none;
+        }
+        .task button {
+            margin-top: 10px;
+        }
+        .stop-button {
+            background-color: transparent;
+            color: red;
+            border: 1px solid red;
+            display: none;
+        }
+        .stop-button:hover {
+            background-color: red;
+            color: white;
+            border: 1px solid transparent;
+        }
+        .pause-button {
+            background-color: transparent;
+            color: gold;
+            border: 1px solid gold;
+            display: none;
+        }
+        .pause-button:hover{
+            background-color: gold;
+            color: white;
+            border: 1px solid transparent;
+        }
+        .resume-button {
+            background-color: transparent;
+            color: green;
+            border: 1px solid green;
+            display: none;
+        }
+        .resume-button:hover{
+            background-color: green;
+            color: white;
+            border: 1px solid transparent;
+        }
+        .edit-button {
+            background-color: #555555;
+            color: white;
+        }
+        .edit-button:hover{
+            background-color: transparent;
+            color: #555555;
+            border: 1px solid #555555;
+        }
+        .task, .new-todo, .emptyMessage {
+            font-size: 1em;
+        }
+        #task-info .left {
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+            gap: 0px;
+        }
+        #task-info .left > * {
+            margin: 0;
+        }
+        .right strong{
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="navbar-left">
+            <a href="/">$APPNAME</a>
+            <a href="{% url 'about' %}">About</a>
+        </div>
+        <div class="navbar-right">
+            <a href="{% url 'dashboard' %}">Dashboard</a>
+            <a href="{% url 'todos_new' %}">To-Do's</a>
+            <a href="{% url 'teams' id=team_id %}">Teams</a>
+            <a href="{% url 'logout' %}">{{ user.email }}</a>
+        </div>
+    </div>
+    {% if todo_items %}
+    <div class="new-todo-container">
+        <div class="split">
+            <div class="left">
+                <div class="filter-container">
+                    <select id="categoryFilter" class="dropdown" name="categoryFilter" onchange="filterTasks()">
+                        <option value="all">Categories</option>
+                        {% for category in categories %}
+                            <option value="{{ category }}">{{ category }}</option>
+                        {% endfor %}
+                    </select>
+            
+                    <select id="teamFilter" class="dropdown" name="teamFilter" onchange="filterTasks()">
+                        <option value="all">Teams</option>
+                        {% for team in teams %}
+                            <option value="{{ team.name }}">{{ team.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="right">
+                <button type="button" class="new-todo" onclick="window.location.href='/todos/new'">New ToDo</button>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+<div class="task-container" id="task-container">
+    {% if todo_items %}
+        {% for task in todo_items %}
+            <div class="task" data-team="{{ task.team }}" data-category="{{ task.category }}">
+                <div class="split" id="task-info">
+                    <div class="left">
+                        <h3>{{ task.title }}</h3>
+                        <p>{{ task.description }}</p>
+                        <!-- <div class="timer" id="timer-{{ task.id }}">0m 0s</div> -->
+                        <div class="timer" id="timer-{{ task.id }}" 
+                        data-seconds-elapsed="{{ task.timer.secondsElapsed }}" 
+                        data-is-running="{{ task.timer.isRunning }}"
+                        data-is-running="{{ task.timer.isRunning }}">
+                            0m 0s
+                        </div>
+                    </div>
+                    <div class="right">
+                        <p>{% if task.team.name %}<strong>Team:</strong> {{ task.team.name }}{% endif %}</p>
+                    </div>
+                </div>
+                <div class="split">
+                    <div class="left">
+                        <button class="start-button" onclick="startTimer('{{ task.id }}', 'timer-{{ task.id }}')">Start</button>
+                        <button class="stop-button" onclick="stopTimer('{{ task.id }}', 'timer-{{ task.id }}')">Stop</button>
+                        <button class="pause-button" onclick="pauseTimer('{{ task.id }}', 'timer-{{ task.id }}')">Pause</button>
+                        <button class="resume-button" onclick="resumeTimer('{{ task.id }}', 'timer-{{ task.id }}')">Resume</button>
+                    </div>
+                    <div class="right">
+                        <button type="button" class="edit-button" onclick="window.location.href='{% url 'todos_edit' task.id %}'" class="edit-todo">Edit</button>
+                        <button class="delete-button" onclick="showPopup(this, '{{ task.id }}')">Delete</button>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="emptyMessage">
+            <p>No ToDo's available. Create a new task to get started!</p>
+            <button type="button" class="new-todo" onclick="window.location.href='/todos/new'">New ToDo</button>
+        </div>
+    {% endif %}
+    </div>
+
+    <div class="popup-overlay" id="popup-overlay">
+        <div class="popup" id="popup">
+            <div class="popup-content">
+                <div class="message">Are you sure you want to delete this item?</div>
+                <button class="cancel-button" onclick="cancelDelete()">Cancel</button>
+                <button class="delete-button" type="submit" onclick="confirmDelete()">Delete</button>
+            </div>
+        </div>
+    </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    fetchTimers();
+});
+
+const timers = {};
+let taskToDelete = null;
+
+function fetchTimers() {
+    fetch('{% url "fetch_timers" %}')
+        .then(response => response.json())
+        .then(data => {
+            data.timers.forEach(timer => {
+                const timerElement = document.getElementById(`timer-${timer.taskId}`);
+                if (timerElement) {
+                    timers[timer.taskId] = {
+                        seconds: timer.secondsElapsed,
+                        interval: null,
+                        isPaused: !timer.isRunning
+                    };
+                    updateTimerUI(timer.taskId);
+                }
+            });
+        });
+}
+
+function updateTimerUI(taskId) {
+    const timerElement = document.getElementById(`timer-${taskId}`);
+    const { startButton, stopButton, pauseButton, resumeButton } = getButtons(taskId);
+    const timer = timers[taskId];
+
+    if (timer) {
+        const minutes = Math.floor(timer.seconds / 60);
+        const seconds = timer.seconds % 60;
+        timerElement.innerText = `${minutes}m ${seconds}s`;
+
+        if (timer.isPaused) {
+            startButton.style.display = 'none';
+            stopButton.style.display = 'inline-block';
+            pauseButton.style.display = 'none';
+            resumeButton.style.display = 'inline-block';
+        } else {
+            startButton.style.display = 'none';
+            stopButton.style.display = 'inline-block';
+            pauseButton.style.display = 'inline-block';
+            resumeButton.style.display = 'none';
+        }
+    }
+}
+
+function getButtons(taskId) {
+    const timerElement = document.getElementById(`timer-${taskId}`);
+    const taskDiv = timerElement.closest('.task');
+    return {
+        startButton : taskDiv.querySelector('.start-button'),
+        stopButton : taskDiv.querySelector('.stop-button'),
+        pauseButton : taskDiv.querySelector('.pause-button'),
+        resumeButton : taskDiv.querySelector('.resume-button'),
+    };
+}
+
+function startTimer(taskId, timerId) {
+    // const { stopButton, pauseButton, resumeButton, startButton } = getButtons(timerId);
+    // const timerElement = document.getElementById(timerId);
+    const timerElement = document.getElementById(`timer-${taskId}`);
+    timerElement.style.display = 'block';
+    if (!timerElement) return;
+    
+    // Set timer data attributes
+    timers[timerId] = { seconds: 0, interval: null, isPaused: false }
+    timerElement.dataset.isRunning = true;
+    // timerElement.dataset.secondsElapsed = timerElement.dataset.secondsElapsed || '0';
+
+    // Update button visibility
+    const { startButton, stopButton, pauseButton, resumeButton } = getButtons(taskId);
+
+    if (!timers[timerId].interval) {
+        timers[timerId].interval = setInterval(() => {
+            if (!timers[timerId].isPaused) {
+                timers[timerId].seconds++;
+                const minutes = Math.floor(timers[timerId].seconds / 60);
+                const seconds = timers[timerId].seconds % 60;
+                timerElement.innerText = `${minutes}m ${seconds}s`;
+            }
+        }, 1000);
+
+        startButton.style.display = 'none';
+        stopButton.style.display = 'inline-block';
+        pauseButton.style.display = 'inline-block';
+        resumeButton.style.display = 'none';
+    }
+    // Send state update to the backend
+    fetch(`{% url 'update_task_state' 0 %}`.replace('0', taskId), {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}'
+        },
+        body: JSON.stringify({ state: 'running', secondsElapsed: timers[timerId].seconds })
+    });
+}
+
+function stopTimer(taskId, timerId) {
+    const timerElement = document.getElementById(`timer-${taskId}`);
+    timerElement.style.display = 'none';
+    timerElement.dataset.isRunning = false;
+    timerElement.dataset.secondsElapsed = '0';
+    timerElement.innerText = '0m 0s';
+
+    // Update button visibility
+    const { startButton, stopButton, pauseButton, resumeButton } = getButtons(taskId);
+
+    clearInterval(timers[timerId.interval]);
+    timers[timerId].interval = null;
+
+    startButton.style.display = 'inline-block';
+    stopButton.style.display = 'none';
+    pauseButton.style.display = 'none';
+    resumeButton.style.display = 'none';
+
+    timers[timerId] = { seconds: 0, interval: null, isPaused: true };
+    timerElement.innerText = `0m 0s`;
+
+    // Send state update to the backend
+    fetch(`{% url 'update_task_state' 0 %}`.replace('0', taskId), {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}'
+        },
+        body: JSON.stringify({ state: 'stopped', secondsElapsed: 0 })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Stop Timer Response:', data);
+        if (data.success) {
+            console.log('Timer state updated successfully.');
+        } else {
+            console.error('Failed to update timer state.');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+
+function pauseTimer(taskId, timerId) {
+    const timerElement = document.getElementById(`timer-${taskId}`);
+    timerElement.dataset.isRunning = false;
+
+    const { startButton, stopButton, pauseButton, resumeButton } = getButtons(taskId);
+
+    // startButton.style.display = 'none';
+    // stopButton.style.display = 'inline-block';
+    // pauseButton.style.display = 'none';
+    // resumeButton.style.display = 'inline-block';
+
+    const timer = timers[timerId];
+    if (timer) {
+        timer.isPaused = true;
+        pauseButton.style.display = 'none';
+        resumeButton.style.display = 'inline-block';
+        stopButton.style.display = 'inline-block';
+    }
+
+    fetch(`{% url 'update_task_state' 0 %}`.replace('0', taskId), {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}'
+        },
+        body: JSON.stringify({ state: 'paused', secondsElapsed: timers[timerId].seconds })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Pause Timer Response:', data);
+        if (data.success) {
+            console.log('Timer state updated successfully.');
+        } else {
+            console.error('Failed to update timer state.');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+
+function resumeTimer(taskId, timerId) {
+    const timerElement = document.getElementById(`timer-${taskId}`);
+    timerElement.dataset.isRunning = true;
+    const { startButton, stopButton, pauseButton, resumeButton } = getButtons(taskId);
+
+    const timer = timers[timerId];
+    if (timer) {
+        timer.isPaused = false;
+        startButton.style.display = 'none';
+        stopButton.style.display = 'inline-block';
+        pauseButton.style.display = 'inline-block';
+        resumeButton.style.display = 'none';
+    }
+}
+
+// document.addEventListener('DOMContentLoaded', () => {
+//     {% for task in todo_items %}
+//         {% if task.timer and task.timer.isRunning %}
+//             startTimer('{{ task.id }}', '{{ task.timer.startTime }}');
+//         {% endif %}
+//     {% endfor %}
+// });
+
+function showPopup(button, taskId) {
+    taskToDelete = taskId;
+    document.getElementById('popup-overlay').style.display = 'flex';
+    document.getElementById('popup').style.display = 'flex';
+}
+
+function confirmDelete() {
+    if (taskToDelete) {
+        window.location.href = `{% url 'delete' 0 %}`.replace('0', taskToDelete);
+        taskToDelete = null;
+    }
+    delete timers[timerId];
+    taskToDelete.remove();
+    taskToDelete = null;
+
+    document.getElementById('popup-overlay').style.display = 'none';
+}
+
+function cancelDelete() {
+    taskToDelete = null;
+    document.getElementById('popup-overlay').style.display = 'none';
+}
+
+function filterTasks() {
+    let selectedTeam = document.getElementById("teamFilter").value; 
+    let selectedCategory = document.getElementById("categoryFilter").value; 
+    let tasks = document.querySelectorAll(".task"); 
+    let hasVisibleTasks = false; 
+
+    tasks.forEach(task => {
+        let taskTeam = task.getAttribute("data-team"); 
+        let taskCategory = task.getAttribute("data-category"); 
+
+        let teamMatch = (selectedTeam === "all" || taskTeam === selectedTeam);
+        let categoryMatch = (selectedCategory === "all" || taskCategory === selectedCategory);
+
+        if (teamMatch && categoryMatch) {
+            task.style.display = "block"; 
+            hasVisibleTasks = true;
+        } else {
+            task.style.display = "none"; 
+        }
+    });
+
+    document.getElementById("no-results").style.display = hasVisibleTasks ? "none" : "block";
+}
+</script>
+</body>
+</html>

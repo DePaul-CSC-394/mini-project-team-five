@@ -61,13 +61,13 @@ class TaskForm(forms.ModelForm):
     title = forms.CharField(max_length=200, widget=forms.TextInput(attrs={'name':'title'}))
     description = forms.CharField(widget=forms.Textarea(attrs={'name':'description'}))
     dueDate = forms.DateField(widget=forms.DateInput(attrs={'name':'dueDate', 'type': 'date'}), required=False)
-    category = forms.CharField(max_length=200, widget=forms.TextInput(attrs={'name':'category'}))
+    category = forms.CharField(max_length=200, widget=forms.TextInput(attrs={'name':'category'}), required=False)
     team = forms.ModelChoiceField(queryset=Team.objects.all(), widget=forms.Select(attrs={'name':'team'}), required=False)
     assigned_to = forms.ModelChoiceField(queryset=CustomUser.objects.all(), widget=forms.Select(attrs={'name':'assignee'}), required=False)
 
     def clean_dueDate(self):
         dueDate = self.cleaned_data.get('dueDate')
-        if dueDate and dueDate <= datetime.date.today():
+        if dueDate and dueDate < datetime.date.today():
             raise forms.ValidationError("The due date must be in the future.")
         return dueDate
 
