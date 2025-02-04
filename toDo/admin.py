@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 
-from .models import Task, Team, stopwatch
+from .models import Task, Team, Timer
 #from django.contrib.auth.models import UserAdmin
 #from users.models import CustomUser
 
@@ -9,7 +9,7 @@ from .models import Task, Team, stopwatch
 
 admin.site.register(Task)
 admin.site.register(Team)
-admin.site.register(stopwatch)
+admin.site.register(Timer)
 
 #admin.site.register(CustomUser)
 

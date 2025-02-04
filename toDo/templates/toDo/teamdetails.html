@@ -134,6 +134,7 @@
 
     <script>
         // let memberToDelete = null;
+        // teamToDelete 
         const newMembersInput = document.getElementById('new-members');
         const newMembers = [];
 
@@ -148,8 +149,6 @@
                 {
                     checkDupe = true;
                 }
-
-
             });
         
             if (checkDupe)
@@ -248,7 +247,6 @@
             document.getElementById('delete-team-form').submit();
             document.getElementById('popup-overlay').style.display = 'none';
             window.location.href = '{% url "delete_team" id=team_id %}';
-            window.location.href = '/dashboard';
         }
 
         function cancelDelete() {

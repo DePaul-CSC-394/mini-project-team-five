@@ -28,10 +28,12 @@ from django.db import models
 
 #     def __str__(self):
 #         return self.email
-class stopwatch(models.Model):
-    startTime = models.DateTimeField(default=timezone.now, null=True, blank=True)
-    endTime = models.DateTimeField(null=True, blank=True)
+class Timer(models.Model):
+    # startTime = models.DateTimeField(default=timezone.now, null=True, blank=True)
+    # endTime = models.DateTimeField(null=True, blank=True)
+    secondsElapsed = models.IntegerField(default=0)
     isRunning = models.BooleanField(default=False)
+    isPaused = models.BooleanField(default=False)
     
     def start(self):
         self.startTime = timezone.now()
@@ -43,14 +45,14 @@ class stopwatch(models.Model):
         self.isRunning = False
         self.save()
         
-    def timeElasped(self):
-        if self.isRunning:
-            return timezone.now() - self.startTime
-        elif self.endTime:
-            return self.endTime - self.startTime
-        else:
-            return None
- 
+    # def timeElasped(self):
+    #     if self.isRunning:
+    #         return timezone.now() - self.startTime
+    #     elif self.endTime:
+    #         return self.endTime - self.startTime
+    #     else:
+    #         return None
+
 #New model for the team and member relationship
 #https://docs.djangoproject.com/en/5.1/topics/db/models/
 class Team(models.Model):
@@ -65,8 +67,6 @@ class Team(models.Model):
 
     class Meta:
         ordering = ['name']
-  
- 
         
 class Task(models.Model):
     id = models.AutoField(primary_key=True)
@@ -76,8 +76,7 @@ class Task(models.Model):
     dueDate= models.DateTimeField(null=True, blank=True)
     category = models.CharField(max_length=200, null=True, blank=True)
     team = models.ForeignKey(Team, on_delete=models.CASCADE, null=True, blank=True)
-    
-    
+    timer = models.ForeignKey(Timer, on_delete=models.CASCADE, null=True, blank=True)
     complete = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)
 
@@ -87,7 +86,6 @@ class Task(models.Model):
     class Meta:
         ordering = ['complete']  # ordering within the database
         
-      
         
 class TeamMember(models.Model):
     team = models.ForeignKey(Team, on_delete=models.CASCADE)
