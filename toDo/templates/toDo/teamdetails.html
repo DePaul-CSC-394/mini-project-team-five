@@ -141,6 +141,21 @@
         function updateTeam() {
             const newMembersInput = document.getElementById('new-members');
             const form = document.getElementById('update-team-form');
+            const memberList = document.querySelectorAll('.team-list .member-name');
+            
+            let checkDupe = false;
+            memberList.forEach(member => {
+                if (member.textContent.trim() === email)
+                {
+                    checkDupe = true;
+                }
+            });
+        
+            if (checkDupe)
+            {
+                alert("This user is already in this team.");
+                return; 
+            }
             
             // Set the new members value before submitting
             // newMembersInput.value = newMembers.join(',');
