@@ -67,7 +67,7 @@ class TaskForm(forms.ModelForm):
 
     def clean_dueDate(self):
         dueDate = self.cleaned_data.get('dueDate')
-        if dueDate and dueDate <= datetime.date.today():
+        if dueDate and dueDate < datetime.date.today():
             raise forms.ValidationError("The due date must be in the future.")
         return dueDate
 
