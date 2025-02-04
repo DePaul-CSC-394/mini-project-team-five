@@ -3,9 +3,6 @@
 <head>
     <title>Task Form with Validation</title>
     <link rel="stylesheet" href="../../static/main.css">
-    <style>
-        
-    </style>
 </head>
 <body>
     <div class="navbar">
@@ -22,7 +19,7 @@
     </div>
     <div class="form-container">
         <div class="form-box">
-            <form method = "post" id="taskForm">
+            <form method="post" id="taskForm">
                 {% csrf_token %}
                 <div class="form-group">
                     <label for="{{ form.title.id_for_label }}">Title</label>
@@ -31,7 +28,6 @@
                         <div class="error-message">{{ form.title.errors }}</div>
                     {% endif %}
                 </div>
-            
                 <div class="form-group">
                     <label for="{{ form.description.id_for_label }}">Description</label>
                     {{ form.description }}
@@ -39,7 +35,6 @@
                         <div class="error-message">{{ form.description.errors }}</div>
                     {% endif %}
                 </div>
-            
                 <div class="form-group">
                     <label for="{{ form.dueDate.id_for_label }}">Due Date</label>
                     {{ form.dueDate }}
@@ -47,7 +42,6 @@
                         <div class="error-message">{{ form.dueDate.errors }}</div>
                     {% endif %}
                 </div>
-            
                 <div class="form-group">
                     <label for="{{ form.category.id_for_label }}">Category</label>
                     {{ form.category }}
@@ -55,7 +49,6 @@
                         <div class="error-message">{{ form.category.errors }}</div>
                     {% endif %}
                 </div>
-            
                 <div class="form-group">
                     <label for="{{ form.team.id_for_label }}">Team</label>
                     {{ form.team }}
@@ -70,84 +63,10 @@
                         <div class="error-message">{{ form.assigned_to.errors }}</div>
                     {% endif %}
                 </div>
-
                 <button type="button" class="cancel-button" onclick="window.location.href='{% url 'dashboard' %}'">Cancel</button>
                 <button type="submit" class="save-button">Save</button>
             </form>
         </div>
     </div>
-        
-    <!--script>
-        // Form validation
-        document.getElementById('taskForm').addEventListener('submit', function (event) {
-            event.preventDefault(); // Prevent form submission
-
-            let isValid = true;
-
-            // Validate Task Title
-            const taskTitle = document.getElementById('task-title');
-            const taskTitleError = document.getElementById('task-title-error');
-            if (taskTitle.value.trim() === '') {
-                taskTitle.classList.add('error');
-                taskTitleError.style.display = 'block';
-                isValid = false;
-            } else {
-                taskTitle.classList.remove('error');
-                taskTitleError.style.display = 'none';
-            }
-
-            const description = document.getElementById('description');
-            const descriptionError = document.getElementById('description-error');
-            if (description.value.trim() === '') {
-                description.classList.add('error');
-                descriptionError.style.display = 'block';
-                isValid = false;
-            } else {
-                description.classList.remove('error');
-                descriptionError.style.display = 'none';
-            }
-                        
-            const dueDate = document.getElementById('due-date');
-            const dueDateError = document.getElementById('due-date-error');
-            const dateRegex = /^(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])\/\d{4}$/;
-            
-            
-            if (!dateRegex.test(dueDate.value.trim())) {
-                dueDate.classList.add('error');
-                dueDateError.style.display = 'block';
-                dueDateError.textContent = 'Please enter a valid date in MM/DD/YYYY format';
-                isValid = false;
-            } else {
-                const [month, day, year] = dueDate.value.split('/').map(Number);
-                const dueDateObj = new Date(year, month - 1, day);
-                const currentDate = new Date();
-            
-                if (
-                    dueDateObj.getFullYear() !== year ||
-                    dueDateObj.getMonth() + 1 !== month ||
-                    dueDateObj.getDate() !== day
-                ) {
-                    dueDate.classList.add('error');
-                    dueDateError.style.display = 'block';
-                    dueDateError.textContent = 'Invalid date. Please check the values entered.';
-                    isValid = false;
-                } 
-                else if (dueDateObj < currentDate) {
-                    dueDate.classList.add('error');
-                    dueDateError.style.display = 'block';
-                    dueDateError.textContent = 'Due date cannot be in the past.';
-                    isValid = false;
-                } else {
-                    dueDate.classList.remove('error');
-                    dueDateError.style.display = 'none';
-                }
-            }
-            if (isValid) {
-                alert('Form submitted successfully!');
-
-            }
-        }
-    );
-    </script-->
 </body>
 </html>

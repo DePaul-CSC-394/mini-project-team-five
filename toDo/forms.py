@@ -63,7 +63,7 @@ class TaskForm(forms.ModelForm):
     dueDate = forms.DateField(widget=forms.DateInput(attrs={'name':'dueDate', 'type': 'date'}), required=False)
     category = forms.CharField(max_length=200, widget=forms.TextInput(attrs={'name':'category'}), required=False)
     team = forms.ModelChoiceField(queryset=Team.objects.all(), widget=forms.Select(attrs={'name':'team'}), required=False)
-    assigned_to = forms.ModelChoiceField(queryset=CustomUser.objects.all(), widget=forms.Select(attrs={'name':'assignee'}), required=False)
+    assigned_to = forms.ModelChoiceField(queryset=CustomUser.objects.all(), widget=forms.Select(attrs={'name':'assigned_to'}), required=False)
 
     def clean_dueDate(self):
         dueDate = self.cleaned_data.get('dueDate')
@@ -73,14 +73,24 @@ class TaskForm(forms.ModelForm):
 
     class Meta:
         model = Task
-        fields = ['title', 'description', 'dueDate', 'category', 'team']
+        fields = ['title', 'description', 'dueDate', 'category', 'team', 'assigned_to']
 
-    def init(self, args, **kwargs):
+    def init(self, *args, **kwargs):
         self.user = kwargs.pop('user', None)
+        self.team = kwargs.pop('team', None)    
+        self.assigned_to = kwargs.pop('assigned_to', None)
         super(TaskForm, self).init(args, **kwargs)
         if self.user:
             self.fields['team'].queryset = Team.objects.filter(members=self.user)
+            self.fields['assigned_to'].queryset = CustomUser.objects.filter(teams__members=self.user)
             self.fields['user'].initial = self.user
+
+    # def save(self, commit=True):
+    #     task = super(TaskForm, self).save(commit=False)
+    #     task.assigned_to = self.cleaned_data['assigned_to']
+    #     if commit:
+    #         task.save()
+    #     return task
 
         
 class TeamForm(forms.ModelForm):

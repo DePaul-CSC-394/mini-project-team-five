@@ -204,11 +204,13 @@ def todosEdit(request, id):
     if not request.user.is_authenticated:
         return redirect('login')
     
-    team = Team.objects.first()
-    team_id = team.id if team else 0 
+    # team = Team.objects.first()
+    # team_id = team.id if team else 0 
 
     try:
         task = get_object_or_404(Task, id=id)
+        team = task.team
+        team_id = team.id if team else 0 
         
         if request.method == "GET":
             form = TaskForm(instance=task)

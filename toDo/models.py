@@ -79,6 +79,7 @@ class Task(models.Model):
     timer = models.ForeignKey(Timer, on_delete=models.CASCADE, null=True, blank=True)
     complete = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)
+    assigned_to = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='assigned_tasks', null=True, blank=True)
 
     def __str__(self):
         return self.title
