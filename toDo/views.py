@@ -6,6 +6,8 @@ from toDoList import settings
 from users.models import CustomUser
 from .forms import LoginForm, PasswordResetForm, TaskForm, TeamForm, UserRegisterForm
 from django.contrib.auth import authenticate, login as auth_login, logout
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 from django.urls import reverse
 from django.db import IntegrityError
 from django.core.mail import send_mail
@@ -16,6 +18,7 @@ from django.contrib.auth.tokens import PasswordResetTokenGenerator
 
 from .models import Task, Team
 
+import json
 import logging
 from django.db.models import Q
 
@@ -256,7 +259,7 @@ def dashboard(request):
     
     try:
         # Get the first team (or return an error if no teams exist)
-        team = Team.objects.first()
+        team = Team.objects.first() #get l
         # if not team:
         #     logger.error("No teams found in the database.")
         #     return render(request, 'toDo/dashboard.html', {
@@ -512,3 +515,38 @@ def addMember(request, id):
 
     return redirect('teams', id=id)
 
+@csrf_exempt
+def update_task_state(request, task_id):
+    if request.method == 'POST':
+        try:
+            task = Task.objects.get(id=task_id)
+            data = json.loads(request.body)
+            state = data.get('state')
+            secondsElapsed = data.get('secondsElapsed', 0)
+            if state == 'running':
+                task.timer.isRunning = True
+                task.timer.isPaused = False
+            elif state == 'paused':
+                task.timer.isRunning = False
+                task.timer.isPaused = True
+            elif state == 'stopped':
+                task.timer.isRunning = False
+                task.timer.isPaused = False
+                task.timer.secondsElapsed = 0
+            task.timer.secondsElapsed = secondsElapsed
+            task.timer.save()
+            return JsonResponse({'status': 'success'})
+        except Task.DoesNotExist:
+            return JsonResponse({'status': 'error', 'message': 'Task not found'}, status=404)
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=400)
+
+def fetch_timers(request):
+    tasks = Task.objects.all()
+    timers = []
+    for task in tasks:
+        timers.append({
+            'taskId': task.id,
+            'secondsElapsed': task.timer.secondsElapsed,
+            'isRunning': task.timer.isRunning,
+        })
+    return JsonResponse({'timers': timers})

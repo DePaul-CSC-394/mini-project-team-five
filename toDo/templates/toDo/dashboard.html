@@ -66,6 +66,7 @@
         }
         .task .timer {
             margin: 10px 0;
+            display: none;
         }
         .task button {
             margin-top: 10px;
@@ -177,7 +178,13 @@
                     <div class="left">
                         <h3>{{ task.title }}</h3>
                         <p>{{ task.description }}</p>
-                        <div class="timer" id="timer-{{ task.id }}">0m 0s</div>
+                        <!-- <div class="timer" id="timer-{{ task.id }}">0m 0s</div> -->
+                        <div class="timer" id="timer-{{ task.id }}" 
+                        data-seconds-elapsed="{{ task.timer.secondsElapsed }}" 
+                        data-is-running="{{ task.timer.isRunning }}"
+                        data-is-running="{{ task.timer.isRunning }}">
+                            0m 0s
+                        </div>
                     </div>
                     <div class="right">
                         <p>{% if task.team.name %}<strong>Team:</strong> {{ task.team.name }}{% endif %}</p>
@@ -185,10 +192,10 @@
                 </div>
                 <div class="split">
                     <div class="left">
-                        <button class="start-button" onclick="startTimer('timer-{{ task.id }}')">Start</button>
-                        <button class="stop-button" onclick="stopTimer('timer-{{ task.id }}')">Stop</button>
-                        <button class="pause-button" onclick="pauseTimer('timer-{{ task.id }}')">Pause</button>
-                        <button class="resume-button" onclick="resumeTimer('timer-{{ task.id }}')">Resume</button>
+                        <button class="start-button" onclick="startTimer('{{ task.id }}', 'timer-{{ task.id }}')">Start</button>
+                        <button class="stop-button" onclick="stopTimer('{{ task.id }}', 'timer-{{ task.id }}')">Stop</button>
+                        <button class="pause-button" onclick="pauseTimer('{{ task.id }}', 'timer-{{ task.id }}')">Pause</button>
+                        <button class="resume-button" onclick="resumeTimer('{{ task.id }}', 'timer-{{ task.id }}')">Resume</button>
                     </div>
                     <div class="right">
                         <button type="button" class="edit-button" onclick="window.location.href='{% url 'todos_edit' task.id %}'" class="edit-todo">Edit</button>
@@ -216,27 +223,80 @@
     </div>
 
 <script>
+document.addEventListener('DOMContentLoaded', () => {
+    fetchTimers();
+});
+
 const timers = {};
 let taskToDelete = null;
 
-function getButtons(timerId) {
-    const timerElement = document.getElementById(timerId);
-    const taskDiv = timerElement.parentNode.parentNode.parentNode;
+function fetchTimers() {
+    fetch('{% url "fetch_timers" %}')
+        .then(response => response.json())
+        .then(data => {
+            data.timers.forEach(timer => {
+                const timerElement = document.getElementById(`timer-${timer.taskId}`);
+                if (timerElement) {
+                    timers[timer.taskId] = {
+                        seconds: timer.secondsElapsed,
+                        interval: null,
+                        isPaused: !timer.isRunning
+                    };
+                    updateTimerUI(timer.taskId);
+                }
+            });
+        });
+}
+
+function updateTimerUI(taskId) {
+    const timerElement = document.getElementById(`timer-${taskId}`);
+    const { startButton, stopButton, pauseButton, resumeButton } = getButtons(taskId);
+    const timer = timers[taskId];
+
+    if (timer) {
+        const minutes = Math.floor(timer.seconds / 60);
+        const seconds = timer.seconds % 60;
+        timerElement.innerText = `${minutes}m ${seconds}s`;
+
+        if (timer.isPaused) {
+            startButton.style.display = 'none';
+            stopButton.style.display = 'inline-block';
+            pauseButton.style.display = 'none';
+            resumeButton.style.display = 'inline-block';
+        } else {
+            startButton.style.display = 'none';
+            stopButton.style.display = 'inline-block';
+            pauseButton.style.display = 'inline-block';
+            resumeButton.style.display = 'none';
+        }
+    }
+}
+
+function getButtons(taskId) {
+    const timerElement = document.getElementById(`timer-${taskId}`);
+    const taskDiv = timerElement.closest('.task');
     return {
-        stopButton: taskDiv.querySelector('.stop-button'),
-        pauseButton: taskDiv.querySelector('.pause-button'),
-        resumeButton: taskDiv.querySelector('.resume-button'),
-        startButton: taskDiv.querySelector('.start-button')
+        startButton : taskDiv.querySelector('.start-button'),
+        stopButton : taskDiv.querySelector('.stop-button'),
+        pauseButton : taskDiv.querySelector('.pause-button'),
+        resumeButton : taskDiv.querySelector('.resume-button'),
     };
 }
 
-function startTimer(timerId) {
-    const { stopButton, pauseButton, resumeButton, startButton } = getButtons(timerId);
-    const timerElement = document.getElementById(timerId);
+function startTimer(taskId, timerId) {
+    // const { stopButton, pauseButton, resumeButton, startButton } = getButtons(timerId);
+    // const timerElement = document.getElementById(timerId);
+    const timerElement = document.getElementById(`timer-${taskId}`);
+    timerElement.style.display = 'block';
+    if (!timerElement) return;
+    
+    // Set timer data attributes
+    timers[timerId] = { seconds: 0, interval: null, isPaused: false }
+    timerElement.dataset.isRunning = true;
+    // timerElement.dataset.secondsElapsed = timerElement.dataset.secondsElapsed || '0';
 
-    if (!timers[timerId]) {
-        timers[timerId] = { seconds: 0, interval: null, isPaused: false };
-    }
+    // Update button visibility
+    const { startButton, stopButton, pauseButton, resumeButton } = getButtons(taskId);
 
     if (!timers[timerId].interval) {
         timers[timerId].interval = setInterval(() => {
@@ -253,12 +313,28 @@ function startTimer(timerId) {
         pauseButton.style.display = 'inline-block';
         resumeButton.style.display = 'none';
     }
+    // Send state update to the backend
+    fetch(`{% url 'update_task_state' 0 %}`.replace('0', taskId), {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}'
+        },
+        body: JSON.stringify({ state: 'running', secondsElapsed: timers[timerId].seconds })
+    });
 }
 
-function stopTimer(timerId) {
-    const { stopButton, pauseButton, resumeButton, startButton } = getButtons(timerId);
-    const timerElement = document.getElementById(timerId);
-    clearInterval(timers[timerId].interval);
+function stopTimer(taskId, timerId) {
+    const timerElement = document.getElementById(`timer-${taskId}`);
+    timerElement.style.display = 'none';
+    timerElement.dataset.isRunning = false;
+    timerElement.dataset.secondsElapsed = '0';
+    timerElement.innerText = '0m 0s';
+
+    // Update button visibility
+    const { startButton, stopButton, pauseButton, resumeButton } = getButtons(taskId);
+
+    clearInterval(timers[timerId.interval]);
     timers[timerId].interval = null;
 
     startButton.style.display = 'inline-block';
@@ -266,13 +342,42 @@ function stopTimer(timerId) {
     pauseButton.style.display = 'none';
     resumeButton.style.display = 'none';
 
-    timers[timerId] = { seconds: 0, interval: null, isPaused: false };
+    timers[timerId] = { seconds: 0, interval: null, isPaused: true };
     timerElement.innerText = `0m 0s`;
+
+    // Send state update to the backend
+    fetch(`{% url 'update_task_state' 0 %}`.replace('0', taskId), {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}'
+        },
+        body: JSON.stringify({ state: 'stopped', secondsElapsed: 0 })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Stop Timer Response:', data);
+        if (data.success) {
+            console.log('Timer state updated successfully.');
+        } else {
+            console.error('Failed to update timer state.');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
 }
 
-function pauseTimer(timerId) {
-    const { stopButton, pauseButton, resumeButton, startButton } = getButtons(timerId);
-    const timerElement = document.getElementById(timerId);
+function pauseTimer(taskId, timerId) {
+    const timerElement = document.getElementById(`timer-${taskId}`);
+    timerElement.dataset.isRunning = false;
+
+    const { startButton, stopButton, pauseButton, resumeButton } = getButtons(taskId);
+
+    // startButton.style.display = 'none';
+    // stopButton.style.display = 'inline-block';
+    // pauseButton.style.display = 'none';
+    // resumeButton.style.display = 'inline-block';
 
     const timer = timers[timerId];
     if (timer) {
@@ -281,20 +386,51 @@ function pauseTimer(timerId) {
         resumeButton.style.display = 'inline-block';
         stopButton.style.display = 'inline-block';
     }
+
+    fetch(`{% url 'update_task_state' 0 %}`.replace('0', taskId), {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}'
+        },
+        body: JSON.stringify({ state: 'paused', secondsElapsed: timers[timerId].seconds })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Pause Timer Response:', data);
+        if (data.success) {
+            console.log('Timer state updated successfully.');
+        } else {
+            console.error('Failed to update timer state.');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
 }
 
-function resumeTimer(timerId) {
-    const { stopButton, pauseButton, resumeButton, startButton } = getButtons(timerId);
-    const timerElement = document.getElementById(timerId);
+function resumeTimer(taskId, timerId) {
+    const timerElement = document.getElementById(`timer-${taskId}`);
+    timerElement.dataset.isRunning = true;
+    const { startButton, stopButton, pauseButton, resumeButton } = getButtons(taskId);
 
     const timer = timers[timerId];
     if (timer) {
         timer.isPaused = false;
+        startButton.style.display = 'none';
+        stopButton.style.display = 'inline-block';
         pauseButton.style.display = 'inline-block';
         resumeButton.style.display = 'none';
-        stopButton.style.display = 'inline-block';
     }
 }
+
+// document.addEventListener('DOMContentLoaded', () => {
+//     {% for task in todo_items %}
+//         {% if task.timer and task.timer.isRunning %}
+//             startTimer('{{ task.id }}', '{{ task.timer.startTime }}');
+//         {% endif %}
+//     {% endfor %}
+// });
 
 function showPopup(button, taskId) {
     taskToDelete = taskId;
