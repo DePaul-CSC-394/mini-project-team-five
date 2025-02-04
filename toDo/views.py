@@ -306,7 +306,7 @@ def teams(request, id):
     team_members = team.members.all()
     todo_items = Task.objects.filter(team=team)
     team_id = team.id
-    # team_name = team.name
+    team_name = team.name
     team_description = team.description
     team_owner = team.owner
     # users_not_in_team = CustomUser.objects.exclude(teams=team)
@@ -374,7 +374,7 @@ def teams(request, id):
     context = {
         # 'form': form,
         'team_id': team_id,
-        # 'team_name': team_name,
+        'team_name': team_name,
         'team_description': team_description,
         'team_owner': team_owner,
         'team_members': team_members,
