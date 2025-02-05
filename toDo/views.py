@@ -178,21 +178,55 @@ def update_team(request, id):
         team.description = request.POST.get("description", team.description)
         
         # Handle new members
-        new_members = json.loads(request.POST.get("new_members", "[]"))
+        new_members = request.POST.get("new_members", "[]")
+        try:
+            new_members = json.loads(new_members)
+        except json.JSONDecodeError:
+            new_members = []
+
         for email in new_members:
             user = CustomUser.objects.filter(email=email).first()
             if user:
-                team.members.add(user)
+                if user in team.members.all():
+                    messages.error(request, f"User {email} is already in the team")
+                else:
+                    team.members.add(user)
+            else:
+                messages.error(request, f"User {email} not found")
+
 
         # Handle removed members
-        removed_members = json.loads(request.POST.get("removed_members", "[]"))
+        removed_members = request.POST.get("removed_members", "[]")
+        try:
+            removed_members = json.loads(removed_members)
+        except json.JSONDecodeError:
+            removed_members = []
+
         for email in removed_members:
             user = CustomUser.objects.filter(email=email).first()
             if user:
                 team.members.remove(user)
 
         team.save()
-        return redirect("teams", id=team.id)
+        messages.success(request, "Team updated successfully")
+        return redirect('teams', id=team.id)
+    else:
+        team = get_object_or_404(Team, id=id)
+        form = TeamForm(instance=team)
+        team_members = team.members.all()
+        users_not_in_team = CustomUser.objects.exclude(teams=team)
+        
+        context = {
+            'form': form,
+            'team_id': team.id,
+            'team_name': team.name,
+            'team_description': team.description,
+            'team_owner': team.owner,
+            'team_members': team_members,
+            'users_not_in_team': users_not_in_team,
+        }
+        
+        return render(request, 'toDo/teamdetails.html', context)
 
 
 def todosNew(request):
