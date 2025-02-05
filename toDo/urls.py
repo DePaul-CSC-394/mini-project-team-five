@@ -22,4 +22,5 @@ urlpatterns = [
     path('teams/<int:id>/add-member', views.addMember, name='add_member'),
     path('update_task_state/<int:task_id>/', views.update_task_state, name='update_task_state'),
     path('fetch_timers/', views.fetch_timers, name='fetch_timers'),
+    path('update_team/<int:id>/', views.update_team, name='update_team'),
 ]
