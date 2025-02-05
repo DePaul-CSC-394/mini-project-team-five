@@ -175,6 +175,12 @@ let removedMembers = [];
 function addTempMember() {
     let emailInput = document.getElementById("add-member-email");
     let email = emailInput.value.trim();
+    let emailPattern = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
+
+    if (!emailPattern.test(email)) {
+        showMessagePopup("Invalid email format.");
+        return;
+    }
 
     if (email && !tempMembers.includes(email)) {
         tempMembers.push(email);
@@ -217,10 +223,17 @@ function updateTeamList() {
 }
 
 function showPopup(button) {
-    // memberToDelete = button.parentNode;
     document.getElementById('popup-overlay').style.display = 'flex';
     document.getElementById('popup').style.display = 'flex';
 }
+
+function showMessagePopup(message) {
+    const popup = document.getElementById('message-popup');
+    const messageDiv = popup.querySelector('.message');
+    messageDiv.textContent = message;
+    popup.style.display = 'flex';
+}
+
 
 function closePopup() {
     document.getElementById('message-popup').style.display = 'none';

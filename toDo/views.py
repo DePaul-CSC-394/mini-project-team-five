@@ -357,6 +357,9 @@ def dashboard(request):
 def teams(request, id):
     if not request.user.is_authenticated:
         return redirect('login')
+    
+    if id == 0: 
+        return redirect('teams_new')
 
     team = get_object_or_404(Team, id=id)
     team_members = team.members.all()
