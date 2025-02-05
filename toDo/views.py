@@ -358,6 +358,10 @@ def teams(request, id):
     if not request.user.is_authenticated:
         return redirect('login')
     
+    user_teams_ids = Team.objects.filter(members=request.user).values_list('id', flat=True) | Team.objects.filter(owner=request.user).values_list('id', flat=True)
+    # if id not in user_teams_ids:
+    #     return redirect('teams_new')
+    
     if id == 0: 
         return redirect('teams_new')
 
