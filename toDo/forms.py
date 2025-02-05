@@ -99,7 +99,7 @@ class TeamForm(forms.ModelForm):
         widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Team Name'})
     )
     description = forms.CharField(
-        widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Team Description', 'rows': 3}),
+        widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Team Description'}),
     )
 
     class Meta:

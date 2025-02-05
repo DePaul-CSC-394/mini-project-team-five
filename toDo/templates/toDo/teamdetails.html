@@ -52,6 +52,38 @@
             font-size: 1rem;
             font-weight: bold;
         }
+        .team-list .team-member {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border: 1px solid lightgray;
+            border-radius: 3px;
+            margin-bottom: 10px;
+            background-color: #f8f9fa;
+        }
+        .team-list .member-name {
+            font-size: 1rem;
+            font-weight: bold;
+        }
+        #add-member-email{
+            padding: 0;
+            margin: 0;
+        }
+        .add-member-field{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            height: fit-content;
+        }
+        .add-member-field button{
+            margin: 0 10px;
+        }
+        .button-container button:last-of-type{
+            float: right;
+            margin-right: 10px;
+        }
     </style>
 </head>
 <body>
@@ -116,45 +148,51 @@
 -->
     <div class="content">
         <!--team selection-->
-        <div class="team-selection">
-            <label for="team-select">Select Team:</label>
-            <select id="team-select" onchange="selectTeam()">
-                {% for team in user_teams %}
-                    <option value="{{ team.id }}" {% if team.id == team_id %}selected{% endif %}>{{ team.name }}</option> 
-                {% endfor %}
-            </select>                
-        </div>
-        <br>
+        <!-- <br> -->
         <!--Team Form-->
-        <h1>{{team_name}}</h1>
-        <form id="update-team-form" method="POST" action="{% url 'update_team' id=team_id %}">
-            {% csrf_token %}
-            
-            <label for="team-description">Description:</label>
-            <br>
-            <textarea name="description" id="team-description">{{ team_description }}</textarea>
-        
-            <div class="team-members">
-                <input type="email" id="add-member-email" placeholder="Add team member (email)">
-                <button type="button" onclick="addTempMember()">Add</button>
+        <div class="form-container" style="flex-direction: column;">
+            <div class="team-selection">
+                <label for="team-select">Select Team:</label>
+                <select id="team-select" onchange="selectTeam()">
+                    {% for team in user_teams %}
+                        <option value="{{ team.id }}" {% if team.id == team_id %}selected{% endif %}>{{ team.name }}</option> 
+                    {% endfor %}
+                </select>                
             </div>
-        
-            <div class="team-list" id="team-list">
-                {% for member in team_members %}
-                <div class="team-member" data-id="{{ member.id }}">
-                    <span class="member-name">{{ member.email }}</span>
-                    <button type="button" onclick="removeTempMember(this)">Remove</button>
-                </div>
-                {% endfor %}
+            <div class="form-box">
+                <h1>{{ team_name }}</h1>
+                <form id="update-team-form" method="POST" action="{% url 'update_team' id=team_id %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="team-description">Description:</label>
+                        <textarea name="description" id="team-description">{{ team_description }}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="add-member-email">Add team member:</label>
+                        <div class="add-member-field">
+                            <input type="email" id="add-member-email" placeholder="Add team member (email)">
+                            <button type="button" onclick="addTempMember()">Add</button>
+                        </div>
+                        <p class="error-message"></p>
+                    </div>
+                    <div class="team-list" id="team-list">
+                        {% for member in team_members %}
+                        <div class="team-member" data-id="{{ member.id }}">
+                            <span class="member-name">{{ member.email }}</span>
+                            <button type="button" onclick="removeTempMember(this)">Remove</button>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="button-container">
+                        <input type="hidden" name="new_members" id="new-members">
+                        <input type="hidden" name="removed_members" id="removed-members">
+                        <button class="update-button" type="submit">Update</button>
+                        <button class="cancel-button" type="button" onclick="window.location.href='/dashboard'">Cancel</button>
+                        <button class="delete-button" type="button" onclick="showPopup(this)">Delete</button>
+                    </div>
+                </form>
             </div>
-        
-            <input type="hidden" name="new_members" id="new-members">
-            <input type="hidden" name="removed_members" id="removed-members">
-            <button class="update-button" type="submit">Update</button>
-            <button class="cancel-button" type="button" onclick="window.location.href='/dashboard'">Cancel</button>
-            <button class="delete-button" type="button" onclick="showPopup(this)">Delete</button>
-        </form>
-    </div>
+        </div>
 
     {% if messages %}
     <div class="message-popup" id="message-popup">
@@ -183,8 +221,14 @@
             </div>
         </div>
     </div>
-
-
+    <!-- <div class="message-popup" id="message-popup">
+        <div class="popup-content">
+            {% for message in messages %}
+                <div class="message {{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+            <button class="close-button" onclick="closePopup()">OK</button>
+        </div>
+    </div> -->
     <script>
         function selectTeam() {
             const selectElement = document.getElementById("team-select");
@@ -197,18 +241,24 @@
 
         function addTempMember() {
             let emailInput = document.getElementById("add-member-email");
+            let errorMessageContainer = document.querySelector(".error-message");
             let email = emailInput.value.trim();
             let emailPattern = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
         
+            errorMessageContainer.innerHTML = '';
+
             if (!emailPattern.test(email)) {
-                showMessagePopup("Invalid email format.");
+                errorMessageContainer.innerHTML = "Invalid email format.";
                 return;
             }
         
             if (email && !tempMembers.includes(email)) {
                 tempMembers.push(email);
                 updateTeamList();
+            } else if (tempMembers.includes(email)) {
+                errorMessageContainer.innerHTML = "This email is already added.";
             }
+
             emailInput.value = "";
         }
 
