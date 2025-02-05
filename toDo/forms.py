@@ -94,15 +94,17 @@ class TaskForm(forms.ModelForm):
 
         
 class TeamForm(forms.ModelForm):
-    name = forms.CharField(max_length=200, widget=forms.TextInput(attrs={'name':'name'}))
-    description = forms.CharField(widget=forms.Textarea(attrs={'name':'description'}))
-    #members = forms.ModelMultipleChoiceField(queryset=CustomUser.objects.all(), widget=forms.SelectMultiple(attrs={'name':'members'}), required=False)
-    
+    name = forms.CharField(
+        max_length=200,
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Team Name'})
+    )
+    description = forms.CharField(
+        widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Team Description'}),
+    )
+
     class Meta:
         model = Team
         fields = ['name', 'description']
-        #fields = ['name', 'description', 'members'] # need to add members to fields
-        
     
 
 class PasswordResetForm(forms.Form): #form for forgot password page

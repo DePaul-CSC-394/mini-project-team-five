@@ -170,6 +170,64 @@ def logoutView(request):
     logout(request)
     return redirect("login")
 
+def update_team(request, id):
+    if request.method == "POST":
+        team = get_object_or_404(Team, id=id)
+        
+        # Update description
+        team.description = request.POST.get("description", team.description)
+        
+        # Handle new members
+        new_members = request.POST.get("new_members", "[]")
+        try:
+            new_members = json.loads(new_members)
+        except json.JSONDecodeError:
+            new_members = []
+
+        for email in new_members:
+            user = CustomUser.objects.filter(email=email).first()
+            if user:
+                if user in team.members.all():
+                    messages.error(request, f"User {email} is already in the team")
+                else:
+                    team.members.add(user)
+            else:
+                messages.error(request, f"User {email} not found")
+
+
+        # Handle removed members
+        removed_members = request.POST.get("removed_members", "[]")
+        try:
+            removed_members = json.loads(removed_members)
+        except json.JSONDecodeError:
+            removed_members = []
+
+        for email in removed_members:
+            user = CustomUser.objects.filter(email=email).first()
+            if user:
+                team.members.remove(user)
+
+        team.save()
+        messages.success(request, "Team updated successfully")
+        return redirect('teams', id=team.id)
+    else:
+        team = get_object_or_404(Team, id=id)
+        form = TeamForm(instance=team)
+        team_members = team.members.all()
+        users_not_in_team = CustomUser.objects.exclude(teams=team)
+        
+        context = {
+            'form': form,
+            'team_id': team.id,
+            'team_name': team.name,
+            'team_description': team.description,
+            'team_owner': team.owner,
+            'team_members': team_members,
+            'users_not_in_team': users_not_in_team,
+        }
+        
+        return render(request, 'toDo/teamdetails.html', context)
+
 
 def todosNew(request):
     if not request.user.is_authenticated:
@@ -299,89 +357,34 @@ def dashboard(request):
 def teams(request, id):
     if not request.user.is_authenticated:
         return redirect('login')
-
-    if id == 0:
+    
+    if id == 0: 
         return redirect('teams_new')
-    # team = Team.objects.get(id=id)
-    # # Get the team by ID
+
     team = get_object_or_404(Team, id=id)
     team_members = team.members.all()
     todo_items = Task.objects.filter(team=team)
-    team_id = team.id
-    team_name = team.name
-    team_description = team.description
-    team_owner = team.owner
-    # users_not_in_team = CustomUser.objects.exclude(teams=team)
     users_not_in_team = CustomUser.objects.filter(~Q(teammember__team=team))
-    # print(request.POST)
-    print("Team:", team)
-    print("Tasks:", todo_items)
-    print("Users not in team:", users_not_in_team)
+    user_teams = Team.objects.filter(members=request.user) | Team.objects.filter(owner=request.user) #can be member or owner
 
-
-    # if request.method == "GET":
-    #         form = TaskForm(instance=team)
-    #         context = {
-    #             'form': form,
-    #             'team_id': team_id,
-    #             'team_name': team_name,
-    #             'team_description': team_description,
-    #             'team_members': team_members,
-    #             'todo_items': todo_items,
-    #             'users_not_in_team': users_not_in_team,
-    #         }
-    #         return render(request, 'toDo/teamdetails.html', context)
-    
-    # if request.method == "GET":
-    #     form = TaskForm(instance=team)
     if request.method == 'POST':
-        # if 'new_members' in request.POST:
-        #     form = TeamForm(request.POST, instance=team)
-        #     if form.is_valid():
-        #         team = form.save()
-                
-        #         new_members_str = request.POST.get('new_members')
-        #         if new_members_str:
-        #             new_members_ids = new_members_str.split(',')
-        #             new_members_ids = [int(id) for id in new_members_ids if id]  # Convert to integers
-        #             if new_members_ids:
-        #                 new_members = CustomUser.objects.filter(id__in=new_members_ids)
-        #                 team.members.add(*new_members)
-        #         return redirect('dashboard')
-        # else:
-        #     print("POST data:", request.POST)  # Debug log
-        #     if 'new_members' in request.POST:
-        #         print("New members found:", request.POST.get('new_members'))  # Debug log
-    # else:
-    #     print("Form is not valid:", form.errors)
-    #     form = None
-    # else:
-    #     form = None
-        if 'new_members' in request.POST:
-            newMembers = request.POST.get('new_members')
-            if newMembers:
-                newMembers = newMembers.split(',')
-                newMembers = [int(id) for id in newMembers if id]
-                if newMembers:
-                    newMembers = CustomUser.objects.filter(id__in=newMembers)
-                    team.members.add(*newMembers)
-                    return HttpResponseRedirect(reverse('teamdetails', args=[id]))
-        elif 'delete_member' in request.POST:
-            member_id = request.POST.get('delete_member')
-            if member_id:
-                member = CustomUser.objects.get(id=member_id)
-                team.members.remove(member)
-                return HttpResponseRedirect(reverse('teamdetails', args=[id]))
-            
+        form = TeamForm(request.POST, instance=team)
+        if form.is_valid():
+            form.save()
+            return redirect('teams', id=team.id)
+    else:
+        form = TeamForm(instance=team)
+
     context = {
-        # 'form': form,
-        'team_id': team_id,
-        'team_name': team_name,
-        'team_description': team_description,
-        'team_owner': team_owner,
+        'form': form,
+        'team_id': team.id,
+        'team_name': team.name,
+        'team_description': team.description,
+        'team_owner': team.owner,
         'team_members': team_members,
         'todo_items': todo_items,
         'users_not_in_team': users_not_in_team,
+        'user_teams': user_teams,
     }
 
     return render(request, 'toDo/teamdetails.html', context)
