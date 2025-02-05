@@ -109,6 +109,17 @@
     </div>
 -->
     <div class="content">
+        <!--team selection-->
+        <div class="team-selection">
+            <label for="team-select">Select Team:</label>
+            <select id="team-select" onchange="selectTeam()">
+                {% for team in user_teams %}
+                    <option value="{{ team.id }}" {% if team.id == team_id %}selected{% endif %}>{{ team.name }}</option> 
+                {% endfor %}
+            </select>                
+        </div>
+        <br>
+        <!--Team Form-->
         <h1>{{team_name}}</h1>
         <form id="update-team-form" method="POST" action="{% url 'update_team' id=team_id %}">
             {% csrf_token %}
@@ -169,98 +180,104 @@
 
 
     <script>
+        function selectTeam() {
+            const selectElement = document.getElementById("team-select");
+            const selectedTeamId = selectElement.value;
+            window.location.href = `/teams/${selectedTeamId}`;
+        }
+
         let tempMembers = [];
-let removedMembers = [];
+        let removedMembers = [];
 
-function addTempMember() {
-    let emailInput = document.getElementById("add-member-email");
-    let email = emailInput.value.trim();
-    let emailPattern = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
+        function addTempMember() {
+            let emailInput = document.getElementById("add-member-email");
+            let email = emailInput.value.trim();
+            let emailPattern = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
+        
+            if (!emailPattern.test(email)) {
+                showMessagePopup("Invalid email format.");
+                return;
+            }
+        
+            if (email && !tempMembers.includes(email)) {
+                tempMembers.push(email);
+                updateTeamList();
+            }
+            emailInput.value = "";
+        }
 
-    if (!emailPattern.test(email)) {
-        showMessagePopup("Invalid email format.");
-        return;
-    }
+        function removeTempMember(button) {
+            let memberDiv = button.parentElement;
+            let memberEmail = memberDiv.querySelector(".member-name").innerText;
+        
+            // Remove from tempMembers if it was added in this session
+            tempMembers = tempMembers.filter(email => email !== memberEmail);
+        
+            // Track removed members (only if they existed before)
+            if (!removedMembers.includes(memberEmail)) {
+                removedMembers.push(memberEmail);
+            }
+        
+            updateTeamList();
+        }
 
-    if (email && !tempMembers.includes(email)) {
-        tempMembers.push(email);
-        updateTeamList();
-    }
-    emailInput.value = "";
-}
+        function updateTeamList() {
+            let teamList = document.getElementById("team-list");
+            teamList.innerHTML = "";
+        
+            tempMembers.forEach(email => {
+                let div = document.createElement("div");
+                div.classList.add("team-member");
+                div.innerHTML = `
+                    <span class="member-name">${email}</span>
+                    <button type="button" onclick="removeTempMember(this)">Remove</button>
+                `;
+                teamList.appendChild(div);
+            });
+        
+            document.getElementById("new-members").value = JSON.stringify(tempMembers);
+            document.getElementById("removed-members").value = JSON.stringify(removedMembers);
+        }
 
-function removeTempMember(button) {
-    let memberDiv = button.parentElement;
-    let memberEmail = memberDiv.querySelector(".member-name").innerText;
+        function showPopup(button) {
+            document.getElementById('popup-overlay').style.display = 'flex';
+            document.getElementById('popup').style.display = 'flex';
+        }
 
-    // Remove from tempMembers if it was added in this session
-    tempMembers = tempMembers.filter(email => email !== memberEmail);
-
-    // Track removed members (only if they existed before)
-    if (!removedMembers.includes(memberEmail)) {
-        removedMembers.push(memberEmail);
-    }
-
-    updateTeamList();
-}
-
-function updateTeamList() {
-    let teamList = document.getElementById("team-list");
-    teamList.innerHTML = "";
-
-    tempMembers.forEach(email => {
-        let div = document.createElement("div");
-        div.classList.add("team-member");
-        div.innerHTML = `
-            <span class="member-name">${email}</span>
-            <button type="button" onclick="removeTempMember(this)">Remove</button>
-        `;
-        teamList.appendChild(div);
-    });
-
-    document.getElementById("new-members").value = JSON.stringify(tempMembers);
-    document.getElementById("removed-members").value = JSON.stringify(removedMembers);
-}
-
-function showPopup(button) {
-    document.getElementById('popup-overlay').style.display = 'flex';
-    document.getElementById('popup').style.display = 'flex';
-}
-
-function showMessagePopup(message) {
-    const popup = document.getElementById('message-popup');
-    const messageDiv = popup.querySelector('.message');
-    messageDiv.textContent = message;
-    popup.style.display = 'flex';
-}
+        function showMessagePopup(message) {
+            const popup = document.getElementById('message-popup');
+            const messageDiv = popup.querySelector('.message');
+            messageDiv.textContent = message;
+            popup.style.display = 'flex';
+        }
 
 
-function closePopup() {
-    document.getElementById('message-popup').style.display = 'none';
-}
+        function closePopup() {
+            document.getElementById('message-popup').style.display = 'none';
+        }
 
-document.addEventListener('DOMContentLoaded', function() {
-    const popup = document.getElementById('message-popup');
-    if (popup) {
-        popup.style.display = 'flex';
-    }
-});
+        document.addEventListener('DOMContentLoaded', function() {
+            const popup = document.getElementById('message-popup');
+            if (popup) {
+                popup.style.display = 'flex';
+            }
+        });
 
-function confirmDelete() {
-    // if (memberToDelete) {
-    //     memberToDelete.remove();
-    //     memberToDelete = null;
-    // }
-    document.getElementById('delete-team-form').submit();
-    document.getElementById('popup-overlay').style.display = 'none';
-    window.location.href = '{% url "delete_team" id=team_id %}';
-}
+        function confirmDelete() {
+            // if (memberToDelete) {
+            //     memberToDelete.remove();
+            //     memberToDelete = null;
+            // }
+            document.getElementById('delete-team-form').submit();
+            document.getElementById('popup-overlay').style.display = 'none';
+            window.location.href = '{% url "delete_team" id=team_id %}';
+        }
 
-function cancelDelete() {
-    // memberToDelete = null;
-    document.getElementById('popup-overlay').style.display = 'none';
-}
+        function cancelDelete() {
+            // memberToDelete = null;
+            document.getElementById('popup-overlay').style.display = 'none';
+        }
 
-</script>
-</body>
+        </script>
+    </body>
 </html>

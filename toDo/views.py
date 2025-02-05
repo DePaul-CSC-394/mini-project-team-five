@@ -365,6 +365,7 @@ def teams(request, id):
     team_members = team.members.all()
     todo_items = Task.objects.filter(team=team)
     users_not_in_team = CustomUser.objects.filter(~Q(teammember__team=team))
+    user_teams = Team.objects.filter(members=request.user) | Team.objects.filter(owner=request.user) #can be member or owner
 
     if request.method == 'POST':
         form = TeamForm(request.POST, instance=team)
@@ -383,6 +384,7 @@ def teams(request, id):
         'team_members': team_members,
         'todo_items': todo_items,
         'users_not_in_team': users_not_in_team,
+        'user_teams': user_teams,
     }
 
     return render(request, 'toDo/teamdetails.html', context)
