@@ -32,7 +32,7 @@
 # List of Commands:
 
 ## Docker:
-- **docker compose up** OR **docker-compose up**
+- **docker compose up --build** OR **docker-compose up --build**
   - Builds the containers that are in the current compose.yaml file and run the project on localhost:1337
   - Using the --build flag will create a fresh build
   - Using the optional -d flag it will run the container in the background until you use: docker-compose down -v
@@ -40,8 +40,8 @@
 - **docker compose down -v** OR **docker-compose down -v**
   - Stops the running containers and volumes associated with them
  
-**_Any docker compose exec command will not run unless you do docker-compose up -d_**  
-**_THe docker compose VS docker-compose seems to be a OS specific problem please use them interchangeably if you have issues_**
+**_Any docker compose exec command will not run unless the container is running_**  
+**_The docker compose VS docker-compose seems to be a OS specific problem please use them interchangeably if you have issues_**
 
 - **docker compose exec django-web python manage.py migrate --noinput**
   - Runs a migration
